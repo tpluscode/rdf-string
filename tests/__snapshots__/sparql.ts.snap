@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`sparql serializes named node 1`] = `"SELECT * WHERE { ?person a <http://example.com/type> }"`;
+
+exports[`sparql serializes string literal 1`] = `"SELECT * WHERE { ?person <http://schema.org/name> John Doe }"`;
