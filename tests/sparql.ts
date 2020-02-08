@@ -1,5 +1,9 @@
 import { sparql } from '../src/index'
 import { namedNode } from '@rdfjs/data-model'
+import { prefixes } from '@zazuko/rdf-vocabularies'
+import namespace from '@rdfjs/namespace'
+
+const schema = namespace(prefixes.schema)
 
 describe('sparql', () => {
   it('serializes named node', () => {
@@ -19,6 +23,14 @@ describe('sparql', () => {
 
     // when
     const query = sparql`SELECT * WHERE { ?person <http://schema.org/name> ${name} }`
+
+    // then
+    expect(query.toString()).toMatchSnapshot()
+  })
+
+  it('extracts known prefixes', () => {
+    // when
+    const query = sparql`SELECT * WHERE { ?person ${schema.name} "Tomasz" }`
 
     // then
     expect(query.toString()).toMatchSnapshot()
