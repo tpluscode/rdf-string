@@ -1,4 +1,4 @@
-> # @zazuko/rdf-string
+> # @tpluscode/rdf-string
 
 Simplifies the construction of RDF strings (turtle, n-triples, SPARQL, etc.)
 by taking care of correctly serializing values to their string representation
