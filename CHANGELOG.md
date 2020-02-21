@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/zazuko/rdf-string/compare/v0.0.3...v0.0.4) (2020-02-21)
+
+
+### Bug Fixes
+
+* type SparqlValue must be generic ([32ab34e](https://github.com/zazuko/rdf-string/commit/32ab34e21d444876ffa76be1071b25a9bb55164d))
+
 ### [0.0.3](https://github.com/zazuko/rdf-string/compare/v0.0.2...v0.0.3) (2020-02-21)
 
 
