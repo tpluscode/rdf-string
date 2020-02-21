@@ -17,3 +17,4 @@ deploy:
   on:
     tags: true
     repo: tpluscode/rdf-string
+    node: '13'
