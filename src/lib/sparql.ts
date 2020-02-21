@@ -1,7 +1,8 @@
 import { prefixes as knownPrefixes, shrink } from '@zazuko/rdf-vocabularies'
+import { Term } from 'rdf-js'
 import { Value } from './value'
 
-export type SparqlValue = Value<SparqlTemplateResult>
+export type SparqlValue<T extends Term = Term> = Value<SparqlTemplateResult, T>
 
 function prefixDeclarations(prefixes: Set<string>): string {
   return [...prefixes]
