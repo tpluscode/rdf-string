@@ -1,7 +1,7 @@
-import { Term } from 'rdf-js'
 import { prefixes as knownPrefixes, shrink } from '@zazuko/rdf-vocabularies'
+import { Value } from './value'
 
-type Value = SparqlTemplateResult | Term | string | null | undefined
+export type SparqlValue = Value<SparqlTemplateResult>
 
 function prefixDeclarations(prefixes: Set<string>): string {
   return [...prefixes]
@@ -12,10 +12,10 @@ function prefixDeclarations(prefixes: Set<string>): string {
 
 export class SparqlTemplateResult {
   readonly strings: TemplateStringsArray;
-  readonly values: readonly Value[];
+  readonly values: readonly SparqlValue[];
   readonly prefixes: Set<string> = new Set()
 
-  constructor(strings: TemplateStringsArray, values: Value[]) {
+  constructor(strings: TemplateStringsArray, values: SparqlValue[]) {
     this.strings = strings
     this.values = values
   }
@@ -70,5 +70,5 @@ ${query}`
   }
 }
 
-export const sparql = (strings: TemplateStringsArray, ...values: Value[]) =>
+export const sparql = (strings: TemplateStringsArray, ...values: SparqlValue[]) =>
   new SparqlTemplateResult(strings, values)

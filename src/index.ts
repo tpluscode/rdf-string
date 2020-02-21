@@ -1,1 +1,1 @@
-export { sparql } from './lib/sparql'
+export { sparql, SparqlTemplateResult, SparqlValue } from './lib/sparql'
