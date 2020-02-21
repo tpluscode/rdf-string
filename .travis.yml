@@ -1,11 +1,20 @@
 language: node_js
 node_js:
-  - '12'
-  - '13'
-  - '14'
+- '12'
+- '13'
+- '14'
 after_script:
-  - npm run build
+- npm run build
 after_success:
-  - npx codecov
+- npx codecov
 after_failure:
-  - npx codecov
+- npx codecov
+deploy:
+  provider: npm
+  email: npm@t-code.pl
+  edge: true
+  api_key:
+    secure: RPubs/VRiwkWxF8p4zKfug+MEI7WLN4pj9wiIEpgZxaMvHwPmtR4KdTOJv0aUT62AgcJXn9ucHZbgMXsSIGEVlxKU/kPfHma1fJleaEe/kBjGLSz0Q8/wkLyj8n8XOeiRNBjUxbCCJI8uq6dQtrwIXd+/X7ab/txPHfuKGS0WSxQBq7CQ+49vg5AqsWB2T8Plqr3kdcwwyHZwidrZ4bJ56hEXZ+OL8O+HUpOMXTWY3uqtYOONbtBkPtuu+3tKdWDj3gPTVFNvREyPZnn8UFObJJd/4KpOU4qFUWivIWqo6g2zx+klV0IHPKZfRMdkn/9nPy2ehDtJFi4SsufBh830+MMy/bZifEiwswBzyIg0OOT/fCfX1ioChmflYi0s9cOxZVXS+fasOGtY3icfjBKcdaGwkwVqwvVg6rE6eQgZNiPjPERMxiLAdEXCi8eqfiPZs9Ijoly3Yk8bNzLAJlhIl3+t6GCyDO5jcuKGbfT9lzNHcCsTDuf/o/9nu0bumXE4P+mkf1quPake2dSMLJieCyzGzHI3w+omfilsL2wjDikPta5UhBOAOSrZ7wU/ai2FNMnSxvOsaq2iOsWEBJMHnWK51SHFNhwe3pAJ5WY9htgz4/lWtwmNASxfqqEbZyehNL8anDncTe6JoNOQvuxPt80HXR5eDSGkOeqxI2EJyM=
+  on:
+    tags: true
+    repo: tpluscode/rdf-string

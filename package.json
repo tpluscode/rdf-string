@@ -2,8 +2,8 @@
   "name": "@zazuko/rdf-string",
   "version": "0.0.0",
   "description": "Simplifies creating of RDF strings",
-  "main": "lib/node/index.js",
-  "module": "lib/es/index.js",
+  "main": "dist/node/index.js",
+  "module": "dist/es/index.js",
   "types": "index.d.ts",
   "scripts": {
     "prepack": "npm run build",
@@ -52,6 +52,9 @@
     "url": "https://github.com/zazuko/rdf-string/issues"
   },
   "homepage": "https://github.com/zazuko/rdf-string#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
