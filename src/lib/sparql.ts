@@ -1,7 +1,7 @@
 import { Term } from 'rdf-js'
 import { prefixes as knownPrefixes, shrink } from '@zazuko/rdf-vocabularies'
 
-type Value = Term | string
+type Value = SparqlTemplateResult | Term | string | null | undefined
 
 function prefixDeclarations(prefixes: Set<string>): string {
   return [...prefixes]
@@ -30,7 +30,12 @@ export class SparqlTemplateResult {
       const value = this.values[i]
       let valueStr: string
       if (typeof value === 'string') {
-        valueStr = value
+        valueStr = `"${value}"`
+      } else if (typeof value === 'undefined' || value === null) {
+        valueStr = ''
+      } else if (value instanceof SparqlTemplateResult) {
+        valueStr = value.toString({ prefixes: false })
+        value.prefixes.forEach(prefix => this.prefixes.add(prefix))
       } else {
         switch (value.termType) {
           case 'Literal':
@@ -50,7 +55,7 @@ export class SparqlTemplateResult {
         }
       }
 
-      query = s + valueStr
+      query += s + valueStr
     }
 
     query += this.strings[l]
