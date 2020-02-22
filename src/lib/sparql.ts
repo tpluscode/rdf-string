@@ -4,6 +4,11 @@ import { Value } from './value'
 
 export type SparqlValue<T extends Term = Term> = Value<SparqlTemplateResult, T>
 
+interface SparqlOptions {
+  base?: string
+  prefixes?: boolean
+}
+
 function prefixDeclarations(prefixes: Set<string>): string {
   return [...prefixes]
     .filter(prefix => prefix in knownPrefixes)
@@ -21,7 +26,10 @@ export class SparqlTemplateResult {
     this.values = values
   }
 
-  public toString({ prefixes } = { prefixes: true }): string {
+  public toString(options: SparqlOptions = {}): string {
+    const prefixes = options.prefixes || typeof options.prefixes === 'undefined'
+    const baseRegex = new RegExp('^' + options.base)
+
     const l = this.strings.length - 1
     let query = ''
 
@@ -48,7 +56,7 @@ export class SparqlTemplateResult {
               this.prefixes.add(shrunk.split(':')[0])
               valueStr = shrunk
             } else {
-              valueStr = `<${value.value}>`
+              valueStr = `<${value.value.replace(baseRegex, '')}>`
             }
           } break
           default:
@@ -61,13 +69,17 @@ export class SparqlTemplateResult {
 
     query += this.strings[l]
 
-    if (prefixes && this.prefixes.size > 0) {
-      return `${prefixDeclarations(this.prefixes)}
-
-${query}`
+    let baseStatement = ''
+    if (options.base) {
+      baseStatement = `BASE <${options.base}>\n\n`
     }
 
-    return query
+    let prefixStatements = ''
+    if (prefixes && this.prefixes.size > 0) {
+      prefixStatements = `${prefixDeclarations(this.prefixes)}\n\n`
+    }
+
+    return `${baseStatement}${prefixStatements}${query}`
   }
 }
 

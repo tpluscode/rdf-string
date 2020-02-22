@@ -84,4 +84,18 @@ describe('sparql', () => {
     // then
     expect(query).toMatchQuery(expected)
   })
+
+  it('reduces named nodes to URIs relative to base', () => {
+    // given
+    const dog = namedNode('http://example.org/dog')
+
+    // when
+    const query = sparql`PREFIX : <http://example.org/vocab#> 
+SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
+  base: 'http://example.org/',
+})
+
+    // then
+    expect(query.toString()).toMatchSnapshot()
+  })
 })
