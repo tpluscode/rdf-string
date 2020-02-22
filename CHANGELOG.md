@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/zazuko/rdf-string/compare/v0.0.5...v0.0.6) (2020-02-22)
+
+
+### Features
+
+* support BASE ([5cca6c7](https://github.com/zazuko/rdf-string/commit/5cca6c7d8474095dd500288c25b8d985d5d19b4e))
+
 ### [0.0.5](https://github.com/zazuko/rdf-string/compare/v0.0.4...v0.0.5) (2020-02-21)
 
 ### [0.0.4](https://github.com/zazuko/rdf-string/compare/v0.0.3...v0.0.4) (2020-02-21)
