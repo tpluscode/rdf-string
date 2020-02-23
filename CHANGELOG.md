@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/zazuko/rdf-string/compare/v0.0.6...v0.0.7) (2020-02-23)
+
+
+### Bug Fixes
+
+* **sparql:** variables were stringified without question mark ([0b05db7](https://github.com/zazuko/rdf-string/commit/0b05db7b3fcef2912e122cd087034deed6a0560e))
+
 ### [0.0.6](https://github.com/zazuko/rdf-string/compare/v0.0.5...v0.0.6) (2020-02-22)
 
 
