@@ -1,5 +1,5 @@
 import { sparql } from '../src/index'
-import { namedNode } from '@rdfjs/data-model'
+import { namedNode, variable } from '@rdfjs/data-model'
 import { prefixes } from '@zazuko/rdf-vocabularies'
 import namespace from '@rdfjs/namespace'
 
@@ -14,6 +14,20 @@ describe('sparql', () => {
 
     // when
     const query = sparql`SELECT * WHERE { ?person a ${type} }`
+
+    // then
+    expect(query.toString()).toMatchQuery(expected)
+  })
+
+  it('serializes variable', () => {
+    // given
+    const expected = 'SELECT * WHERE { ?s ?p ?o }'
+    const s = variable('s')
+    const p = variable('p')
+    const o = variable('o')
+
+    // when
+    const query = sparql`SELECT * WHERE { ${s} ${p} ${o} }`
 
     // then
     expect(query.toString()).toMatchQuery(expected)

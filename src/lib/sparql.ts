@@ -59,6 +59,9 @@ export class SparqlTemplateResult {
               valueStr = `<${value.value.replace(baseRegex, '')}>`
             }
           } break
+          case 'Variable':
+            valueStr = `?${value.value}`
+            break
           default:
             valueStr = value.value
         }
