@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/zazuko/rdf-string/compare/v0.1.0...v0.2.0) (2020-02-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* renamed parameter of SparqlOptions
+
+### Bug Fixes
+
+* base was not applied to nested templates ([7b443e4](https://github.com/zazuko/rdf-string/commit/7b443e48a1cbdd1ab1f03105486fe6e4156409ee))
+
 ## [0.1.0](https://github.com/zazuko/rdf-string/compare/v0.0.8...v0.1.0) (2020-02-24)
 
 
