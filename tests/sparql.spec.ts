@@ -1,5 +1,5 @@
 import { sparql } from '../src/index'
-import { namedNode, variable } from '@rdfjs/data-model'
+import { literal, namedNode, variable } from '@rdfjs/data-model'
 import { prefixes } from '@zazuko/rdf-vocabularies'
 import namespace from '@rdfjs/namespace'
 
@@ -35,7 +35,7 @@ describe('sparql', () => {
 
   it('serializes string literal', () => {
     // given
-    const name = 'John Doe'
+    const name = literal('John Doe')
     const expected = 'SELECT * WHERE { ?person <http://schema.org/name> "John Doe" }'
 
     // when

@@ -39,7 +39,7 @@ export class SparqlTemplateResult {
       const value = this.values[i]
       let valueStr: string
       if (typeof value === 'string') {
-        valueStr = `"${value}"`
+        valueStr = `${value}`
       } else if (typeof value === 'undefined' || value === null) {
         valueStr = ''
       } else if (value instanceof SparqlTemplateResult) {
