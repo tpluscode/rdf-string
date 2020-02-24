@@ -1,4 +1,4 @@
-> # @tpluscode/rdf-string ![Test](https://github.com/tpluscode/rdf-string/workflows/Test/badge.svg)
+> # @tpluscode/rdf-string ![Test](https://github.com/tpluscode/rdf-string/workflows/Test/badge.svg) [![codecov](https://codecov.io/gh/tpluscode/rdf-string/branch/master/graph/badge.svg)](https://codecov.io/gh/tpluscode/rdf-string) [![npm version](https://badge.fury.io/js/%40tpluscode%2Frdf-string.svg)](https://badge.fury.io/js/%40tpluscode%2Frdf-string)
 
 Simplifies the construction of RDF strings (turtle, n-triples, SPARQL, etc.)
 by taking care of correctly serializing values to their string representation
