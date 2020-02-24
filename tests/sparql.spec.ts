@@ -112,4 +112,18 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
     // then
     expect(query.toString()).toMatchSnapshot()
   })
+
+  it('respects base in sub-templates', () => {
+    // given
+    const dog = namedNode('http://example.org/dog')
+
+    // when
+    const where = sparql`${dog} <eats> ${dog}`
+    const query = sparql`SELECT * WHERE { ${where} }`.toString({
+      base: 'http://example.org/',
+    })
+
+    // then
+    expect(query.toString()).toMatchSnapshot()
+  })
 })

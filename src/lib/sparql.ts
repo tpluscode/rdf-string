@@ -6,14 +6,13 @@ export type SparqlValue<T extends Term = Term> = Value<SparqlTemplateResult, T>
 
 interface SparqlOptions {
   base?: string
-  prefixes?: boolean
+  prologue?: boolean
 }
 
-function prefixDeclarations(prefixes: Set<string>): string {
+function prefixDeclarations(prefixes: Set<string>): string[] {
   return [...prefixes]
     .filter(prefix => prefix in knownPrefixes)
     .map(prefix => `PREFIX ${prefix}: <${knownPrefixes[prefix]}>`)
-    .join('\n')
 }
 
 export class SparqlTemplateResult {
@@ -27,7 +26,7 @@ export class SparqlTemplateResult {
   }
 
   public toString(options: SparqlOptions = {}): string {
-    const prefixes = options.prefixes || typeof options.prefixes === 'undefined'
+    const prologue = options.prologue || typeof options.prologue === 'undefined'
     const baseRegex = new RegExp('^' + options.base)
 
     const l = this.strings.length - 1
@@ -43,7 +42,7 @@ export class SparqlTemplateResult {
       } else if (typeof value === 'undefined' || value === null) {
         valueStr = ''
       } else if (value instanceof SparqlTemplateResult) {
-        valueStr = value.toString({ prefixes: false })
+        valueStr = value.toString({ ...options, prologue: false })
         value.prefixes.forEach(prefix => this.prefixes.add(prefix))
       } else {
         switch (value.termType) {
@@ -72,17 +71,16 @@ export class SparqlTemplateResult {
 
     query += this.strings[l]
 
-    let baseStatement = ''
-    if (options.base) {
-      baseStatement = `BASE <${options.base}>\n\n`
+    let prologueLines: string[] = []
+    if (prologue) {
+      prologueLines = prefixDeclarations(this.prefixes)
+      if (options.base) {
+        prologueLines = [`BASE <${options.base}>`, ...prologueLines]
+      }
+      prologueLines.push('\n')
     }
 
-    let prefixStatements = ''
-    if (prefixes && this.prefixes.size > 0) {
-      prefixStatements = `${prefixDeclarations(this.prefixes)}\n\n`
-    }
-
-    return `${baseStatement}${prefixStatements}${query}`
+    return `${prologueLines.join('\n')}${query}`
   }
 }
 
