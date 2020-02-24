@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/zazuko/rdf-string/compare/v0.0.8...v0.1.0) (2020-02-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* plain string will not be wrapped as RDF/JS literal
+
+### Bug Fixes
+
+* it's not possible to interpolate plain string ([1fc417a](https://github.com/zazuko/rdf-string/commit/1fc417a11e4340a3e41c53bbff3bb0500902e7bb))
+
 ### [0.0.8](https://github.com/zazuko/rdf-string/compare/v0.0.7...v0.0.8) (2020-02-23)
 
 ### [0.0.8](https://github.com/zazuko/rdf-string/compare/v0.0.7...v0.0.8) (2020-02-23)
