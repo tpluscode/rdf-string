@@ -1,3 +1,3 @@
-import { Term } from 'rdf-js'
+import { DatasetCore, Quad, Term } from 'rdf-js'
 
-export type Value<TResult, TTerm extends Term = Term> = TResult | TTerm | string | undefined | null
+export type Value<TResult, TTerm extends Term = Term> = DatasetCore | Quad | TResult | TTerm | string | undefined | null

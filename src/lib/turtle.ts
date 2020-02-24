@@ -1,8 +1,9 @@
 import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term } from 'rdf-js'
 import { prefixes as knownPrefixes, shrink } from '@zazuko/rdf-vocabularies'
 import { Value } from './value'
+import { PartialString, TemplateResult } from './TemplateResult'
 
-export type TurtleValue<T extends Term = Term> = Value<TurtleTemplateResult | DatasetCore | Quad, T>
+export type TurtleValue<T extends Term = Term> = Value<TurtleTemplateResult, T>
 
 interface TurtleOptions {
   directives?: boolean
@@ -14,88 +15,107 @@ function prefixDeclarations(prefixes: Set<string>): string[] {
     .map(prefix => `@prefix ${prefix}: <${knownPrefixes[prefix]}> .`)
 }
 
-export class TurtleTemplateResult {
-  readonly strings: TemplateStringsArray;
-  readonly values: readonly TurtleValue[];
-  readonly prefixes: Set<string> = new Set()
-  private readonly _turtle: (strings: TemplateStringsArray, ...values: TurtleValue[]) => TurtleTemplateResult;
-
-  constructor(strings: TemplateStringsArray, values: TurtleValue[], turtle: (strings: TemplateStringsArray, ...values: TurtleValue<any>[]) => TurtleTemplateResult) {
-    this.strings = strings
-    this.values = values
-    this._turtle = turtle
+export class TurtleTemplateResult extends TemplateResult<TurtleTemplateResult, TurtleValue, TurtleOptions> {
+  // eslint-disable-next-line no-useless-constructor
+  public constructor(strings: TemplateStringsArray, values: TurtleValue[], turtle: (strings: TemplateStringsArray, ...values: TurtleValue<any>[]) => TurtleTemplateResult) {
+    super(strings, values, turtle)
   }
 
-  toString(options: TurtleOptions = { directives: true }): string {
-    const prologue = options.directives || typeof options.directives === 'undefined'
+  protected get __defaultOptions(): TurtleOptions {
+    return {
+      directives: true,
+    }
+  }
 
-    const l = this.strings.length - 1
-    let query = ''
+  protected _evaluateBlankNode(term: BlankNode): PartialString {
+    return {
+      value: `_:${term.value}`,
+      prefixes: [],
+    }
+  }
 
-    for (let i = 0; i < l; i++) {
-      query += this.strings[i]
-
-      const value = this.values[i]
-      if (!value) continue
-
-      if (typeof value === 'string') {
-        query += `${value}`
-      } else if (value instanceof TurtleTemplateResult) {
-        query += value.toString({ ...options, directives: false })
-        value.prefixes.forEach(prefix => this.prefixes.add(prefix))
-      } else if ('subject' in value) {
-        const quadResult = this._turtle`${value.subject} ${value.predicate} ${value.object}`
-        query += quadResult.toString({ directives: false })
-        quadResult.prefixes.forEach(prefix => this.prefixes.add(prefix))
-      } else if ('match' in value) {
-        const [first, ...rest] = value
-        const datasetResult = rest.reduce((result, quad) => {
-          return this._turtle`${result}\n${quad}`
-        }, this._turtle`${first}`)
-
-        query += datasetResult.toString({ directives: false })
-        datasetResult.prefixes.forEach(prefix => this.prefixes.add(prefix))
-      } else {
-        switch (value.termType) {
-          case 'Literal':
-            query += `"${value.value}"`
-            if (value.language) {
-              query += `@${value.language}`
-            } else if (value.datatype) {
-              const datatypeResult = this._turtle`^^${value.datatype}`
-              query += datatypeResult.toString({ directives: false })
-              datatypeResult.prefixes.forEach(prefix => this.prefixes.add(prefix))
-            }
-            break
-          case 'NamedNode': {
-            const shrunk = shrink(value.value)
-            if (shrunk) {
-              this.prefixes.add(shrunk.split(':')[0])
-              query += shrunk
-            } else {
-              query += `<${value.value}>`
-            }
-          } break
-          case 'BlankNode':
-            query += `_:${value.value}`
-            break
-          default:
-            query += value.value
-        }
+  protected _evaluateLiteral(term: Literal): PartialString {
+    const literalString = `"${term.value}"`
+    if (term.language) {
+      return {
+        value: literalString + `@${term.language}`,
+        prefixes: [],
       }
     }
 
-    query += this.strings[l]
+    if (term.datatype) {
+      const datatypeResult = this._evaluateNamedNode(term.datatype)
+
+      return {
+        value: `${literalString}^^${datatypeResult.value}`,
+        prefixes: datatypeResult.prefixes,
+      }
+    }
+
+    return {
+      value: literalString,
+      prefixes: [],
+    }
+  }
+
+  protected _evaluateNamedNode(term: NamedNode): PartialString {
+    const shrunk = shrink(term.value)
+    if (shrunk) {
+      return {
+        value: shrunk,
+        prefixes: [
+          shrunk.split(':')[0],
+        ],
+      }
+    }
+
+    return {
+      value: `<${term.value}>`,
+      prefixes: [],
+    }
+  }
+
+  protected _evaluateVariable(): PartialString {
+    throw new Error('Turtle cannot interpolate RDF/JS variables')
+  }
+
+  protected _evaluateDataset(dataset: DatasetCore, options: TurtleOptions): PartialString {
+    return [...dataset].reduce<PartialString>((result, quad) => {
+      const quadResult = this._evaluateQuad(quad, options)
+      return {
+        value: result.value + '\n' + quadResult,
+        prefixes: [...result.prefixes, ...quadResult.prefixes],
+      }
+    }, { value: '', prefixes: [] })
+  }
+
+  protected _evaluateQuad(quad: Quad, options: TurtleOptions): PartialString {
+    const subject = this._evaluateTerm(quad.subject, options)
+    const predicate = this._evaluateTerm(quad.predicate, options)
+    const object = this._evaluateTerm(quad.object, options)
+
+    return {
+      value: `${subject.value} ${predicate.value} ${object.value} .`,
+      prefixes: [
+        ...subject.prefixes,
+        ...predicate.prefixes,
+        ...object.prefixes,
+      ],
+    }
+  }
+
+  protected _getFinalString(result: string, prefixes: Set<string>, options: TurtleOptions): string {
+    const prologue = options.directives || typeof options.directives === 'undefined'
 
     let prologueLines: string[] = []
     if (prologue) {
-      if (this.prefixes.size > 0) {
-        prologueLines = prefixDeclarations(this.prefixes)
+      if (prefixes.size > 0) {
+        prologueLines = prefixDeclarations(prefixes)
         prologueLines.push('\n')
       }
     }
 
-    return `${prologueLines.join('\n')}${query}`
+    return `${prologueLines.join('\n')}${result}`
   }
 }
 
