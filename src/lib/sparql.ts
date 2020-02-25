@@ -40,7 +40,7 @@ export class SparqlTemplateResult extends TemplateResult<SparqlTemplateResult, S
       }
     }
 
-    if (term.datatype && term.datatype.equals(xsdString)) {
+    if (term.datatype && !term.datatype.equals(xsdString)) {
       const datatypeResult = this._evaluateNamedNode(term.datatype, options)
 
       return {
