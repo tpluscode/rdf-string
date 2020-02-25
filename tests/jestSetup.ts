@@ -11,7 +11,33 @@ declare global {
     interface Matchers<R> {
       toMatchQuery(expected: string): R
       toBeValidTurtle(): Promise<R>
+      toBeValidNQuads(): Promise<R>
     }
+  }
+}
+
+function parsingMatcher(mediaType: string) {
+  return (received: SparqlTemplateResult) => {
+    const stream = parsers.import(mediaType, toStream(received.toString())) as any
+
+    stream.on('data', () => {
+      // force the stream to consume all input
+    })
+    return new Promise((resolve, reject) => {
+      stream.on('end', resolve)
+      stream.on('error', reject)
+    })
+      .then(() => {
+        return {
+          pass: true,
+          message: () => 'RDF is valid',
+        }
+      }).catch((e) => {
+        return {
+          pass: false,
+          message: () => `Value is not valid ${mediaType} ${e.message}`,
+        }
+      })
   }
 }
 
@@ -48,26 +74,6 @@ expect.extend({
     }
   },
 
-  toBeValidTurtle(received: SparqlTemplateResult) {
-    const stream = parsers.import('text/turtle', toStream(received.toString())) as any
-
-    stream.on('data', () => {
-      // force the stream to consume all input
-    })
-    return new Promise((resolve, reject) => {
-      stream.on('end', resolve)
-      stream.on('error', reject)
-    })
-      .then(() => {
-        return {
-          pass: true,
-          message: () => 'Turtle is valid',
-        }
-      }).catch((e) => {
-        return {
-          pass: false,
-          message: () => `Value is not valid turtle ${e.message}`,
-        }
-      })
-  },
+  toBeValidTurtle: parsingMatcher('text/turtle'),
+  toBeValidNQuads: parsingMatcher('application/n-quads'),
 })
