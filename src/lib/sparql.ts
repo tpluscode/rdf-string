@@ -59,7 +59,9 @@ export class SparqlTemplateResult extends TemplateResult<SparqlTemplateResult, S
       if (options.base) {
         prologueLines = [`BASE <${options.base}>`, ...prologueLines]
       }
-      prologueLines.push('\n')
+      if (prologueLines.length > 0) {
+        prologueLines.push('\n')
+      }
     }
 
     return `${prologueLines.join('\n')}${result}`
