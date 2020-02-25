@@ -1,7 +1,10 @@
 import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term } from 'rdf-js'
 import { prefixes as knownPrefixes, shrink } from '@zazuko/rdf-vocabularies'
+import { xsd } from '@tpluscode/rdf-ns-builders'
 import { Value } from './value'
 import { PartialString, TemplateResult } from './TemplateResult'
+
+const xsdString = xsd.string
 
 export type TurtleValue<T extends Term = Term> = Value<TurtleTemplateResult, T>
 
@@ -43,7 +46,7 @@ export class TurtleTemplateResult extends TemplateResult<TurtleTemplateResult, T
       }
     }
 
-    if (term.datatype) {
+    if (term.datatype && !term.datatype.equals(xsdString)) {
       const datatypeResult = this._evaluateNamedNode(term.datatype)
 
       return {

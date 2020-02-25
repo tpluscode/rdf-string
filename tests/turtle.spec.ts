@@ -1,5 +1,5 @@
-import { blankNode, literal, namedNode } from '@rdfjs/data-model'
-import { xsd } from '@tpluscode/rdf-ns-builders'
+import { blankNode, literal, namedNode, quad } from '@rdfjs/data-model'
+import { xsd, foaf } from '@tpluscode/rdf-ns-builders'
 import { turtle } from '../src'
 
 describe('turtle', () => {
@@ -62,6 +62,24 @@ describe('turtle', () => {
 
     // then
     expect(str).toEqual('<http://example.com/> <http://example.com/le-foo> "foo"@fr .')
+    await expect(str).toBeValidTurtle()
+  })
+
+  it('serializes a single quad', async () => {
+    // given
+    const q = quad(
+      namedNode('http://example.com/person/John'),
+      foaf.lastName,
+      literal('Doe')
+    )
+
+    // when
+    const str = turtle`${q}`.toString()
+
+    // then
+    expect(str).toEqual(`@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<http://example.com/person/John> foaf:lastName "Doe" .`)
     await expect(str).toBeValidTurtle()
   })
 })
