@@ -23,13 +23,31 @@ export abstract class TemplateResult<TImpl extends TemplateResult<TImpl, TValue,
 
   protected abstract get __defaultOptions(): TOptions;
 
-  protected abstract _getFinalString(result: string, prefixes: Iterable<string>, options?: TOptions): string;
-  protected abstract _evaluateLiteral(term: Literal, options: TOptions): PartialString;
-  protected abstract _evaluateNamedNode(term: NamedNode): PartialString;
-  protected abstract _evaluateVariable(term: Variable): PartialString;
-  protected abstract _evaluateBlankNode(term: BlankNode): PartialString;
-  protected abstract _evaluateQuad(quad: Quad, options: TOptions): PartialString;
-  protected abstract _evaluateDataset(dataset: DatasetCore, options: TOptions): PartialString;
+  protected abstract _getFinalString(result: string, prefixes: Iterable<string>, options: TOptions): string;
+
+  protected _evaluateLiteral(term: Literal, options: TOptions): PartialString {
+    throw new Error(`${this._tag.name} cannot interpolate literals`)
+  }
+
+  protected _evaluateNamedNode(term: NamedNode, options: TOptions): PartialString {
+    throw new Error(`${this._tag.name} cannot interpolate named nodes`)
+  }
+
+  protected _evaluateVariable(term: Variable): PartialString {
+    throw new Error(`${this._tag.name} cannot interpolate variables`)
+  }
+
+  protected _evaluateBlankNode(term: BlankNode): PartialString {
+    throw new Error(`${this._tag.name} cannot interpolate blank nodes`)
+  }
+
+  protected _evaluateQuad(quad: Quad, options: TOptions): PartialString {
+    throw new Error(`${this._tag.name} cannot interpolate quads`)
+  }
+
+  protected _evaluateDataset(dataset: DatasetCore, options: TOptions): PartialString {
+    throw new Error(`${this._tag.name} cannot interpolate datasets`)
+  }
 
   toString(options?: TOptions): string {
     const { value, prefixes } = this._toPartialString(options || this.__defaultOptions)
@@ -85,7 +103,7 @@ export abstract class TemplateResult<TImpl extends TemplateResult<TImpl, TValue,
       case 'Literal':
         return this._evaluateLiteral(value, options)
       case 'NamedNode':
-        return this._evaluateNamedNode(value)
+        return this._evaluateNamedNode(value, options)
       case 'BlankNode':
         return this._evaluateBlankNode(value)
       case 'Variable':

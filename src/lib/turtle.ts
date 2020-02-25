@@ -9,7 +9,7 @@ interface TurtleOptions {
   directives?: boolean
 }
 
-function prefixDeclarations(prefixes: Set<string>): string[] {
+function prefixDeclarations(prefixes: Iterable<string>): string[] {
   return [...prefixes]
     .filter(prefix => prefix in knownPrefixes)
     .map(prefix => `@prefix ${prefix}: <${knownPrefixes[prefix]}> .`)
@@ -75,10 +75,6 @@ export class TurtleTemplateResult extends TemplateResult<TurtleTemplateResult, T
     }
   }
 
-  protected _evaluateVariable(): PartialString {
-    throw new Error('Turtle cannot interpolate RDF/JS variables')
-  }
-
   protected _evaluateDataset(dataset: DatasetCore, options: TurtleOptions): PartialString {
     return [...dataset].reduce<PartialString>((result, quad) => {
       const quadResult = this._evaluateQuad(quad, options)
@@ -104,13 +100,13 @@ export class TurtleTemplateResult extends TemplateResult<TurtleTemplateResult, T
     }
   }
 
-  protected _getFinalString(result: string, prefixes: Set<string>, options: TurtleOptions): string {
+  protected _getFinalString(result: string, prefixes: Iterable<string>, options: TurtleOptions): string {
     const prologue = options.directives || typeof options.directives === 'undefined'
 
     let prologueLines: string[] = []
     if (prologue) {
-      if (prefixes.size > 0) {
-        prologueLines = prefixDeclarations(prefixes)
+      prologueLines = prefixDeclarations(prefixes)
+      if (prologueLines.length > 0) {
         prologueLines.push('\n')
       }
     }
