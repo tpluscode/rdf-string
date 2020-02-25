@@ -1,6 +1,10 @@
 import { blankNode, literal, namedNode, quad } from '@rdfjs/data-model'
+import RDF from '@rdfjs/dataset'
 import { xsd, foaf } from '@tpluscode/rdf-ns-builders'
+import namespace from '@rdfjs/namespace'
 import { turtle } from '../src'
+
+const ex = namespace('http://example.com/')
 
 describe('turtle', () => {
   it('serializes named node', async () => {
@@ -65,21 +69,64 @@ describe('turtle', () => {
     await expect(str).toBeValidTurtle()
   })
 
-  it('serializes a single quad', async () => {
-    // given
-    const q = quad(
-      namedNode('http://example.com/person/John'),
-      foaf.lastName,
-      literal('Doe')
-    )
+  describe('quad interpolation', () => {
+    it('serializes a single quad', async () => {
+      // given
+      const q = quad(
+        namedNode('http://example.com/person/John'),
+        foaf.lastName,
+        literal('Doe')
+      )
 
-    // when
-    const str = turtle`${q}`.toString()
+      // when
+      const str = turtle`${q}`.toString()
 
-    // then
-    expect(str).toEqual(`@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+      // then
+      expect(str).toEqual(`@prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
 <http://example.com/person/John> foaf:lastName "Doe" .`)
-    await expect(str).toBeValidTurtle()
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('ignores named graph', () => {
+      // given
+      const q = quad(ex.S, ex.P, ex.O, ex.G)
+
+      // when
+      const str = turtle`${q}`.toString()
+
+      // then
+      expect(str).toEqual('')
+    })
+  })
+
+  describe('dataset interpolation', () => {
+    it('ignores named graph', () => {
+      // given
+      const dataset = RDF.dataset()
+        .add(quad(ex.S, ex.P, ex.O, ex.G))
+
+      // when
+      const str = turtle`${dataset}`.toString()
+
+      // then
+      expect(str).toEqual('')
+    })
+
+    it('can serialize quads from a selected named graph', async () => {
+      // given
+      const dataset = RDF.dataset()
+        .add(quad(ex.S, ex.P, ex.O, ex.G1))
+        .add(quad(ex.S, ex.P, ex.O, ex.G2))
+
+      // when
+      const str = turtle`${dataset}`.toString({
+        graph: ex.G1,
+      })
+
+      // then
+      expect(str).toMatch('<http://example.com/S> <http://example.com/P> <http://example.com/O> .')
+      await expect(str).toBeValidTurtle()
+    })
   })
 })

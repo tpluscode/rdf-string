@@ -50,9 +50,14 @@ export abstract class TemplateResult<TImpl extends TemplateResult<TImpl, TValue,
   }
 
   toString(options?: TOptions): string {
-    const { value, prefixes } = this._toPartialString(options || this.__defaultOptions)
+    let actualOptions: TOptions = this.__defaultOptions
+    if (options) {
+      actualOptions = { ...actualOptions, ...options }
+    }
 
-    return this._getFinalString(value, prefixes, options || this.__defaultOptions)
+    const { value, prefixes } = this._toPartialString(actualOptions)
+
+    return this._getFinalString(value, prefixes, actualOptions)
   }
 
   protected _toPartialString(options: TOptions): PartialString {

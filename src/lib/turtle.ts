@@ -1,4 +1,5 @@
-import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term } from 'rdf-js'
+import { BlankNode, DatasetCore, DefaultGraph, Literal, NamedNode, Quad, Term } from 'rdf-js'
+import { defaultGraph } from '@rdfjs/data-model'
 import { prefixes as knownPrefixes, shrink } from '@zazuko/rdf-vocabularies'
 import { xsd } from '@tpluscode/rdf-ns-builders'
 import { Value } from './value'
@@ -10,6 +11,7 @@ export type TurtleValue<T extends Term = Term> = Value<TurtleTemplateResult, T>
 
 interface TurtleOptions {
   directives?: boolean
+  graph: NamedNode | DefaultGraph
 }
 
 function prefixDeclarations(prefixes: Iterable<string>): string[] {
@@ -27,6 +29,7 @@ export class TurtleTemplateResult extends TemplateResult<TurtleTemplateResult, T
   protected get __defaultOptions(): TurtleOptions {
     return {
       directives: true,
+      graph: defaultGraph(),
     }
   }
 
@@ -79,16 +82,29 @@ export class TurtleTemplateResult extends TemplateResult<TurtleTemplateResult, T
   }
 
   protected _evaluateDataset(dataset: DatasetCore, options: TurtleOptions): PartialString {
-    return [...dataset].reduce<PartialString>((result, quad) => {
+    const graphQuads = [...dataset.match(null, null, null, options.graph)]
+
+    return graphQuads.reduce<PartialString>((result, quad) => {
       const quadResult = this._evaluateQuad(quad, options)
+      if (quadResult.value === '') {
+        return result
+      }
+
       return {
-        value: result.value + '\n' + quadResult,
+        value: result.value + '\n' + quadResult.value,
         prefixes: [...result.prefixes, ...quadResult.prefixes],
       }
     }, { value: '', prefixes: [] })
   }
 
   protected _evaluateQuad(quad: Quad, options: TurtleOptions): PartialString {
+    if (!options.graph.equals(quad.graph)) {
+      return {
+        value: '',
+        prefixes: [],
+      }
+    }
+
     const subject = this._evaluateTerm(quad.subject, options)
     const predicate = this._evaluateTerm(quad.predicate, options)
     const object = this._evaluateTerm(quad.object, options)
