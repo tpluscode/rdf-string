@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`sparql reduces named nodes to URIs relative to base 1`] = `
+exports[`sparql interpolating named node respects base in sub-templates 1`] = `
+"BASE <http://example.org/>
+
+SELECT * WHERE { <dog> <eats> <dog> }"
+`;
+
+exports[`sparql interpolating named node writes URIs relative to base 1`] = `
 "BASE <http://example.org/>
 
 PREFIX : <http://example.org/vocab#> 
 SELECT * WHERE { <dog> :eats <dog> }"
-`;
-
-exports[`sparql respects base in sub-templates 1`] = `
-"BASE <http://example.org/>
-
-SELECT * WHERE { <dog> <eats> <dog> }"
 `;

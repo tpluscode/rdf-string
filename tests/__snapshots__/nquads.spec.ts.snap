@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`nquads interpolating dataset writes all graphs 1`] = `
+"<http://example.com/John> <http://schema.org/name> \\"John\\" <http://example.com/John> .
+<http://example.com/Jane> <http://schema.org/name> \\"Jane\\" <http://example.com/Jane> .
+<http://example.com/Jane> <http://schema.org/spouse> <http://example.com/Jane>  .
+<http://example.com/John> <http://schema.org/baseSalary> _:salary <http://example.com/John> .
+_:salary <http://schema.org/value> \\"20000\\"^^<http://www.w3.org/2001/XMLSchema#int> <http://example.com/John> ."
+`;
