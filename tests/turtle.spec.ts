@@ -3,60 +3,65 @@ import { xsd } from '@tpluscode/rdf-ns-builders'
 import { turtle } from '../src'
 
 describe('turtle', () => {
-  it('serializes named node', () => {
+  it('serializes named node', async () => {
     // given
     const node = namedNode('http://example.com/')
 
     // when
-    const str = turtle`${node}`.toString()
+    const str = turtle`${node} a <http://example.com/Type> .`.toString()
 
     // then
-    expect(str).toEqual('<http://example.com/>')
+    expect(str).toEqual('<http://example.com/> a <http://example.com/Type> .')
+    await expect(str).toBeValidTurtle()
   })
 
-  it('serializes blank node', () => {
+  it('serializes blank node', async () => {
     // given
-    const node = blankNode('foo')
+    const node = blankNode('bar')
 
     // when
-    const str = turtle`${node}`.toString()
+    const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString()
 
     // then
-    expect(str).toEqual('_:foo')
+    expect(str).toEqual('<http://example.com/> <http://example.com/foo> _:bar .')
+    await expect(str).toBeValidTurtle()
   })
 
-  it('serializes typed literal node', () => {
+  it('serializes typed literal node', async () => {
     // given
-    const node = literal('foo', 'http://example.com/Datatype')
+    const node = literal('bar', 'http://example.com/Datatype')
 
     // when
-    const str = turtle`${node}`.toString()
+    const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString()
 
     // then
-    expect(str).toEqual('"foo"^^<http://example.com/Datatype>')
+    expect(str).toEqual('<http://example.com/> <http://example.com/foo> "bar"^^<http://example.com/Datatype> .')
+    await expect(str).toBeValidTurtle()
   })
 
-  it('reduces known datatype URI to prefixed name', () => {
+  it('reduces known datatype URI to prefixed name', async () => {
     // given
-    const node = literal('foo', xsd.TOKEN)
+    const node = literal('bar', xsd.TOKEN)
 
     // when
-    const str = turtle`${node}`.toString()
+    const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString()
 
     // then
     expect(str).toEqual(`@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-"foo"^^xsd:TOKEN`)
+<http://example.com/> <http://example.com/foo> "bar"^^xsd:TOKEN .`)
+    await expect(str).toBeValidTurtle()
   })
 
-  it('serializes literal node with language', () => {
+  it('serializes literal node with language', async () => {
     // given
     const node = literal('foo', 'fr')
 
     // when
-    const str = turtle`${node}`.toString()
+    const str = turtle`<http://example.com/> <http://example.com/le-foo> ${node} .`.toString()
 
     // then
-    expect(str).toEqual('"foo"@fr')
+    expect(str).toEqual('<http://example.com/> <http://example.com/le-foo> "foo"@fr .')
+    await expect(str).toBeValidTurtle()
   })
 })
