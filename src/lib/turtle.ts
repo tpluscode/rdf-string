@@ -1,11 +1,9 @@
 import { BlankNode, DatasetCore, DefaultGraph, Literal, NamedNode, Quad, Term } from 'rdf-js'
 import { defaultGraph } from '@rdfjs/data-model'
-import { prefixes as knownPrefixes, shrink } from '@zazuko/rdf-vocabularies'
-import { xsd } from '@tpluscode/rdf-ns-builders'
+import { prefixes as knownPrefixes } from '@zazuko/rdf-vocabularies'
 import { Value } from './value'
 import { PartialString, TemplateResult } from './TemplateResult'
-
-const xsdString = xsd.string
+import * as syntax from './syntax/turtle'
 
 export type TurtleValue<T extends Term = Term> = Value<TurtleTemplateResult, T>
 
@@ -35,50 +33,17 @@ export class TurtleTemplateResult extends TemplateResult<TurtleTemplateResult, T
 
   protected _evaluateBlankNode(term: BlankNode): PartialString {
     return {
-      value: `_:${term.value}`,
+      value: syntax.blankNode(term),
       prefixes: [],
     }
   }
 
   protected _evaluateLiteral(term: Literal): PartialString {
-    const literalString = `"${term.value}"`
-    if (term.language) {
-      return {
-        value: literalString + `@${term.language}`,
-        prefixes: [],
-      }
-    }
-
-    if (term.datatype && !term.datatype.equals(xsdString)) {
-      const datatypeResult = this._evaluateNamedNode(term.datatype)
-
-      return {
-        value: `${literalString}^^${datatypeResult.value}`,
-        prefixes: datatypeResult.prefixes,
-      }
-    }
-
-    return {
-      value: literalString,
-      prefixes: [],
-    }
+    return syntax.literal(term)
   }
 
   protected _evaluateNamedNode(term: NamedNode): PartialString {
-    const shrunk = shrink(term.value)
-    if (shrunk) {
-      return {
-        value: shrunk,
-        prefixes: [
-          shrunk.split(':')[0],
-        ],
-      }
-    }
-
-    return {
-      value: `<${term.value}>`,
-      prefixes: [],
-    }
+    return syntax.namedNode(term)
   }
 
   protected _evaluateDataset(dataset: DatasetCore, options: TurtleOptions): PartialString {

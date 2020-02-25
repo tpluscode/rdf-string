@@ -1,10 +1,8 @@
-import { prefixes as knownPrefixes, shrink } from '@zazuko/rdf-vocabularies'
-import { xsd } from '@tpluscode/rdf-ns-builders'
+import { prefixes as knownPrefixes } from '@zazuko/rdf-vocabularies'
 import { BlankNode, Literal, NamedNode, Term, Variable } from 'rdf-js'
 import { Value } from './value'
 import { PartialString, TemplateResult } from './TemplateResult'
-
-const xsdString = xsd.string
+import * as turtleSyntax from './syntax/turtle'
 
 export type SparqlValue<T extends Term = Term> = Value<SparqlTemplateResult, T>
 
@@ -32,50 +30,16 @@ export class SparqlTemplateResult extends TemplateResult<SparqlTemplateResult, S
   }
 
   protected _evaluateLiteral(term: Literal, options: SparqlOptions): PartialString {
-    const literalString = `"${term.value}"`
-    if (term.language) {
-      return {
-        value: literalString + `@${term.language}`,
-        prefixes: [],
-      }
-    }
-
-    if (term.datatype && !term.datatype.equals(xsdString)) {
-      const datatypeResult = this._evaluateNamedNode(term.datatype, options)
-
-      return {
-        value: `${literalString}^^${datatypeResult.value}`,
-        prefixes: datatypeResult.prefixes,
-      }
-    }
-
-    return {
-      value: literalString,
-      prefixes: [],
-    }
+    return turtleSyntax.literal(term, options.base)
   }
 
   protected _evaluateNamedNode(term: NamedNode, options: SparqlOptions): PartialString {
-    const baseRegex = new RegExp('^' + options.base)
-    const shrunk = shrink(term.value)
-    if (shrunk) {
-      return {
-        value: shrunk,
-        prefixes: [
-          shrunk.split(':')[0],
-        ],
-      }
-    }
-
-    return {
-      value: `<${term.value.replace(baseRegex, '')}>`,
-      prefixes: [],
-    }
+    return turtleSyntax.namedNode(term, options.base)
   }
 
   protected _evaluateBlankNode(term: BlankNode): PartialString {
     return {
-      value: `_:${term.value}`,
+      value: turtleSyntax.blankNode(term),
       prefixes: [],
     }
   }
