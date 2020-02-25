@@ -164,6 +164,17 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
     })
   })
 
+  describe('interpolating JS types', () => {
+    it('leaves strings intact', () => {
+      // when
+      const foo = 'foo'
+      const str = sparql`<http://example.com/${foo}>`.toString()
+
+      // then
+      expect(str).toEqual('<http://example.com/foo>')
+    })
+  })
+
   it('ignores null', () => {
     // given
     const expected = 'SELECT * WHERE { ?person <http://schema.org/name> "Tomasz" }'

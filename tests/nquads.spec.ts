@@ -7,6 +7,17 @@ import { nquads } from '../src'
 const ex = namespace('http://example.com/')
 
 describe('nquads', () => {
+  describe('interpolating JS types', () => {
+    it('leaves strings intact', () => {
+      // when
+      const foo = 'foo'
+      const str = nquads`<http://example.com/${foo}>`.toString()
+
+      // then
+      expect(str).toEqual('<http://example.com/foo>')
+    })
+  })
+
   describe('interpolating dataset', () => {
     it('writes all graphs', () => {
       // given

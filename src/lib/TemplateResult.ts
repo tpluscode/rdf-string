@@ -76,7 +76,7 @@ export abstract class TemplateResult<TImpl extends TemplateResult<TImpl, TValue,
       if (!value) continue
 
       if (typeof value === 'string') {
-        result += `${value}`
+        result += value
       } else
 
       if (value instanceof TemplateResult) {

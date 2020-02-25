@@ -135,4 +135,15 @@ describe('turtle', () => {
       await expect(str).toBeValidTurtle()
     })
   })
+
+  describe('interpolating JS types', () => {
+    it('leaves strings intact', () => {
+      // when
+      const foo = 'foo'
+      const str = turtle`<http://example.com/${foo}>`.toString()
+
+      // then
+      expect(str).toEqual('<http://example.com/foo>')
+    })
+  })
 })
