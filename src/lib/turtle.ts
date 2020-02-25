@@ -86,9 +86,6 @@ export class TurtleTemplateResult extends TemplateResult<TurtleTemplateResult, T
 
     return graphQuads.reduce<PartialString>((result, quad) => {
       const quadResult = this._evaluateQuad(quad, options)
-      if (quadResult.value === '') {
-        return result
-      }
 
       return {
         value: result.value + '\n' + quadResult.value,
