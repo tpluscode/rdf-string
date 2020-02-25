@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/zazuko/rdf-string/compare/v0.2.0...v0.2.1) (2020-02-25)
+
+
+### Features
+
+* **turtle:** defaultGraph is serialized with option for named ([1f087c1](https://github.com/zazuko/rdf-string/commit/1f087c14bce87741fae4d10f2ae4cda6aa43b868))
+* turtle initial version ([fc83c08](https://github.com/zazuko/rdf-string/commit/fc83c08086b8c7f3ff6a9f43363915982f18bb74))
+
+
+### Bug Fixes
+
+* **sparql:** remove superfluous blank lines added in head ([d4b5f0f](https://github.com/zazuko/rdf-string/commit/d4b5f0f99cfd24111822b1b3817cf05395c6d7bd))
+
 ## [0.2.0](https://github.com/zazuko/rdf-string/compare/v0.1.0...v0.2.0) (2020-02-24)
 
 
