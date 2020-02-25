@@ -17,7 +17,7 @@ return the prefix declarations according to the specific syntax.
 
 ```js
 import * as RDF from '@rdfjs/data-model' 
-import { prefixes } from '@zazuko/rdf-vocabuleries'
+import { prefixes } from '@zazuko/rdf-vocabularies'
 import namespace from '@rdfjs/namespace'
 
 import { sparql } from '@zazuko/rdf-string'
