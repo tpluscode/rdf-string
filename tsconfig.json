@@ -12,10 +12,11 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "moduleResolution": "node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "typeRoots": [ "node_modules/@types", "types" ]
   },
   "files": [
     "src/index.ts"
   ],
-  "include": ["tests"]
+  "include": ["tests", "types"]
 }
