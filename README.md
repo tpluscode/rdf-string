@@ -7,8 +7,7 @@ and automatically prefixing URIs.
 ## Usage
 
 The heart of the library are [EcmaScript template string tag functions][template-literals].
-All values interpolated values are serialized according to the syntactic rules of
-the given RDF format.
+All interpolated values are serialized according to the syntactic rules of the given RDF format.
 
 Formats which support prefixes will automatically abbreviate the URIs and
 return the prefix declarations according to the specific syntax.
