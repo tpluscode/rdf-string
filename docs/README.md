@@ -36,7 +36,7 @@ On the other hand, in the case of RDF serializations it might be used as a makes
 <run-kit>
 
 ```js
-const fetch = require('@rdfjs/fetch-lite')
+const fetch = require('@rdfjs/fetch')
 const { turtle } = require('@tpluscode/rdf-string')
 
 const dataset = await fetch('http://dbpedia.org/resource/RDF')

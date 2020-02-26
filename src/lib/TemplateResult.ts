@@ -1,7 +1,7 @@
 import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from 'rdf-js'
 import { Value } from './value'
 
-type TagFunction<TImpl extends TemplateResult<TImpl, TValue, TOptions>, TValue extends Value<TImpl>, TOptions> = {
+type TagFunction<TImpl extends TemplateResult<TOptions>, TValue extends Value<TImpl>, TOptions> = {
   (strings: TemplateStringsArray, ...values: TValue[]): TImpl
 }
 
@@ -10,54 +10,72 @@ export interface PartialString {
   prefixes: Iterable<string>
 }
 
-export abstract class TemplateResult<TImpl extends TemplateResult<TImpl, TValue, TOptions>, TValue extends Value<TImpl>, TOptions> {
-  protected readonly strings: TemplateStringsArray;
-  protected readonly values: readonly Value<TImpl>[];
-  protected readonly _tag: TagFunction<TImpl, DatasetCore | Quad | TImpl | Term | string | undefined | null, TOptions>
+export abstract class SerializationStrategy<TOptions> {
+  public abstract evaluateLiteral(term: Literal, options: TOptions): PartialString
+  public abstract evaluateNamedNode(term: NamedNode, options: TOptions): PartialString
+  public abstract evaluateVariable(term: Variable): PartialString
+  public abstract evaluateBlankNode(term: BlankNode): PartialString
+  public abstract evaluateQuad(quad: Quad, options: TOptions): PartialString
+  public abstract evaluateDataset(dataset: DatasetCore, options: TOptions): PartialString
+  public abstract getFinalString(result: string, prefixes: Iterable<string>, options: TOptions): string
 
-  protected constructor(strings: TemplateStringsArray, values: Value<TImpl>[], tag: TagFunction<TImpl, Value<TImpl>, TOptions>) {
+  public evaluateTerm(value: Term, options: TOptions): PartialString {
+    switch (value.termType) {
+      case 'Literal':
+        return this.evaluateLiteral(value, options)
+      case 'NamedNode':
+        return this.evaluateNamedNode(value, options)
+      case 'BlankNode':
+        return this.evaluateBlankNode(value)
+      case 'Variable':
+        return this.evaluateVariable(value)
+    }
+
+    return {
+      value: '',
+      prefixes: [],
+    }
+  }
+}
+
+export interface TemplateResultInit<TOptions> {
+  strings: TemplateStringsArray
+  values: Value<any>[]
+  tag: TagFunction<any, Value<any>, TOptions>
+  strategy: SerializationStrategy<TOptions>
+  defaultOptions: TOptions
+}
+
+export class TemplateResult<TOptions> {
+  protected readonly strings: TemplateStringsArray;
+  protected readonly values: readonly Value<TemplateResult<TOptions>>[];
+  protected readonly _tag: TagFunction<TemplateResult<TOptions>, DatasetCore | Quad | Term | string | undefined | null, TOptions>
+  private readonly __strategy: SerializationStrategy<TOptions>
+  private readonly __defaultOptions: TOptions
+
+  public constructor({
+    strings,
+    values,
+    tag,
+    strategy,
+    defaultOptions,
+  }: TemplateResultInit<TOptions>) {
     this.strings = strings
     this.values = values
     this._tag = tag
+    this.__strategy = strategy
+    this.__defaultOptions = defaultOptions
   }
 
-  protected abstract get __defaultOptions(): TOptions;
-
-  protected abstract _getFinalString(result: string, prefixes: Iterable<string>, options: TOptions): string;
-
-  protected _evaluateLiteral(term: Literal, options: TOptions): PartialString {
-    throw new Error(`${this._tag.name} cannot interpolate literals`)
-  }
-
-  protected _evaluateNamedNode(term: NamedNode, options: TOptions): PartialString {
-    throw new Error(`${this._tag.name} cannot interpolate named nodes`)
-  }
-
-  protected _evaluateVariable(term: Variable): PartialString {
-    throw new Error(`${this._tag.name} cannot interpolate variables`)
-  }
-
-  protected _evaluateBlankNode(term: BlankNode): PartialString {
-    throw new Error(`${this._tag.name} cannot interpolate blank nodes`)
-  }
-
-  protected _evaluateQuad(quad: Quad, options: TOptions): PartialString {
-    throw new Error(`${this._tag.name} cannot interpolate quads`)
-  }
-
-  protected _evaluateDataset(dataset: DatasetCore, options: TOptions): PartialString {
-    throw new Error(`${this._tag.name} cannot interpolate datasets`)
-  }
-
-  toString(options?: TOptions): string {
-    let actualOptions: TOptions = this.__defaultOptions
+  toString(options?: Partial<TOptions>): string {
+    let actualOptions = this.__defaultOptions
     if (options) {
       actualOptions = { ...actualOptions, ...options }
     }
 
     const { value, prefixes } = this._toPartialString(actualOptions)
 
-    return this._getFinalString(value, prefixes, actualOptions)
+    return this.__strategy.getFinalString(value, prefixes, actualOptions)
   }
 
   protected _toPartialString(options: TOptions): PartialString {
@@ -84,11 +102,11 @@ export abstract class TemplateResult<TImpl extends TemplateResult<TImpl, TValue,
       } else
 
       if ('subject' in value) {
-        partialResult = this._evaluateQuad(value, options)
+        partialResult = this.__strategy.evaluateQuad(value, options)
       } else if ('match' in value) {
-        partialResult = this._evaluateDataset(value, options)
+        partialResult = this.__strategy.evaluateDataset(value, options)
       } else {
-        partialResult = this._evaluateTerm(value, options)
+        partialResult = this.__strategy.evaluateTerm(value, options)
       }
 
       result += partialResult.value
@@ -100,24 +118,6 @@ export abstract class TemplateResult<TImpl extends TemplateResult<TImpl, TValue,
     return {
       value: result,
       prefixes,
-    }
-  }
-
-  protected _evaluateTerm(value: Term, options: TOptions): PartialString {
-    switch (value.termType) {
-      case 'Literal':
-        return this._evaluateLiteral(value, options)
-      case 'NamedNode':
-        return this._evaluateNamedNode(value, options)
-      case 'BlankNode':
-        return this._evaluateBlankNode(value)
-      case 'Variable':
-        return this._evaluateVariable(value)
-    }
-
-    return {
-      value: '',
-      prefixes: [],
     }
   }
 }
