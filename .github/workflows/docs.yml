@@ -16,6 +16,6 @@ jobs:
     - name: GH Pages deploy
       uses: Cecilapp/GitHub-Pages-deploy@2.0.0
       env:
-        - EMAIL: arnaud@ligny.org
-        - GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        - BUILD_DIR: docs/ 
+        EMAIL: arnaud@ligny.org
+        GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        BUILD_DIR: docs/ 
