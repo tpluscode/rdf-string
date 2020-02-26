@@ -36,5 +36,16 @@ describe('nquads', () => {
       expect(str).toMatchSnapshot()
       expect(str).toBeValidNQuads()
     })
+
+    it('does not break on empty dataset', () => {
+      // given
+      const dataset = RDF.dataset()
+
+      // when
+      const str = nquads`${dataset}`.toString()
+
+      // then
+      expect(str).toEqual('')
+    })
   })
 })

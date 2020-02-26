@@ -1,14 +1,14 @@
 import { prefixes as knownPrefixes } from '@zazuko/rdf-vocabularies'
 import { BlankNode, Literal, NamedNode, Term, Variable } from 'rdf-js'
 import { Value } from './value'
-import { PartialString, TemplateResult } from './TemplateResult'
+import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult'
 import * as turtleSyntax from './syntax/turtle'
 
 export type SparqlValue<T extends Term = Term> = Value<SparqlTemplateResult, T>
 
 interface SparqlOptions {
   base?: string
-  prologue?: boolean
+  prologue: boolean
 }
 
 function prefixDeclarations(prefixes: Iterable<string>): string[] {
@@ -17,41 +17,32 @@ function prefixDeclarations(prefixes: Iterable<string>): string[] {
     .map(prefix => `PREFIX ${prefix}: <${knownPrefixes[prefix]}>`)
 }
 
-export class SparqlTemplateResult extends TemplateResult<SparqlTemplateResult, SparqlValue, SparqlOptions> {
-  // eslint-disable-next-line no-useless-constructor
-  public constructor(strings: TemplateStringsArray, values: SparqlValue[], turtle: (strings: TemplateStringsArray, ...values: SparqlValue<any>[]) => SparqlTemplateResult) {
-    super(strings, values, turtle)
-  }
+export type SparqlTemplateResult = TemplateResult<SparqlOptions>
 
-  protected get __defaultOptions(): SparqlOptions {
-    return {
-      prologue: true,
-    }
-  }
-
-  protected _evaluateLiteral(term: Literal, options: SparqlOptions): PartialString {
+export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
+  public evaluateLiteral(term: Literal, options: SparqlOptions): PartialString {
     return turtleSyntax.literal(term, options.base)
   }
 
-  protected _evaluateNamedNode(term: NamedNode, options: SparqlOptions): PartialString {
+  public evaluateNamedNode(term: NamedNode, options: SparqlOptions): PartialString {
     return turtleSyntax.namedNode(term, options.base)
   }
 
-  protected _evaluateBlankNode(term: BlankNode): PartialString {
+  public evaluateBlankNode(term: BlankNode): PartialString {
     return {
       value: turtleSyntax.blankNode(term),
       prefixes: [],
     }
   }
 
-  protected _evaluateVariable(term: Variable): PartialString {
+  public evaluateVariable(term: Variable): PartialString {
     return {
       value: `?${term.value}`,
       prefixes: [],
     }
   }
 
-  protected _getFinalString(result: string, prefixes: Iterable<string>, options: SparqlOptions): string {
+  public getFinalString(result: string, prefixes: Iterable<string>, options: SparqlOptions): string {
     const prologue = options.prologue || typeof options.prologue === 'undefined'
     let prologueLines: string[] = []
     if (prologue) {
@@ -66,7 +57,23 @@ export class SparqlTemplateResult extends TemplateResult<SparqlTemplateResult, S
 
     return `${prologueLines.join('\n')}${result}`
   }
+
+  public evaluateDataset(): PartialString {
+    throw new Error('Method not implemented')
+  }
+
+  public evaluateQuad(): PartialString {
+    throw new Error('Method not implemented')
+  }
 }
 
 export const sparql = (strings: TemplateStringsArray, ...values: SparqlValue[]) =>
-  new SparqlTemplateResult(strings, values, sparql)
+  new TemplateResult<SparqlOptions>({
+    strings,
+    values,
+    tag: sparql,
+    strategy: new SparqlStrategy(),
+    defaultOptions: {
+      prologue: true,
+    },
+  })
