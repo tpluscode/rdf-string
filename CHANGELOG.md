@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://github.com/tpluscode/rdf-string/compare/v0.2.2...v0.2.3) (2020-02-26)
+
+
+### Bug Fixes
+
+* **dep:** namespace builder package was not a runtime dependency ([6196216](https://github.com/tpluscode/rdf-string/commit/61962165f112957c3cd2d1aa981c4aca299c257c))
+
 ### [0.2.2](https://github.com/zazuko/rdf-string/compare/v0.2.1...v0.2.2) (2020-02-25)
 
 ### [0.2.1](https://github.com/zazuko/rdf-string/compare/v0.2.0...v0.2.1) (2020-02-25)
