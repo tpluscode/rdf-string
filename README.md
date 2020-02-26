@@ -14,22 +14,50 @@ All values interpolated values are serialized according to the syntactic rules o
 1. Import the desired format function
 2. Use it with template string to interpolate RDF/JS terms
 
+It may be most powerful for building SPARQL queries from without
+
 <run-kit>
 
 ```js
 const RDF = require('@rdfjs/data-model')
-const convert = require('@tpluscode/rdf-string')
+const { sparql } = require('@tpluscode/rdf-string')
 
-const node = RDF.namedNode('http://example.com/node')
+const Person = RDF.namedNode('http://schema.org/Person')
 
-const results = {
-  nQuads: convert.nquads`${node}`.toString(),  
-  turtle: convert.turtle`${node}`.toString(),
-  sparql: convert.sparql`${node}`.toString(),
-}
+sparql`SELECT * WHERE {
+  ?s a ${Person}
+}`.toString()
 ```
 
 </run-kit>
+
+On the other hand, in the case of RDF serializations it might be used as a makeshift, string-based, synchronous serializer...
+
+<run-kit>
+
+```js
+const fetch = require('@rdfjs/fetch-lite')
+const { turtle } = require('@tpluscode/rdf-string')
+
+const dataset = await fetch('http://dbpedia.org/resource/RDF')
+  .then(response => response.dataset())
+  
+turtle`${dataset}`.toString()
+```
+
+</run-kit>
+
+## Features
+
+1. Easily composable from smaller pieces
+2. Serializes term values according to format's syntactic rules
+3. Abbreviates URIs to prefixed names using vocabularies from [@zazuko/rdf-vocabularies](https://npm.im/@zazuko/rdf-vocabularies)
+4. Applies base URI
+5. (coming soon) Compresses turtle
+
+## What it does not do
+
+1. Check syntax
 
 ## Supported formats
 
