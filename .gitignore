@@ -3,3 +3,4 @@ node_modules/
 *.d.ts.map
 /lib/
 dist/
+docs/api/
