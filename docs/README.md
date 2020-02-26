@@ -61,9 +61,9 @@ turtle`${dataset}`.toString()
 
 ## Supported formats
 
-* [n-quads](https://www.w3.org/TR/n-quads/)
-* [turtle](https://www.w3.org/TR/turtle/)/[N3](https://www.w3.org/TeamSubmission/n3/)
-* SPARQL 1.1 [Query](https://www.w3.org/TR/sparql11-query) and [Update](https://www.w3.org/TR/sparql11-update/)
+* N-Quads
+* turtle/[N3](https://www.w3.org/TeamSubmission/n3/)
+* SPARQL 1.1 Query and [Update](https://www.w3.org/TR/sparql11-update/)
 
 More to come
 
