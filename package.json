@@ -20,6 +20,7 @@
     "lib"
   ],
   "dependencies": {
+    "@rdfjs/data-model": "^1.1.2",
     "@types/rdf-js": "^2.0.11",
     "@tpluscode/rdf-ns-builders": "^0.0.4",
     "@zazuko/rdf-vocabularies": "^2020.2.3"
