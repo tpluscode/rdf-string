@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.4](https://github.com/tpluscode/rdf-string/compare/v0.2.3...v0.2.4) (2020-02-26)
+
+
+### Bug Fixes
+
+* **dep:** data model package was not a runtime dependency ([7582da1](https://github.com/tpluscode/rdf-string/commit/7582da16bda1fd7e687288e439ca38b15185a013))
+
 ### [0.2.3](https://github.com/tpluscode/rdf-string/compare/v0.2.2...v0.2.3) (2020-02-26)
 
 
