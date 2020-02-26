@@ -22,7 +22,7 @@ describe('turtle', () => {
 
     it('reduces known datatype URI to prefixed name', async () => {
       // given
-      const node = literal('bar', xsd.TOKEN)
+      const node = xsd.TOKEN
 
       // when
       const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString()
@@ -30,7 +30,7 @@ describe('turtle', () => {
       // then
       expect(str).toEqual(`@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<http://example.com/> <http://example.com/foo> "bar"^^xsd:TOKEN .`)
+<http://example.com/> <http://example.com/foo> xsd:TOKEN .`)
       await expect(str).toBeValidTurtle()
     })
   })
@@ -71,6 +71,20 @@ describe('turtle', () => {
 
       // then
       expect(str).toEqual('<http://example.com/> <http://example.com/le-foo> "foo"@fr .')
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('reduces known datatype URI to prefixed name', async () => {
+      // given
+      const node = literal('bar', xsd.TOKEN)
+
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString()
+
+      // then
+      expect(str).toEqual(`@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.com/> <http://example.com/foo> "bar"^^xsd:TOKEN .`)
       await expect(str).toBeValidTurtle()
     })
   })
