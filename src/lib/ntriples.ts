@@ -29,13 +29,6 @@ export class NTriplesStrategy extends NQuadsStrategy<NTriplesOptions> {
 
     return super.evaluateQuad(triple(quad.subject, quad.predicate, quad.object), options)
   }
-
-  protected get __defaultOptions(): NTriplesOptions {
-    return {
-      graph: defaultGraph(),
-      sortGraphs: false,
-    }
-  }
 }
 
 export const ntriples = (strings: TemplateStringsArray, ...values: Value<NTriplesTemplateResult, NamedNode | Literal | BlankNode>[]) =>

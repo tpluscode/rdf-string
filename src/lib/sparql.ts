@@ -20,12 +20,6 @@ function prefixDeclarations(prefixes: Iterable<string>): string[] {
 export type SparqlTemplateResult = TemplateResult<SparqlOptions>
 
 export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
-  protected get __defaultOptions(): SparqlOptions {
-    return {
-      prologue: true,
-    }
-  }
-
   public evaluateLiteral(term: Literal, options: SparqlOptions): PartialString {
     return turtleSyntax.literal(term, options.base)
   }
