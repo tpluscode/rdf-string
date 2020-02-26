@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>__global | @tpluscode/rdf-string</title>
+	<title>&quot;lib/sparql&quot; | @tpluscode/rdf-string</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -40,8 +40,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -56,13 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_tests_jestsetup_.html">&quot;tests/jestSetup&quot;</a>
-				</li>
-				<li>
-					<a href="_tests_jestsetup_.__global.html">__global</a>
+					<a href="_lib_sparql_.html">&quot;lib/sparql&quot;</a>
 				</li>
 			</ul>
-			<h1>Module __global</h1>
+			<h1>External module &quot;lib/sparql&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -74,12 +69,72 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Modules</h3>
+							<h3>Classes</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-module tsd-parent-kind-module"><a href="_tests_jestsetup_.__global.jest.html" class="tsd-kind-icon">jest</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/_lib_sparql_.sparqltemplateresult.html" class="tsd-kind-icon">Sparql<wbr>Template<wbr>Result</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Type aliases</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_lib_sparql_.html#sparqlvalue" class="tsd-kind-icon">Sparql<wbr>Value</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_lib_sparql_.html#sparql" class="tsd-kind-icon">sparql</a></li>
 							</ul>
 						</section>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Type aliases</h2>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
+					<a name="sparqlvalue" class="tsd-anchor"></a>
+					<h3>Sparql<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">Sparql<wbr>Value&lt;T&gt;<span class="tsd-signature-symbol">:</span> <a href="_lib_value_.html#value" class="tsd-signature-type">Value</a><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_lib_sparql_.sparqltemplateresult.html" class="tsd-signature-type">SparqlTemplateResult</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/tpluscode/rdf-string/blob/a28b3cb/src/lib/sparql.ts#L7">lib/sparql.ts:7</a></li>
+						</ul>
+					</aside>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Term</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="sparql" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> sparql</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">sparql<span class="tsd-signature-symbol">(</span>strings<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TemplateStringsArray</span>, <span class="tsd-signature-symbol">...</span>values<span class="tsd-signature-symbol">: </span><a href="_lib_sparql_.html#sparqlvalue" class="tsd-signature-type">SparqlValue</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_lib_sparql_.sparqltemplateresult.html" class="tsd-signature-type">SparqlTemplateResult</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/tpluscode/rdf-string/blob/a28b3cb/src/lib/sparql.ts#L71">lib/sparql.ts:71</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>strings: <span class="tsd-signature-type">TemplateStringsArray</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>values: <a href="_lib_sparql_.html#sparqlvalue" class="tsd-signature-type">SparqlValue</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/_lib_sparql_.sparqltemplateresult.html" class="tsd-signature-type">SparqlTemplateResult</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -89,62 +144,43 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Internals</span>
+					<li class=" tsd-kind-external-module">
+						<a href="_index_.html">&quot;index&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_src_index_.html">&quot;src/index&quot;</a>
+						<a href="_lib_templateresult_.html">&quot;lib/<wbr>Template<wbr>Result&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_lib_nquads_.html">&quot;lib/nquads&quot;</a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_tests_jestsetup_.html">&quot;tests/jest<wbr>Setup&quot;</a>
-						<ul>
-							<li class="current tsd-kind-module tsd-parent-kind-external-module tsd-is-not-exported">
-								<a href="_tests_jestsetup_.__global.html">__global</a>
-								<ul>
-									<li class=" tsd-kind-module tsd-parent-kind-module">
-										<a href="_tests_jestsetup_.__global.jest.html">jest</a>
-									</li>
-								</ul>
-							</li>
-						</ul>
+						<a href="_lib_sparql_.html">&quot;lib/sparql&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_tests_nquads_spec_.html">&quot;tests/nquads.spec&quot;</a>
+						<a href="_lib_syntax_ntriples_.html">&quot;lib/syntax/ntriples&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_tests_sparql_spec_.html">&quot;tests/sparql.spec&quot;</a>
+						<a href="_lib_syntax_turtle_.html">&quot;lib/syntax/turtle&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_tests_turtle_spec_.html">&quot;tests/turtle.spec&quot;</a>
+						<a href="_lib_turtle_.html">&quot;lib/turtle&quot;</a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="_src_lib_templateresult_.html">&quot;src/lib/<wbr>Template<wbr>Result&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="_src_lib_nquads_.html">&quot;src/lib/nquads&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="_src_lib_sparql_.html">&quot;src/lib/sparql&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="_src_lib_syntax_ntriples_.html">&quot;src/lib/syntax/ntriples&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="_src_lib_syntax_turtle_.html">&quot;src/lib/syntax/turtle&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="_src_lib_turtle_.html">&quot;src/lib/turtle&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="_src_lib_value_.html">&quot;src/lib/value&quot;</a>
+					<li class=" tsd-kind-external-module">
+						<a href="_lib_value_.html">&quot;lib/value&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_lib_sparql_.sparqltemplateresult.html" class="tsd-kind-icon">Sparql<wbr>Template<wbr>Result</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_lib_sparql_.html#sparqlvalue" class="tsd-kind-icon">Sparql<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_lib_sparql_.html#sparql" class="tsd-kind-icon">sparql</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
