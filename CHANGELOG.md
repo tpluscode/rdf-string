@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.6](https://github.com/tpluscode/rdf-string/compare/v0.2.5...v0.2.6) (2020-02-27)
+
+
+### Features
+
+* **turtle:** compress output by removing subject/predicate repetition ([0d2f121](https://github.com/tpluscode/rdf-string/commit/0d2f121c510cd3327f56fc7317116db7e34685ca))
+* **turtle:** options to do cheap compression ([618ffa0](https://github.com/tpluscode/rdf-string/commit/618ffa0d1ee12bc961fb95023b20b8c11f4c1959))
+* added ntriples support ([62aef77](https://github.com/tpluscode/rdf-string/commit/62aef77774bcbe545cde840ca0492bb750fec108))
+
 ### [0.2.5](https://github.com/tpluscode/rdf-string/compare/v0.2.4...v0.2.5) (2020-02-26)
 
 
