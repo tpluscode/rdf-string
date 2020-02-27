@@ -74,7 +74,7 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
     }, { value: '', prefixes: [] })
   }
 
-  public evaluateQuad(quad: Quad, options: TurtleOptions, terminate = true): PartialString {
+  public evaluateQuad(quad: Quad, options: TurtleOptions, { terminate = true, newLineAfterSubject = false } = {}): PartialString {
     if (!options.graph.equals(quad.graph)) {
       return {
         value: '',
@@ -86,8 +86,10 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
     const predicate = this.evaluateTerm(quad.predicate, options)
     const object = this.evaluateTerm(quad.object, options)
 
+    const predicateSeparator = newLineAfterSubject ? '\n   ' : ' '
+
     return {
-      value: `${subject.value} ${predicate.value} ${object.value}${terminate ? ' .' : ''}`,
+      value: `${subject.value}${predicateSeparator}${predicate.value} ${object.value}${terminate ? ' .' : ''}`,
       prefixes: [
         ...subject.prefixes,
         ...predicate.prefixes,
@@ -126,7 +128,10 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
     const result = orderedQuads.reduce<PartialString & DatasetEvaluationContext>((context, quad) => {
       if (!context.previous) {
         return {
-          ...this.evaluateQuad(quad, options, false),
+          ...this.evaluateQuad(quad, options, {
+            terminate: false,
+            newLineAfterSubject: true,
+          }),
           previous: quad,
         }
       }
@@ -145,7 +150,10 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
         }
       }
 
-      const quadResult = this.evaluateQuad(quad, options, false)
+      const quadResult = this.evaluateQuad(quad, options, {
+        terminate: false,
+        newLineAfterSubject: true,
+      })
 
       return {
         value: context.value + ' .\n' + quadResult.value,

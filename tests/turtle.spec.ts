@@ -145,7 +145,7 @@ describe('turtle', () => {
       })
 
       // then
-      expect(str).toMatch('<http://example.com/S> <http://example.com/P> <http://example.com/O> .')
+      expect(str).toMatch('<http://example.com/S>\n   <http://example.com/P> <http://example.com/O> .')
       await expect(str).toBeValidTurtle()
     })
 
