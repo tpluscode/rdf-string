@@ -1,4 +1,6 @@
 import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from 'rdf-js'
+import { literal } from '@rdfjs/data-model'
+import xsd from './syntax/xsd'
 import { Value } from './value'
 
 type TagFunction<TImpl extends TemplateResult<TOptions>, TValue extends Value<TImpl>, TOptions> = {
@@ -40,7 +42,7 @@ export abstract class SerializationStrategy<TOptions> {
 
 export interface TemplateResultInit<TOptions> {
   strings: TemplateStringsArray
-  values: Value<any>[]
+  values: Value<TemplateResult<TOptions>>[]
   tag: TagFunction<any, Value<any>, TOptions>
   strategy: SerializationStrategy<TOptions>
   defaultOptions: TOptions
@@ -48,8 +50,8 @@ export interface TemplateResultInit<TOptions> {
 
 export class TemplateResult<TOptions> {
   protected readonly strings: TemplateStringsArray;
-  protected readonly values: readonly Value<TemplateResult<TOptions>>[];
-  protected readonly _tag: TagFunction<TemplateResult<TOptions>, DatasetCore | Quad | Term | string | undefined | null, TOptions>
+  protected readonly values: readonly (Value<TemplateResult<TOptions>> | object)[];
+  protected readonly _tag: TagFunction<TemplateResult<TOptions>, Value<TemplateResult<TOptions>>, TOptions>
   private readonly __strategy: SerializationStrategy<TOptions>
   private readonly __defaultOptions: TOptions
 
@@ -84,29 +86,37 @@ export class TemplateResult<TOptions> {
     let result = ''
 
     for (let i = 0; i < l; i++) {
-      let partialResult: PartialString = {
-        value: '',
-        prefixes: [],
-      }
+      let partialResult: PartialString | null = null
       result += this.strings[i]
 
       const value = this.values[i]
-      if (!value) continue
+      if (typeof value === 'undefined' || value === null) continue
 
-      if (typeof value === 'string') {
-        result += value
-      } else
+      if (typeof value === 'boolean') {
+        partialResult = this.__strategy.evaluateLiteral(literal(value.toString(), xsd.boolean), options)
+      } else if (typeof value === 'number') {
+        const datatype = Number.isInteger(value) ? xsd.integer : xsd.decimal
 
-      if (value instanceof TemplateResult) {
-        partialResult = value._toPartialString(options)
-      } else
+        partialResult = this.__strategy.evaluateLiteral(literal(value.toString(), datatype), options)
+      } else if (value instanceof Date) {
+        partialResult = this.__strategy.evaluateLiteral(literal(value.toISOString(), xsd.dateTime), options)
+      } else if (typeof value === 'object') {
+        if (value instanceof TemplateResult) {
+          partialResult = value._toPartialString(options)
+        } else if ('subject' in value) {
+          partialResult = this.__strategy.evaluateQuad(value, options)
+        } else if ('match' in value) {
+          partialResult = this.__strategy.evaluateDataset(value, options)
+        } else if ('termType' in value) {
+          partialResult = this.__strategy.evaluateTerm(value, options)
+        }
+      }
 
-      if ('subject' in value) {
-        partialResult = this.__strategy.evaluateQuad(value, options)
-      } else if ('match' in value) {
-        partialResult = this.__strategy.evaluateDataset(value, options)
-      } else {
-        partialResult = this.__strategy.evaluateTerm(value, options)
+      if (partialResult === null) {
+        partialResult = {
+          value: value.toString(),
+          prefixes: [],
+        }
       }
 
       result += partialResult.value

@@ -1,10 +1,8 @@
 import { BlankNode, Literal, NamedNode } from 'rdf-js'
-import { xsd } from '@tpluscode/rdf-ns-builders'
 import { shrink } from '@zazuko/rdf-vocabularies'
 import * as ntriples from './ntriples'
 import { PartialString } from '../TemplateResult'
-
-const xsdString = xsd.string
+import xsd from './xsd'
 
 export function blankNode(term: BlankNode): string {
   return ntriples.blankNode(term)
@@ -28,13 +26,26 @@ export function namedNode(term: NamedNode, base = ''): PartialString {
   }
 }
 
-export function literal(term: Literal, base = ''): PartialString {
-  if (!term.language && term.datatype && !term.datatype.equals(xsdString)) {
-    const datatypeResult = namedNode(term.datatype, base)
+function isBuiltInType(datatype: NamedNode): boolean {
+  return datatype.equals(xsd.integer) || datatype.equals(xsd.boolean) || datatype.equals(xsd.decimal)
+}
 
-    return {
-      value: `"${term.value}"^^${datatypeResult.value}`,
-      prefixes: datatypeResult.prefixes,
+export function literal(term: Literal, base = ''): PartialString {
+  if (!term.language && term.datatype) {
+    if (isBuiltInType(term.datatype)) {
+      return {
+        value: term.value,
+        prefixes: [],
+      }
+    }
+
+    if (!term.datatype.equals(xsd.string)) {
+      const datatypeResult = namedNode(term.datatype, base)
+
+      return {
+        value: `"${term.value}"^^${datatypeResult.value}`,
+        prefixes: datatypeResult.prefixes,
+      }
     }
   }
 
