@@ -80,7 +80,7 @@ export class TemplateResult<TOptions> {
     return this.__strategy.getFinalString(value, prefixes, actualOptions)
   }
 
-  protected _toPartialString(options: TOptions): PartialString {
+  public _toPartialString(options: TOptions): PartialString {
     const prefixes: Set<string> = new Set()
     const l = this.strings.length - 1
     let result = ''
@@ -101,7 +101,7 @@ export class TemplateResult<TOptions> {
       } else if (value instanceof Date) {
         partialResult = this.__strategy.evaluateLiteral(literal(value.toISOString(), xsd.dateTime), options)
       } else if (typeof value === 'object') {
-        if (value instanceof TemplateResult) {
+        if ('_toPartialString' in value) {
           partialResult = value._toPartialString(options)
         } else if ('subject' in value) {
           partialResult = this.__strategy.evaluateQuad(value, options)
