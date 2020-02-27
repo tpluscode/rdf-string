@@ -22,9 +22,32 @@ turtle`${dataset}`.toString()
 
 </run-kit>
 
+## Cheap compression
+
+For large datasets it may be detrimental to perform an accurate compression of the output string because quads have to be reordered in memory to correctly merge predicates of common subjects and objects of common predicates.
+
+An optional flag can be set on the `toString` call to process quads in whatever order the appear the source dataset.
+
+<run-kit>
+
+```js
+const fetch = require('@rdfjs/fetch')
+const { turtle } = require('@tpluscode/rdf-string')
+
+const dataset = await fetch('http://zazuko.github.io/tbbt-ld/dist/tbbt.nt')
+  .then(response => response.dataset())
+  
+turtle`${dataset}`.toString({
+  cheapCompression: true,
+})
+```
+
+</run-kit>
+
 ## Serialize named graph
 
-The default behavior of Turtle is to serialize default graph
+The default behavior of Turtle is to serialize default graph. Passing a named node to the `toString` method will change the graph being serialized.
+
 <run-kit>
 
 ```js
