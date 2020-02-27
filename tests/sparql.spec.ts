@@ -175,6 +175,21 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
     })
   })
 
+  describe('interpolating SPARQL Template', () => {
+    it('combines it with the parent', () => {
+      // given
+      const subquery = sparql`?s a ${schema.Person}`
+
+      // when
+      const query = sparql`SELECT * WHERE { ${subquery} }`.toString()
+
+      // then
+      expect(query).toEqual(`PREFIX schema: <http://schema.org/>
+
+SELECT * WHERE { ?s a schema:Person }`)
+    })
+  })
+
   it('ignores null', () => {
     // given
     const expected = 'SELECT * WHERE { ?person <http://schema.org/name> "Tomasz" }'

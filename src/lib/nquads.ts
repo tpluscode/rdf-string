@@ -62,10 +62,6 @@ export class NQuadsStrategy<TOptions extends NQuadsOptions = NQuadsOptions> exte
     }
   }
 
-  protected _getFinalString(result: string): string {
-    return result
-  }
-
   evaluateVariable(): PartialString {
     throw new Error('N-Quads cannot serialize variables')
   }

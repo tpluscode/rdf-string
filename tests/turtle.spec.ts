@@ -2,6 +2,7 @@ import { blankNode, literal, namedNode, quad } from '@rdfjs/data-model'
 import RDF from '@rdfjs/dataset'
 import { xsd, foaf, schema } from '@tpluscode/rdf-ns-builders'
 import namespace from '@rdfjs/namespace'
+import { DateTime } from 'luxon'
 import { turtle } from '../src'
 
 const ex = namespace('http://example.com/')
@@ -86,6 +87,51 @@ describe('turtle', () => {
 
 <http://example.com/> <http://example.com/foo> "bar"^^xsd:TOKEN .`)
       await expect(str).toBeValidTurtle()
+    })
+
+    it('serializes integer as xsd:integer', async () => {
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/le-foo> ${10} .`.toString()
+
+      // then
+      expect(str).toEqual('<http://example.com/> <http://example.com/le-foo> 10 .')
+    })
+
+    it('serializes Date as xsd:DateTime', async () => {
+      // given
+      const date = DateTime.utc(2020, 2, 27, 14, 13).toJSDate()
+
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/le-foo> ${date} .`.toString()
+
+      // then
+      expect(str).toEqual(`@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.com/> <http://example.com/le-foo> "2020-02-27T14:13:00.000Z"^^xsd:dateTime .`)
+    })
+
+    it('serializes float as xsd:decimal', async () => {
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/le-foo> ${10.5} .`.toString()
+
+      // then
+      expect(str).toEqual('<http://example.com/> <http://example.com/le-foo> 10.5 .')
+    })
+
+    it('serializes boolean as xsd:boolean', async () => {
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/le-foo> ${true} .`.toString()
+
+      // then
+      expect(str).toEqual('<http://example.com/> <http://example.com/le-foo> true .')
+    })
+
+    it('serializes false boolean as xsd:boolean', async () => {
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/le-foo> ${false} .`.toString()
+
+      // then
+      expect(str).toEqual('<http://example.com/> <http://example.com/le-foo> false .')
     })
   })
 

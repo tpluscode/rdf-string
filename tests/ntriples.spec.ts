@@ -59,4 +59,38 @@ describe('ntriples', () => {
       expect(str).toEqual('<http://example.com/S> <http://example.com/P> <http://example.com/O>  .')
     })
   })
+
+  describe('serializing literal', () => {
+    it('serializes integer as xsd:int', async () => {
+      // when
+      const str = ntriples`<http://example.com/> <http://example.com/le-foo> ${10} .`.toString()
+
+      // then
+      expect(str).toEqual('<http://example.com/> <http://example.com/le-foo> "10"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+    })
+
+    it('serializes float as xsd:decimal', async () => {
+      // when
+      const str = ntriples`<http://example.com/> <http://example.com/le-foo> ${10.5} .`.toString()
+
+      // then
+      expect(str).toEqual('<http://example.com/> <http://example.com/le-foo> "10.5"^^<http://www.w3.org/2001/XMLSchema#decimal> .')
+    })
+
+    it('serializes boolean as xsd:boolean', async () => {
+      // when
+      const str = ntriples`<http://example.com/> <http://example.com/le-foo> ${true} .`.toString()
+
+      // then
+      expect(str).toEqual('<http://example.com/> <http://example.com/le-foo> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .')
+    })
+
+    it('serializes false boolean as xsd:boolean', async () => {
+      // when
+      const str = ntriples`<http://example.com/> <http://example.com/le-foo> ${false} .`.toString()
+
+      // then
+      expect(str).toEqual('<http://example.com/> <http://example.com/le-foo> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> .')
+    })
+  })
 })
