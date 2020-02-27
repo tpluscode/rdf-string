@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.8](https://github.com/tpluscode/rdf-string/compare/v0.2.7...v0.2.8) (2020-02-27)
+
+
+### Features
+
+* make it possible to create custom interpolatable objects ([24c60b1](https://github.com/tpluscode/rdf-string/commit/24c60b101ad7c5080dc0d46c624e4651677f8825))
+
+
+### Bug Fixes
+
+* allow any object to be interpolated value ([87184eb](https://github.com/tpluscode/rdf-string/commit/87184ebe55909bdd0cb7e1348bf61d8ef8709a49))
+
 ### [0.2.7](https://github.com/tpluscode/rdf-string/compare/v0.2.6...v0.2.7) (2020-02-27)
 
 
