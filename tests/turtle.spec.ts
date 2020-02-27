@@ -1,6 +1,6 @@
 import { blankNode, literal, namedNode, quad } from '@rdfjs/data-model'
 import RDF from '@rdfjs/dataset'
-import { xsd, foaf } from '@tpluscode/rdf-ns-builders'
+import { xsd, foaf, schema } from '@tpluscode/rdf-ns-builders'
 import namespace from '@rdfjs/namespace'
 import { turtle } from '../src'
 
@@ -145,7 +145,107 @@ describe('turtle', () => {
       })
 
       // then
-      expect(str).toMatch('<http://example.com/S> <http://example.com/P> <http://example.com/O> .')
+      expect(str).toMatch('<http://example.com/S>\n   <http://example.com/P> <http://example.com/O> .')
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('combines multiple predicates from same subsequent subject', async () => {
+      // given
+      const dataset = RDF.dataset()
+        .add(quad(ex.S, ex.P1, ex.O1))
+        .add(quad(ex.S, ex.P2, ex.O2))
+        .add(quad(ex.S, ex.P3, ex.O3))
+
+      // when
+      const str = turtle`${dataset}`.toString()
+
+      // then
+      expect(str).toMatchSnapshot()
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('combines multiple objects for subsequent quads', async () => {
+      // given
+      const dataset = RDF.dataset()
+        .add(quad(ex.S, ex.P, ex.O1))
+        .add(quad(ex.S, ex.P, ex.O2))
+        .add(quad(ex.S, ex.P, ex.O3))
+
+      // when
+      const str = turtle`${dataset}`.toString()
+
+      // then
+      expect(str).toMatchSnapshot()
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('correctly compresses output when prefixing names', async () => {
+      // given
+      const dataset = RDF.dataset()
+        .add(quad(schema.S, schema.P, schema.O1))
+        .add(quad(schema.S, schema.P, schema.O2))
+        .add(quad(schema.S, schema.P, schema.O3))
+        .add(quad(schema.S1, schema.P1, schema.O))
+        .add(quad(schema.S1, schema.P2, schema.O))
+
+      // when
+      const str = turtle`${dataset}`.toString()
+
+      // then
+      expect(str).toMatchSnapshot()
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('reorders quads to get the most efficient compression', async () => {
+      // given
+      const dataset = RDF.dataset()
+        .add(quad(schema.S1, schema.P, schema.O1))
+        .add(quad(schema.S2, schema.P, schema.O2))
+        .add(quad(schema.S, schema.P, schema.O3))
+        .add(quad(schema.S1, schema.P1, schema.O))
+        .add(quad(schema.S2, schema.P2, schema.O))
+        .add(quad(schema.S2, schema.P, schema.O1))
+        .add(quad(schema.S, schema.P, schema.O1))
+
+      // when
+      const str = turtle`${dataset}`.toString()
+
+      // then
+      expect(str).toMatchSnapshot()
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('does not combine multiple objects for non-linear quads when doing cheap compression', async () => {
+      // given
+      const dataset = RDF.dataset()
+        .add(quad(ex.S, ex.P, ex.O1))
+        .add(quad(ex.S, ex.P1, ex.O2))
+        .add(quad(ex.S, ex.P, ex.O3))
+
+      // when
+      const str = turtle`${dataset}`.toString({
+        cheapCompression: true,
+      })
+
+      // then
+      expect(str).toMatchSnapshot()
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('does not combine multiple predicates for non-linear quads when doing cheap compression', async () => {
+      // given
+      const dataset = RDF.dataset()
+        .add(quad(ex.S, ex.P, ex.O1))
+        .add(quad(ex.S1, ex.P, ex.O2))
+        .add(quad(ex.S, ex.P, ex.O3))
+
+      // when
+      const str = turtle`${dataset}`.toString({
+        cheapCompression: true,
+      })
+
+      // then
+      expect(str).toMatchSnapshot()
       await expect(str).toBeValidTurtle()
     })
   })

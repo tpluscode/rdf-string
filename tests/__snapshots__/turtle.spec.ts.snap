@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`turtle dataset interpolation combines multiple objects for subsequent quads 1`] = `
+"<http://example.com/S>
+   <http://example.com/P> <http://example.com/O1> ,
+      <http://example.com/O2> ,
+      <http://example.com/O3> ."
+`;
+
+exports[`turtle dataset interpolation combines multiple predicates from same subsequent subject 1`] = `
+"<http://example.com/S>
+   <http://example.com/P1> <http://example.com/O1> ;
+   <http://example.com/P2> <http://example.com/O2> ;
+   <http://example.com/P3> <http://example.com/O3> ."
+`;
+
+exports[`turtle dataset interpolation correctly compresses output when prefixing names 1`] = `
+"@prefix schema: <http://schema.org/> .
+
+schema:S
+   schema:P schema:O1 ,
+      schema:O2 ,
+      schema:O3 .
+schema:S1
+   schema:P1 schema:O ;
+   schema:P2 schema:O ."
+`;
+
+exports[`turtle dataset interpolation does not combine multiple objects for non-linear quads when doing cheap compression 1`] = `
+"<http://example.com/S>
+   <http://example.com/P> <http://example.com/O1> ;
+   <http://example.com/P1> <http://example.com/O2> ;
+   <http://example.com/P> <http://example.com/O3> ."
+`;
+
+exports[`turtle dataset interpolation does not combine multiple predicates for non-linear quads when doing cheap compression 1`] = `
+"<http://example.com/S>
+   <http://example.com/P> <http://example.com/O1> .
+<http://example.com/S1>
+   <http://example.com/P> <http://example.com/O2> .
+<http://example.com/S>
+   <http://example.com/P> <http://example.com/O3> ."
+`;
+
+exports[`turtle dataset interpolation reorders quads to get the most efficient compression 1`] = `
+"@prefix schema: <http://schema.org/> .
+
+schema:S1
+   schema:P schema:O1 ;
+   schema:P1 schema:O .
+schema:S2
+   schema:P schema:O2 ,
+      schema:O1 ;
+   schema:P2 schema:O .
+schema:S
+   schema:P schema:O3 ,
+      schema:O1 ."
+`;

@@ -11,15 +11,28 @@
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" >
 </head>
 <body>
-  <nav></nav>
+  <nav>
+    <ul>
+      <li>
+        Other tools
+        <ul>
+          <li style="display: none"><a href="https://npm.im/@tpluscode/rdf-ns-builders">@tpluscode/rdf-ns-builders</a></li>
+          <li style="display: none"><a href="https://t-code.pl/rdfine">@tpluscode/rdfine</a></li>
+          <li><a href="https://t-code.pl/sparql-builder">@tpluscode/sparql-builder</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
   <div id="app"></div>
   <script>
     window.$docsify = {
       name: '@tpluscode/rdf-string',
       repo: 'https://github.com/tpluscode/rdf-string',
       loadSidebar: true,
+      subMaxLevel: 2,
       loadNavbar: false,
       changelog: 'https://raw.githubusercontent.com/tpluscode/rdf-string/master/CHANGELOG.md',
+      noCompileLinks: ['/api']
     }
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
