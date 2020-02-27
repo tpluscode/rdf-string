@@ -20,6 +20,10 @@ function prefixDeclarations(prefixes: Iterable<string>): string[] {
 
 export type TurtleTemplateResult = TemplateResult<TurtleOptions>
 
+interface DatasetEvaluationContext {
+  previous?: Quad
+}
+
 export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
   public evaluateBlankNode(term: BlankNode): PartialString {
     return {
@@ -43,17 +47,51 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
   public evaluateDataset(dataset: DatasetCore, options: TurtleOptions): PartialString {
     const graphQuads = [...dataset.match(null, null, null, options.graph)]
 
-    return graphQuads.reduce<PartialString>((result, quad) => {
-      const quadResult = this.evaluateQuad(quad, options)
+    if (graphQuads.length === 0) {
+      return {
+        value: '',
+        prefixes: [],
+      }
+    }
+
+    const result = graphQuads.reduce<PartialString & DatasetEvaluationContext>((context, quad) => {
+      if (!context.previous) {
+        return {
+          ...this.evaluateQuad(quad, options, false),
+          previous: quad,
+        }
+      }
+
+      if (context.previous.subject.equals(quad.subject) && context.previous.predicate.equals(quad.predicate)) {
+        return {
+          ...this.__appendObject(context, quad, options),
+          previous: quad,
+        }
+      }
+
+      if (context.previous.subject.equals(quad.subject)) {
+        return {
+          ...this.__appendPredicateObject(context, quad, options),
+          previous: quad,
+        }
+      }
+
+      const quadResult = this.evaluateQuad(quad, options, false)
 
       return {
-        value: result.value + '\n' + quadResult.value,
-        prefixes: [...result.prefixes, ...quadResult.prefixes],
+        value: context.value + ' .\n' + quadResult.value,
+        prefixes: [...context.prefixes, ...quadResult.prefixes],
+        previous: quad,
       }
     }, { value: '', prefixes: [] })
+
+    return {
+      ...result,
+      value: result.value + ' .',
+    }
   }
 
-  public evaluateQuad(quad: Quad, options: TurtleOptions): PartialString {
+  public evaluateQuad(quad: Quad, options: TurtleOptions, terminate = true): PartialString {
     if (!options.graph.equals(quad.graph)) {
       return {
         value: '',
@@ -66,7 +104,7 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
     const object = this.evaluateTerm(quad.object, options)
 
     return {
-      value: `${subject.value} ${predicate.value} ${object.value} .`,
+      value: `${subject.value} ${predicate.value} ${object.value}${terminate ? ' .' : ''}`,
       prefixes: [
         ...subject.prefixes,
         ...predicate.prefixes,
@@ -87,6 +125,24 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
     }
 
     return `${prologueLines.join('\n')}${result}`
+  }
+
+  private __appendPredicateObject(context: PartialString, quad: Quad, options: TurtleOptions): PartialString {
+    const currentPredicateResult = this.evaluateTerm(quad.predicate, options)
+    const currentObjectResult = this.evaluateTerm(quad.object, options)
+
+    return {
+      value: `${context.value} ;\n   ${currentPredicateResult.value} ${currentObjectResult.value}`,
+      prefixes: [...context.prefixes, ...currentPredicateResult.prefixes, ...currentObjectResult.prefixes],
+    }
+  }
+
+  private __appendObject(context: PartialString, quad: Quad, options: TurtleOptions): PartialString {
+    const currentObjectResult = this.evaluateTerm(quad.object, options)
+    return {
+      value: `${context.value} ,\n      ${currentObjectResult.value}`,
+      prefixes: [...context.prefixes, ...currentObjectResult.prefixes],
+    }
   }
 }
 
