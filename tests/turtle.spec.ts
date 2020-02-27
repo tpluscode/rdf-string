@@ -196,12 +196,16 @@ describe('turtle', () => {
       await expect(str).toBeValidTurtle()
     })
 
-    it('does not combine multiple objects for non-linear quads', async () => {
+    it('reorders quads to get the most efficient compression', async () => {
       // given
       const dataset = RDF.dataset()
-        .add(quad(ex.S, ex.P, ex.O1))
-        .add(quad(ex.S, ex.P1, ex.O2))
-        .add(quad(ex.S, ex.P, ex.O3))
+        .add(quad(schema.S1, schema.P, schema.O1))
+        .add(quad(schema.S2, schema.P, schema.O2))
+        .add(quad(schema.S, schema.P, schema.O3))
+        .add(quad(schema.S1, schema.P1, schema.O))
+        .add(quad(schema.S2, schema.P2, schema.O))
+        .add(quad(schema.S2, schema.P, schema.O1))
+        .add(quad(schema.S, schema.P, schema.O1))
 
       // when
       const str = turtle`${dataset}`.toString()
@@ -211,7 +215,24 @@ describe('turtle', () => {
       await expect(str).toBeValidTurtle()
     })
 
-    it('does not combine multiple predicates for non-linear quads', async () => {
+    it('does not combine multiple objects for non-linear quads when doing cheap compression', async () => {
+      // given
+      const dataset = RDF.dataset()
+        .add(quad(ex.S, ex.P, ex.O1))
+        .add(quad(ex.S, ex.P1, ex.O2))
+        .add(quad(ex.S, ex.P, ex.O3))
+
+      // when
+      const str = turtle`${dataset}`.toString({
+        cheapCompression: true,
+      })
+
+      // then
+      expect(str).toMatchSnapshot()
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('does not combine multiple predicates for non-linear quads when doing cheap compression', async () => {
       // given
       const dataset = RDF.dataset()
         .add(quad(ex.S, ex.P, ex.O1))
@@ -219,7 +240,9 @@ describe('turtle', () => {
         .add(quad(ex.S, ex.P, ex.O3))
 
       // when
-      const str = turtle`${dataset}`.toString()
+      const str = turtle`${dataset}`.toString({
+        cheapCompression: true,
+      })
 
       // then
       expect(str).toMatchSnapshot()

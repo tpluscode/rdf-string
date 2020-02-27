@@ -10,6 +10,7 @@ export type TurtleValue<T extends Term = Term> = Value<TurtleTemplateResult, T>
 interface TurtleOptions {
   directives: boolean
   graph: NamedNode | DefaultGraph
+  cheapCompression: boolean
 }
 
 function prefixDeclarations(prefixes: Iterable<string>): string[] {
@@ -46,49 +47,31 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
 
   public evaluateDataset(dataset: DatasetCore, options: TurtleOptions): PartialString {
     const graphQuads = [...dataset.match(null, null, null, options.graph)]
-
-    if (graphQuads.length === 0) {
-      return {
-        value: '',
-        prefixes: [],
-      }
+    if (options.cheapCompression) {
+      return this.__evaluateQuads(graphQuads, options)
     }
 
-    const result = graphQuads.reduce<PartialString & DatasetEvaluationContext>((context, quad) => {
-      if (!context.previous) {
-        return {
-          ...this.evaluateQuad(quad, options, false),
-          previous: quad,
-        }
+    const subjectMap = graphQuads.reduce((map, quad) => {
+      let quads = map.get(quad.subject.value)
+      if (!quads) {
+        quads = new Set()
+        map.set(quad.subject.value, quads)
       }
 
-      if (context.previous.subject.equals(quad.subject) && context.previous.predicate.equals(quad.predicate)) {
-        return {
-          ...this.__appendObject(context, quad, options),
-          previous: quad,
-        }
-      }
+      quads.add(quad)
 
-      if (context.previous.subject.equals(quad.subject)) {
-        return {
-          ...this.__appendPredicateObject(context, quad, options),
-          previous: quad,
-        }
-      }
+      return map
+    }, new Map<string, Set<Quad>>())
 
-      const quadResult = this.evaluateQuad(quad, options, false)
+    return [...subjectMap.values()].reduce<PartialString>((result, quads, index) => {
+      const nextSubject = this.__evaluateQuads([...quads], options)
+      const separator = index ? '\n' : ''
 
       return {
-        value: context.value + ' .\n' + quadResult.value,
-        prefixes: [...context.prefixes, ...quadResult.prefixes],
-        previous: quad,
+        value: `${result.value}${separator}${nextSubject.value}`,
+        prefixes: [...result.prefixes, ...nextSubject.prefixes],
       }
     }, { value: '', prefixes: [] })
-
-    return {
-      ...result,
-      value: result.value + ' .',
-    }
   }
 
   public evaluateQuad(quad: Quad, options: TurtleOptions, terminate = true): PartialString {
@@ -127,6 +110,56 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
     return `${prologueLines.join('\n')}${result}`
   }
 
+  private __evaluateQuads(quads: Quad[], options: TurtleOptions) {
+    if (quads.length === 0) {
+      return {
+        value: '',
+        prefixes: [],
+      }
+    }
+
+    let orderedQuads = quads
+    if (!options.cheapCompression) {
+      orderedQuads = quads.sort((left, right) => left.predicate.value.localeCompare(right.predicate.value))
+    }
+
+    const result = orderedQuads.reduce<PartialString & DatasetEvaluationContext>((context, quad) => {
+      if (!context.previous) {
+        return {
+          ...this.evaluateQuad(quad, options, false),
+          previous: quad,
+        }
+      }
+
+      if (context.previous.subject.equals(quad.subject) && context.previous.predicate.equals(quad.predicate)) {
+        return {
+          ...this.__appendObject(context, quad, options),
+          previous: quad,
+        }
+      }
+
+      if (context.previous.subject.equals(quad.subject)) {
+        return {
+          ...this.__appendPredicateObject(context, quad, options),
+          previous: quad,
+        }
+      }
+
+      const quadResult = this.evaluateQuad(quad, options, false)
+
+      return {
+        value: context.value + ' .\n' + quadResult.value,
+        prefixes: [...context.prefixes, ...quadResult.prefixes],
+        previous: quad,
+      }
+    }, { value: '', prefixes: [] })
+
+    return {
+      ...result,
+      value: result.value + ' .',
+    }
+  }
+
   private __appendPredicateObject(context: PartialString, quad: Quad, options: TurtleOptions): PartialString {
     const currentPredicateResult = this.evaluateTerm(quad.predicate, options)
     const currentObjectResult = this.evaluateTerm(quad.object, options)
@@ -155,5 +188,6 @@ export const turtle = (strings: TemplateStringsArray, ...values: Value<TemplateR
     defaultOptions: {
       directives: true,
       graph: defaultGraph(),
+      cheapCompression: false,
     },
   })
