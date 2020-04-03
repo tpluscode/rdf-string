@@ -21,6 +21,38 @@ describe('turtle', () => {
       await expect(str).toBeValidTurtle()
     })
 
+    it('applies base URI string to identifiers', async () => {
+      // given
+      const node = ex()
+
+      // when
+      const str = turtle`${node} a ${ex('Type/Person')} .`.toString({
+        base: ex().value,
+      })
+
+      // then
+      expect(str).toEqual(`@base <http://example.com/> .
+
+<> a <Type/Person> .`)
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('applies base URI node to identifiers', async () => {
+      // given
+      const node = ex()
+
+      // when
+      const str = turtle`${node} a ${ex('Type/Person')} .`.toString({
+        base: ex(),
+      })
+
+      // then
+      expect(str).toEqual(`@base <http://example.com/> .
+
+<> a <Type/Person> .`)
+      await expect(str).toBeValidTurtle()
+    })
+
     it('reduces known datatype URI to prefixed name', async () => {
       // given
       const node = xsd.TOKEN
@@ -86,6 +118,38 @@ describe('turtle', () => {
       expect(str).toEqual(`@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <http://example.com/> <http://example.com/foo> "bar"^^xsd:TOKEN .`)
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('reduces known datatype URI to using base URI string', async () => {
+      // given
+      const node = literal('bar', ex.TOKEN)
+
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString({
+        base: ex().value,
+      })
+
+      // then
+      expect(str).toEqual(`@base <http://example.com/> .
+
+<http://example.com/> <http://example.com/foo> "bar"^^<TOKEN> .`)
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('reduces known datatype URI to using base URI named node', async () => {
+      // given
+      const node = literal('bar', ex.TOKEN)
+
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString({
+        base: ex(),
+      })
+
+      // then
+      expect(str).toEqual(`@base <http://example.com/> .
+
+<http://example.com/> <http://example.com/foo> "bar"^^<TOKEN> .`)
       await expect(str).toBeValidTurtle()
     })
 

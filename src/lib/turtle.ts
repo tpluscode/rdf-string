@@ -8,6 +8,7 @@ import * as syntax from './syntax/turtle'
 export type TurtleValue<T extends Term = Term> = Value<TurtleTemplateResult, T>
 
 interface TurtleOptions {
+  base?: string | NamedNode
   directives: boolean
   graph: NamedNode | DefaultGraph
   cheapCompression: boolean
@@ -33,12 +34,12 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
     }
   }
 
-  public evaluateLiteral(term: Literal): PartialString {
-    return syntax.literal(term)
+  public evaluateLiteral(term: Literal, options: TurtleOptions): PartialString {
+    return syntax.literal(term, options.base)
   }
 
-  public evaluateNamedNode(term: NamedNode): PartialString {
-    return syntax.namedNode(term)
+  public evaluateNamedNode(term: NamedNode, options: TurtleOptions): PartialString {
+    return syntax.namedNode(term, options.base)
   }
 
   public evaluateVariable(): PartialString {
@@ -104,6 +105,12 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
     let prologueLines: string[] = []
     if (prologue) {
       prologueLines = prefixDeclarations(prefixes)
+
+      if (options.base) {
+        const baseStr = typeof options.base === 'string' ? options.base : options.base.value
+        prologueLines.push(`@base <${baseStr}> .`)
+      }
+
       if (prologueLines.length > 0) {
         prologueLines.push('\n')
       }
