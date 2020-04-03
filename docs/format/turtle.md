@@ -24,7 +24,7 @@ turtle`${dataset}`.toString()
 
 ## Base URI
 
-?> From version 0.1.1
+?> From version 0.2.9
 
 By setting the `base` parameter on the `toString` call it is possible to set a base URI which will be used to compute relative URIs for matching identifiers (named nodes and literal datatypes alike).
 
