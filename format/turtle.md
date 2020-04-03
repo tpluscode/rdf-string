@@ -22,6 +22,28 @@ turtle`${dataset}`.toString()
 
 </run-kit>
 
+## Base URI
+
+?> From version 0.2.9
+
+By setting the `base` parameter on the `toString` call it is possible to set a base URI which will be used to compute relative URIs for matching identifiers (named nodes and literal datatypes alike).
+
+<run-kit>
+
+```js
+const fetch = require('@rdfjs/fetch')
+const { turtle } = require('@tpluscode/rdf-string')
+
+const dataset = await fetch('http://zazuko.github.io/tbbt-ld/dist/tbbt.nt')
+  .then(response => response.dataset())
+  
+turtle`${dataset}`.toString({
+  base: 'http://localhost:8080/data/',
+})
+```
+
+</run-kit>
+
 ## Cheap compression
 
 For large datasets it may be detrimental to perform an accurate compression of the output string because quads have to be reordered in memory to correctly merge predicates of common subjects and objects of common predicates.
