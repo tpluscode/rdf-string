@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.9](https://github.com/tpluscode/rdf-string/compare/v0.2.8...v0.2.9) (2020-04-03)
+
+
+### Features
+
+* **turtle:** support base URI ([d5eb53c](https://github.com/tpluscode/rdf-string/commit/d5eb53c5006faca7bb23ce4f4f67dc7353edf58a))
+
 ### [0.2.8](https://github.com/tpluscode/rdf-string/compare/v0.2.7...v0.2.8) (2020-02-27)
 
 
