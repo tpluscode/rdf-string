@@ -1,6 +1,6 @@
 import { blankNode, literal, namedNode, quad } from '@rdfjs/data-model'
 import RDF from '@rdfjs/dataset'
-import { xsd, foaf, schema } from '@tpluscode/rdf-ns-builders'
+import { xsd, foaf, schema, rdf } from '@tpluscode/rdf-ns-builders'
 import namespace from '@rdfjs/namespace'
 import { DateTime } from 'luxon'
 import { turtle } from '../src'
@@ -368,6 +368,20 @@ describe('turtle', () => {
 
       // then
       expect(str).toEqual('<http://example.com/foo>')
+    })
+
+    it('reduces an array to it\'s values', () => {
+      // given
+      const array = [
+        RDF.quad(ex.foo, rdf.type, ex.Bar),
+        RDF.quad(ex.foo, rdf.type, ex.Baz),
+      ]
+
+      // when
+      const str = turtle`${array}`.toString()
+
+      // then
+      expect(str).toMatchSnapshot()
     })
   })
 })
