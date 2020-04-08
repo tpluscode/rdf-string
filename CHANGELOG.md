@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.10](https://github.com/tpluscode/rdf-string/compare/v0.2.9...v0.2.10) (2020-04-08)
+
+
+### Features
+
+* reduce arrays by interpolating individual items ([3c47ccc](https://github.com/tpluscode/rdf-string/commit/3c47ccc1cf18778de1d4a82291f2875885bed610))
+
 ### [0.2.9](https://github.com/tpluscode/rdf-string/compare/v0.2.8...v0.2.9) (2020-04-03)
 
 
