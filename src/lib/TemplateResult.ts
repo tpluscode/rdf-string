@@ -100,6 +100,8 @@ export class TemplateResult<TOptions> {
         partialResult = this.__strategy.evaluateLiteral(literal(value.toString(), datatype), options)
       } else if (value instanceof Date) {
         partialResult = this.__strategy.evaluateLiteral(literal(value.toISOString(), xsd.dateTime), options)
+      } else if (Array.isArray(value)) {
+        partialResult = value.reduce<TemplateResult<TOptions>>((result, item) => this._tag`${result}\n${item}`, this._tag``)._toPartialString(options)
       } else if (typeof value === 'object') {
         if ('_toPartialString' in value) {
           partialResult = value._toPartialString(options)
