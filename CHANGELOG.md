@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.11](https://github.com/tpluscode/rdf-string/compare/v0.2.10...v0.2.11) (2020-04-18)
+
+
+### Bug Fixes
+
+* properly escape multiple literals and sepcial chars ([eb420cc](https://github.com/tpluscode/rdf-string/commit/eb420cc3869861844a49b0518589feb9f884c48b))
+
 ### [0.2.10](https://github.com/tpluscode/rdf-string/compare/v0.2.9...v0.2.10) (2020-04-08)
 
 
