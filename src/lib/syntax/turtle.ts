@@ -45,7 +45,7 @@ export function literal(term: Literal, base: string | NamedNode = ''): PartialSt
       const datatypeResult = namedNode(term.datatype, base)
 
       return {
-        value: `"${term.value}"^^${datatypeResult.value}`,
+        value: `${ntriples.literalValue(term)}^^${datatypeResult.value}`,
         prefixes: datatypeResult.prefixes,
       }
     }

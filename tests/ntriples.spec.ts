@@ -1,4 +1,4 @@
-import { quad } from '@rdfjs/data-model'
+import { quad, literal } from '@rdfjs/data-model'
 import { dataset } from '@rdfjs/dataset'
 import namespace from '@rdfjs/namespace'
 import { ntriples } from '../src'
@@ -91,6 +91,17 @@ describe('ntriples', () => {
 
       // then
       expect(str).toEqual('<http://example.com/> <http://example.com/le-foo> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> .')
+    })
+
+    it('escapes line breaks and quote chars from literal', () => {
+      // when
+      const value = literal(`This is
+a multiline string
+with "quotations"`)
+      const str = ntriples`${value}`.toString()
+
+      // then
+      expect(str).toEqual('"This is\\na multiline string\\nwith \\"quotations\\""')
     })
   })
 })

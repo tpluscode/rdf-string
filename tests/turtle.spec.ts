@@ -197,6 +197,19 @@ describe('turtle', () => {
       // then
       expect(str).toEqual('<http://example.com/> <http://example.com/le-foo> false .')
     })
+
+    it('escapes line breaks and quote chars from literal', () => {
+      // when
+      const value = literal(`This is
+a multiline string
+with "quotations"`, xsd.anyType)
+      const str = turtle`${value}`.toString()
+
+      // then
+      expect(str).toEqual(`@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+"This is\\na multiline string\\nwith \\"quotations\\""^^xsd:anyType`)
+    })
   })
 
   describe('quad interpolation', () => {
