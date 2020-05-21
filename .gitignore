@@ -4,3 +4,4 @@ node_modules/
 /lib/
 *.js
 docs/api/
+coverage/
