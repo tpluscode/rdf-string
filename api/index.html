@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>@tpluscode/rdf-string</title>
-	<meta name="description" content="">
+	<meta name="description" content="Documentation for @tpluscode/rdf-string">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -13,7 +13,7 @@
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -63,7 +63,7 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<blockquote>
-					<a href="#tpluscoderdf-string-img-srchttpsgithubcomtpluscoderdf-stringworkflowstestbadgesvg-alttest-a-hrefhttpscodecovioghtpluscoderdf-stringimg-srchttpscodecovioghtpluscoderdf-stringbranchmastergraphbadgesvg-altcodecova-a-hrefhttpsbadgefuryiojs40tpluscode2frdf-stringimg-srchttpsbadgefuryiojs40tpluscode2frdf-stringsvg-altnpm-versiona" id="tpluscoderdf-string-img-srchttpsgithubcomtpluscoderdf-stringworkflowstestbadgesvg-alttest-a-hrefhttpscodecovioghtpluscoderdf-stringimg-srchttpscodecovioghtpluscoderdf-stringbranchmastergraphbadgesvg-altcodecova-a-hrefhttpsbadgefuryiojs40tpluscode2frdf-stringimg-srchttpsbadgefuryiojs40tpluscode2frdf-stringsvg-altnpm-versiona" style="color: inherit; text-decoration: none;">
+					<a href="#tpluscoderdf-string---" id="tpluscoderdf-string---" style="color: inherit; text-decoration: none;">
 						<h1>@tpluscode/rdf-string <img src="https://github.com/tpluscode/rdf-string/workflows/Test/badge.svg" alt="Test"> <a href="https://codecov.io/gh/tpluscode/rdf-string"><img src="https://codecov.io/gh/tpluscode/rdf-string/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://badge.fury.io/js/%40tpluscode%2Frdf-string"><img src="https://badge.fury.io/js/%40tpluscode%2Frdf-string.svg" alt="npm version"></a></h1>
 					</a>
 				</blockquote>
@@ -80,16 +80,16 @@
 				<a href="#sparql" id="sparql" style="color: inherit; text-decoration: none;">
 					<h3>SPARQL</h3>
 				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> RDF <span class="hljs-keyword">from</span> <span class="hljs-string">'@rdfjs/data-model'</span>
-<span class="hljs-keyword">import</span> { prefixes } <span class="hljs-keyword">from</span> <span class="hljs-string">'@zazuko/rdf-vocabularies'</span>
-<span class="hljs-keyword">import</span> namespace <span class="hljs-keyword">from</span> <span class="hljs-string">'@rdfjs/namespace'</span>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> RDF <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@rdfjs/data-model&#x27;</span>
+<span class="hljs-keyword">import</span> { prefixes } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@zazuko/rdf-vocabularies&#x27;</span>
+<span class="hljs-keyword">import</span> namespace <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@rdfjs/namespace&#x27;</span>
 
-<span class="hljs-keyword">import</span> { sparql } <span class="hljs-keyword">from</span> <span class="hljs-string">'@zazuko/rdf-string'</span>
+<span class="hljs-keyword">import</span> { sparql } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@zazuko/rdf-string&#x27;</span>
 
-<span class="hljs-keyword">const</span> person = RDF.variable(<span class="hljs-string">'person'</span>)
-<span class="hljs-keyword">const</span> PersonType = RDF.namedNode(<span class="hljs-string">'http://example.com/Person'</span>)
+<span class="hljs-keyword">const</span> person = RDF.variable(<span class="hljs-string">&#x27;person&#x27;</span>)
+<span class="hljs-keyword">const</span> PersonType = RDF.namedNode(<span class="hljs-string">&#x27;http://example.com/Person&#x27;</span>)
 <span class="hljs-keyword">const</span> schema = namespace(prefixes.schema)
-<span class="hljs-keyword">const</span> name = <span class="hljs-string">"John"</span>
+<span class="hljs-keyword">const</span> name = <span class="hljs-string">&quot;John&quot;</span>
 
 <span class="hljs-keyword">const</span> query = sparql<span class="hljs-string">`SELECT * WHERE {
   <span class="hljs-subst">${person}</span> a <span class="hljs-subst">${PersonType}</span> .
