@@ -1,5 +1,5 @@
 import { BlankNode, DatasetCore, DefaultGraph, Literal, NamedNode, Quad, Term } from 'rdf-js'
-import { defaultGraph } from '@rdfjs/data-model'
+import RDF from '@rdfjs/data-model'
 import { prefixes as knownPrefixes } from '@zazuko/rdf-vocabularies'
 import { Value } from './value'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult'
@@ -202,7 +202,7 @@ export const turtle = (strings: TemplateStringsArray, ...values: Value<TemplateR
     strategy: new TurtleStrategy(),
     defaultOptions: {
       directives: true,
-      graph: defaultGraph(),
+      graph: RDF.defaultGraph(),
       cheapCompression: false,
     },
   })

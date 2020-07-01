@@ -3,5 +3,6 @@ node_modules/
 *.d.ts.map
 /lib/
 *.js
+*.mjs
 docs/api/
 coverage/
