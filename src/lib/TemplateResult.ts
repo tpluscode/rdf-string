@@ -1,5 +1,5 @@
 import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from 'rdf-js'
-import { literal } from '@rdfjs/data-model'
+import RDF from '@rdfjs/data-model'
 import xsd from './syntax/xsd'
 import { Value } from './value'
 
@@ -93,13 +93,13 @@ export class TemplateResult<TOptions> {
       if (typeof value === 'undefined' || value === null) continue
 
       if (typeof value === 'boolean') {
-        partialResult = this.__strategy.evaluateLiteral(literal(value.toString(), xsd.boolean), options)
+        partialResult = this.__strategy.evaluateLiteral(RDF.literal(value.toString(), xsd.boolean), options)
       } else if (typeof value === 'number') {
         const datatype = Number.isInteger(value) ? xsd.integer : xsd.decimal
 
-        partialResult = this.__strategy.evaluateLiteral(literal(value.toString(), datatype), options)
+        partialResult = this.__strategy.evaluateLiteral(RDF.literal(value.toString(), datatype), options)
       } else if (value instanceof Date) {
-        partialResult = this.__strategy.evaluateLiteral(literal(value.toISOString(), xsd.dateTime), options)
+        partialResult = this.__strategy.evaluateLiteral(RDF.literal(value.toISOString(), xsd.dateTime), options)
       } else if (Array.isArray(value)) {
         partialResult = value.reduce<TemplateResult<TOptions>>((result, item) => this._tag`${result}\n${item}`, this._tag``)._toPartialString(options)
       } else if (typeof value === 'object') {
