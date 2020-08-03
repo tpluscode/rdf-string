@@ -68,6 +68,22 @@ describe('sparql', () => {
       // then
       expect(query.toString()).toMatchQuery(expected)
     })
+
+    it('does not wrap default graph in pattern', () => {
+      // given
+      const expected = `SELECT * WHERE {
+          ?foo ?bar ?baz .
+       }`
+      const patterns = $rdf.dataset([
+        quad(variable('foo'), variable('bar'), variable('baz')),
+      ])
+
+      // when
+      const query = sparql`SELECT * WHERE { ${patterns} }`
+
+      // then
+      expect(query.toString()).toMatchQuery(expected)
+    })
   })
 
   describe('interpolating named node', () => {
