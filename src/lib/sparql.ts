@@ -1,5 +1,7 @@
 import { prefixes as knownPrefixes } from '@zazuko/rdf-vocabularies'
-import { BlankNode, Literal, NamedNode, Term, Variable } from 'rdf-js'
+import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from 'rdf-js'
+import { defaultGraphInstance, quad } from '@rdfjs/data-model'
+import TermMap from '@rdf-esm/term-map'
 import { Value } from './value'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult'
 import * as turtleSyntax from './syntax/turtle'
@@ -15,6 +17,10 @@ function prefixDeclarations(prefixes: Iterable<string>): string[] {
   return [...prefixes]
     .filter(prefix => prefix in knownPrefixes)
     .map(prefix => `PREFIX ${prefix}: <${knownPrefixes[prefix]}>`)
+}
+
+function toTriple({ subject, predicate, object }: Quad) {
+  return quad(subject, predicate, object)
 }
 
 export type SparqlTemplateResult = TemplateResult<SparqlOptions>
@@ -58,12 +64,72 @@ export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
     return `${prologueLines.join('\n')}${result}`
   }
 
-  public evaluateDataset(): PartialString {
-    throw new Error('Method not implemented')
+  public evaluateDataset(dataset: DatasetCore, options: SparqlOptions): PartialString {
+    const graphs = [...dataset]
+      .reduce((graphs, quad) => {
+        const namedGraph = graphs.get(quad.graph) || []
+        graphs.set(quad.graph, [
+          ...namedGraph,
+          toTriple(quad),
+        ])
+
+        return graphs
+      }, new TermMap<Term, Quad[]>())
+
+    return [...graphs.entries()].reduce<PartialString>((previous, [graph, quads]) => {
+      const triplePatterns = this.__evaluateTripleArray(quads, options)
+
+      if (defaultGraphInstance.equals(graph)) {
+        return {
+          value: `${previous.value}\n${triplePatterns.value}`,
+          prefixes: [...previous.prefixes, ...triplePatterns.prefixes],
+        }
+      } else {
+        const graphStr = this.evaluateTerm(graph, options)
+
+        return {
+          value: `${previous.value}\nGRAPH ${graphStr.value} {\n${triplePatterns.value}\n}`,
+          prefixes: [...previous.prefixes, ...graphStr.prefixes, ...triplePatterns.prefixes],
+        }
+      }
+    }, {
+      value: '',
+      prefixes: [],
+    })
   }
 
-  public evaluateQuad(): PartialString {
-    throw new Error('Method not implemented')
+  public evaluateQuad(quad: Quad, options: SparqlOptions): PartialString {
+    const subject = this.evaluateTerm(quad.subject, options)
+    const predicate = this.evaluateTerm(quad.predicate, options)
+    const object = this.evaluateTerm(quad.object, options)
+
+    let pattern = `${subject.value} ${predicate.value} ${object.value} .`
+    let prefixes = [
+      ...subject.prefixes,
+      ...predicate.prefixes,
+      ...object.prefixes,
+    ]
+
+    if (!defaultGraphInstance.equals(quad.graph)) {
+      const graph = this.evaluateTerm(quad.graph, options)
+      pattern = `GRAPH ${graph.value} { ${pattern} }`
+      prefixes = [...prefixes, ...graph.prefixes]
+    }
+
+    return {
+      value: pattern,
+      prefixes,
+    }
+  }
+
+  private __evaluateTripleArray(quads: Quad[], options: SparqlOptions): PartialString {
+    return quads.reduce<PartialString>((previous, quad) => {
+      const next = this.evaluateQuad(quad, options)
+      return {
+        value: `${previous.value}\n${next.value}`,
+        prefixes: [...previous.prefixes, ...next.prefixes],
+      }
+    }, { value: '', prefixes: [] })
   }
 }
 
