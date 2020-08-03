@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.17](https://github.com/tpluscode/rdf-string/compare/v0.2.16...v0.2.17) (2020-08-03)
+
+
+### Features
+
+* **sparql:** interpolating quads and datasets with patterns ([bc0a32f](https://github.com/tpluscode/rdf-string/commit/bc0a32f8f89773bce79c19d48eda1a4a71e001b5))
+
 ### [0.2.16](https://github.com/tpluscode/rdf-string/compare/v0.2.15...v0.2.16) (2020-07-01)
 
 ### [0.2.15](https://github.com/tpluscode/rdf-string/compare/v0.2.14...v0.2.15) (2020-06-11)
