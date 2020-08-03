@@ -1,5 +1,6 @@
 import { sparql } from '../src/index'
-import { blankNode, literal, namedNode, variable } from '@rdfjs/data-model'
+import { blankNode, literal, namedNode, quad, variable } from '@rdfjs/data-model'
+import $rdf from 'rdf-ext'
 import { prefixes } from '@zazuko/rdf-vocabularies'
 import namespace from '@rdfjs/namespace'
 import { xsd } from '@tpluscode/rdf-ns-builders'
@@ -8,6 +9,67 @@ const schema = namespace(prefixes.schema)
 const foaf = namespace(prefixes.foaf)
 
 describe('sparql', () => {
+  describe('interpolating quads', () => {
+    it('writes each in separate line', () => {
+      // given
+      const expected = 'SELECT * WHERE { ?s ?p ?o . ?a ?b ?c }'
+      const patterns = [
+        quad(variable('s'), variable('p'), variable('o')),
+        quad(variable('a'), variable('b'), variable('c')),
+      ]
+
+      // when
+      const query = sparql`SELECT * WHERE { ${patterns} }`
+
+      // then
+      expect(query.toString()).toMatchQuery(expected)
+    })
+
+    it('wraps them in graph pattern', () => {
+      // given
+      const expected = `SELECT * WHERE {
+          GRAPH <urn:foo:bar> { ?s ?p ?o } 
+          GRAPH ?bar { ?a ?b ?c } 
+          GRAPH ?bar { ?s ?p ?o } 
+          GRAPH <urn:foo:bar> { ?a ?b ?c } 
+       }`
+      const patterns = [
+        quad(variable('s'), variable('p'), variable('o'), namedNode('urn:foo:bar')),
+        quad(variable('a'), variable('b'), variable('c'), variable('bar')),
+        quad(variable('s'), variable('p'), variable('o'), variable('bar')),
+        quad(variable('a'), variable('b'), variable('c'), namedNode('urn:foo:bar')),
+      ]
+
+      // when
+      const query = sparql`SELECT * WHERE { ${patterns} }`
+
+      // then
+      expect(query.toString()).toMatchQuery(expected)
+    })
+  })
+
+  describe('interpolating dataset', () => {
+    it('groups by common named graph in graph pattern', () => {
+      // given
+      const expected = `SELECT * WHERE {
+          GRAPH <urn:foo:bar> { ?s ?p ?o . ?a ?b ?c } 
+          GRAPH ?bar { ?a ?b ?c . ?s ?p ?o} 
+       }`
+      const patterns = $rdf.dataset([
+        quad(variable('s'), variable('p'), variable('o'), namedNode('urn:foo:bar')),
+        quad(variable('a'), variable('b'), variable('c'), variable('bar')),
+        quad(variable('s'), variable('p'), variable('o'), variable('bar')),
+        quad(variable('a'), variable('b'), variable('c'), namedNode('urn:foo:bar')),
+      ])
+
+      // when
+      const query = sparql`SELECT * WHERE { ${patterns} }`
+
+      // then
+      expect(query.toString()).toMatchQuery(expected)
+    })
+  })
+
   describe('interpolating named node', () => {
     it('serializes in angle brackets', () => {
       // given

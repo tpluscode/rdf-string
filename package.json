@@ -28,6 +28,7 @@
   ],
   "dependencies": {
     "@rdfjs/data-model": "^1.1.2",
+    "@rdf-esm/term-map": "^0.5.0",
     "@tpluscode/rdf-ns-builders": "^0.3.6",
     "@zazuko/rdf-vocabularies": "^2020.6.29"
   },
@@ -48,6 +49,7 @@
     "@types/rdfjs__dataset": "^1.0.2",
     "@types/rdfjs__formats-common": "^2.0.0",
     "@types/rdfjs__namespace": "^1.1.1",
+    "@types/rdfjs__term-map": "^1.0.0",
     "@types/sparqljs": "^2.1.1",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
@@ -106,6 +108,9 @@
     "testRegex": "tests/.+\\.spec\\.ts$",
     "setupFilesAfterEnv": [
       "./tests/jestSetup.ts"
-    ]
+    ],
+    "moduleNameMapper": {
+      "@rdf-esm/(.*)": "@rdfjs/$1"
+    }
   }
 }
