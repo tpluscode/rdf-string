@@ -1,6 +1,6 @@
 import { prefixes as knownPrefixes } from '@zazuko/rdf-vocabularies'
 import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from 'rdf-js'
-import { defaultGraphInstance, quad } from '@rdfjs/data-model'
+import { defaultGraphInstance, quad } from '@rdf-esm/data-model'
 import TermMap from '@rdf-esm/term-map'
 import { Value } from './value'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult'
