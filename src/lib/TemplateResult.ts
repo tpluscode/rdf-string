@@ -1,5 +1,5 @@
-import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from 'rdf-js'
-import RDF from '@rdfjs/data-model'
+import { BlankNode, DatasetCore, Literal, NamedNode, BaseQuad, Term, Variable } from 'rdf-js'
+import RDF from '@rdf-esm/data-model'
 import xsd from './syntax/xsd'
 import { Value } from './value'
 
@@ -17,7 +17,7 @@ export abstract class SerializationStrategy<TOptions> {
   public abstract evaluateNamedNode(term: NamedNode, options: TOptions): PartialString
   public abstract evaluateVariable(term: Variable): PartialString
   public abstract evaluateBlankNode(term: BlankNode): PartialString
-  public abstract evaluateQuad(quad: Quad, options: TOptions): PartialString
+  public abstract evaluateQuad(quad: BaseQuad, options: TOptions): PartialString
   public abstract evaluateDataset(dataset: DatasetCore, options: TOptions): PartialString
   public abstract getFinalString(result: string, prefixes: Iterable<string>, options: TOptions): string
 
