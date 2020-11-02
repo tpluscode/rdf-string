@@ -1,5 +1,5 @@
 import { BlankNode, Literal, NamedNode } from 'rdf-js'
-import { shrink } from '@zazuko/rdf-vocabularies'
+import { shrink } from '@zazuko/rdf-vocabularies/shrink'
 import * as ntriples from './ntriples'
 import { PartialString } from '../TemplateResult'
 import xsd from './xsd'

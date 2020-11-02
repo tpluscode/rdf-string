@@ -30,7 +30,7 @@
     "@rdf-esm/data-model": "^0.5.3",
     "@rdf-esm/term-map": "^0.5.0",
     "@tpluscode/rdf-ns-builders": "^0.4",
-    "@zazuko/rdf-vocabularies": "^2020.6.29"
+    "@zazuko/rdf-vocabularies": "^2020.11.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.3",

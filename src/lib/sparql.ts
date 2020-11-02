@@ -1,4 +1,4 @@
-import { prefixes as knownPrefixes } from '@zazuko/rdf-vocabularies'
+import knownPrefixes from '@zazuko/rdf-vocabularies/prefixes'
 import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from 'rdf-js'
 import { defaultGraphInstance, quad } from '@rdf-esm/data-model'
 import TermMap from '@rdf-esm/term-map'
