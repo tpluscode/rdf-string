@@ -1,6 +1,6 @@
 import { BlankNode, DatasetCore, DefaultGraph, Literal, NamedNode, Quad, Term } from 'rdf-js'
 import RDF from '@rdf-esm/data-model'
-import { prefixes as knownPrefixes } from '@zazuko/rdf-vocabularies'
+import knownPrefixes from '@zazuko/rdf-vocabularies/prefixes'
 import { Value } from './value'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult'
 import * as syntax from './syntax/turtle'
