@@ -1,6 +1,6 @@
 {
   "name": "@tpluscode/rdf-string",
-  "version": "0.2.20",
+  "version": "0.2.21",
   "description": "Simplifies creating of RDF strings using ECMAscript templates",
   "main": "index.js",
   "browser": "index.mjs",
