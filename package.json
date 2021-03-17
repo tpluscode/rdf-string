@@ -17,7 +17,8 @@
     "build:cjs": "tsc",
     "build:esm": "BABEL_ENV=modules babel src --out-dir . --extensions .ts --out-file-extension .mjs",
     "test": "jest --coverage",
-    "docs": "docsify serve docs"
+    "docs": "docsify serve docs",
+    "release": "changeset publish"
   },
   "files": [
     "*.js",
@@ -36,8 +37,7 @@
     "@babel/cli": "^7.10.3",
     "@babel/preset-env": "^7.10.3",
     "@babel/preset-typescript": "^7.10.1",
-    "@commitlint/cli": "^8.2.0",
-    "@commitlint/config-conventional": "^8.2.0",
+    "@changesets/cli": "^2.14.1",
     "@rdfjs/data-model": "^1.2.0",
     "@rdfjs/dataset": "^1.0.1",
     "@rdfjs/formats-common": "^2.1.0",
@@ -55,7 +55,6 @@
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "babel-plugin-add-import-extension": "^1.5.0",
-    "cz-conventional-changelog": "^3.2.0",
     "docsify-cli": "^4.4.1",
     "eslint-plugin-jest": "^23.17.1",
     "husky": "^3.1.0",
@@ -88,18 +87,12 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged && tsc --noEmit"
     }
   },
   "lint-staged": {
     "*.{js,ts}": [
       "eslint --fix --quiet"
-    ]
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
     ]
   },
   "jest": {
