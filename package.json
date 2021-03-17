@@ -30,7 +30,7 @@
     "@rdf-esm/data-model": "^0.5.3",
     "@rdf-esm/term-map": "^0.5.0",
     "@tpluscode/rdf-ns-builders": "^0.4",
-    "@zazuko/rdf-vocabularies": "^2020.11.2"
+    "@zazuko/rdf-vocabularies": "*"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.3",
@@ -54,7 +54,7 @@
     "@types/sparqljs": "^2.1.1",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
-    "babel-plugin-add-import-extension": "github:tpluscode/babel-plugin-add-import-extension#type-only-export",
+    "babel-plugin-add-import-extension": "^1.5.0",
     "cz-conventional-changelog": "^3.2.0",
     "docsify-cli": "^4.4.1",
     "eslint-plugin-jest": "^23.17.1",
