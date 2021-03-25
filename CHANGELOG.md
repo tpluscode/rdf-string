@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.23
+
+### Patch Changes
+
+- 388fdd0: Array: remove recursion from interpolating arrays
+
 ## 0.2.22
 
 ### Patch Changes
