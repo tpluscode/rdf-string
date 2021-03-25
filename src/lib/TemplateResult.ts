@@ -101,7 +101,14 @@ export class TemplateResult<TOptions> {
       } else if (value instanceof Date) {
         partialResult = this.__strategy.evaluateLiteral(RDF.literal(value.toISOString(), xsd.dateTime), options)
       } else if (Array.isArray(value)) {
-        partialResult = value.reduce<TemplateResult<TOptions>>((result, item) => this._tag`${result}\n${item}`, this._tag``)._toPartialString(options)
+        const [first, ...rest] = value
+        partialResult = this._tag`${first}`._toPartialString(options)
+
+        for (const item of rest) {
+          const itemResult = this._tag`${item}`._toPartialString(options)
+          partialResult.value += `\n${itemResult.value}`
+          partialResult.prefixes = [...partialResult.prefixes, ...itemResult.prefixes]
+        }
       } else if (typeof value === 'object') {
         if ('_toPartialString' in value) {
           partialResult = value._toPartialString(options)

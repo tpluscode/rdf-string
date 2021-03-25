@@ -59,7 +59,6 @@ schema:S
 exports[`turtle interpolating JS types reduces an array to it's values 1`] = `
 "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
-
 <http://example.com/foo> rdf:type <http://example.com/Bar> .
 <http://example.com/foo> rdf:type <http://example.com/Baz> ."
 `;
