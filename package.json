@@ -35,10 +35,10 @@
     "@zazuko/rdf-vocabularies": "*"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.3",
-    "@babel/preset-env": "^7.10.3",
-    "@babel/preset-typescript": "^7.10.1",
-    "@changesets/cli": "^2.14.1",
+    "@babel/cli": "^7.14.5",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-typescript": "^7.14.5",
+    "@changesets/cli": "^2.16.0",
     "@rdfjs/data-model": "^1.2.0",
     "@rdfjs/dataset": "^1.0.1",
     "@rdfjs/formats-common": "^2.1.0",
@@ -54,7 +54,7 @@
     "@types/sparqljs": "^2.1.1",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
-    "babel-plugin-add-import-extension": "^1.5.0",
+    "babel-plugin-add-import-extension": "^1.5.1",
     "docsify-cli": "^4.4.1",
     "eslint-plugin-jest": "^23.17.1",
     "husky": "^3.1.0",
