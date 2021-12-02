@@ -54,7 +54,7 @@ describe('sparql', () => {
       // given
       const expected = `SELECT * WHERE {
           GRAPH <urn:foo:bar> { ?s ?p ?o . ?a ?b ?c } 
-          GRAPH ?bar { ?a ?b ?c . ?s ?p ?o} 
+          GRAPH ?bar { ?s ?p ?o . ?a ?b ?c } 
        }`
       const patterns = $rdf.dataset([
         quad(variable('s'), variable('p'), variable('o'), namedNode('urn:foo:bar')),
