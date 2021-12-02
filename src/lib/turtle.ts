@@ -5,8 +5,6 @@ import { Value } from './value'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult'
 import * as syntax from './syntax/turtle'
 
-export type TurtleValue<T extends Term = Term> = Value<TurtleTemplateResult, T>
-
 interface TurtleOptions {
   base?: string | NamedNode
   directives: boolean
@@ -21,6 +19,7 @@ function prefixDeclarations(prefixes: Iterable<string>): string[] {
 }
 
 export type TurtleTemplateResult = TemplateResult<TurtleOptions>
+export type TurtleValue<T extends Term = Term> = Value<TurtleTemplateResult, T>
 
 interface DatasetEvaluationContext {
   previous?: Quad

@@ -218,7 +218,7 @@ with "quotations"`, xsd.anyType)
       const q = quad(
         namedNode('http://example.com/person/John'),
         foaf.lastName,
-        literal('Doe')
+        literal('Doe'),
       )
 
       // when

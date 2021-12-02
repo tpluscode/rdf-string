@@ -1,7 +1,7 @@
 import { BlankNode, Literal, NamedNode } from 'rdf-js'
 import { shrink } from '@zazuko/rdf-vocabularies/shrink'
-import * as ntriples from './ntriples'
 import { PartialString } from '../TemplateResult'
+import * as ntriples from './ntriples'
 import xsd from './xsd'
 
 export function blankNode(term: BlankNode): string {

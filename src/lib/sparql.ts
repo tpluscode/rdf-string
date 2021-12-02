@@ -1,12 +1,10 @@
-import knownPrefixes from '@zazuko/rdf-vocabularies/prefixes'
 import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from 'rdf-js'
+import knownPrefixes from '@zazuko/rdf-vocabularies/prefixes'
 import { defaultGraphInstance, quad } from '@rdf-esm/data-model'
 import TermMap from '@rdf-esm/term-map'
 import { Value } from './value'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult'
 import * as turtleSyntax from './syntax/turtle'
-
-export type SparqlValue<T extends Term = Term> = Value<SparqlTemplateResult, T>
 
 interface SparqlOptions {
   base?: string
@@ -24,6 +22,7 @@ function toTriple({ subject, predicate, object }: Quad) {
 }
 
 export type SparqlTemplateResult = TemplateResult<SparqlOptions>
+export type SparqlValue<T extends Term = Term> = Value<SparqlTemplateResult, T>
 
 export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
   public evaluateLiteral(term: Literal, options: SparqlOptions): PartialString {
