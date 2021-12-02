@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.25
+
+### Patch Changes
+
+- b0e69ef: Support for interpolating any iterator types
+
 ## 0.2.24
 
 ### Patch Changes
