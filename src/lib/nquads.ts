@@ -3,13 +3,12 @@ import { Value } from './value'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult'
 import * as ntriples from './syntax/ntriples'
 
-export type NQuadsValue<T extends Term = Term> = Value<NQuadsTemplateResult, T>
-
 interface NQuadsOptions {
   sortGraphs: boolean
 }
 
 export type NQuadsTemplateResult = TemplateResult<NQuadsOptions>
+export type NQuadsValue<T extends Term = Term> = Value<NQuadsTemplateResult, T>
 
 export class NQuadsStrategy<TOptions extends NQuadsOptions = NQuadsOptions> extends SerializationStrategy<TOptions> {
   public evaluateDataset(dataset: DatasetCore, options: TOptions): PartialString {

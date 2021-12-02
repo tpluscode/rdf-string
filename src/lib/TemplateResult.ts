@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import { BlankNode, DatasetCore, Literal, NamedNode, BaseQuad, Term, Variable } from 'rdf-js'
 import RDF from '@rdf-esm/data-model'
 import xsd from './syntax/xsd'
@@ -48,9 +49,13 @@ export interface TemplateResultInit<TOptions> {
   defaultOptions: TOptions
 }
 
+function isIterable(obj: unknown): obj is Iterable<any> {
+  return Symbol.iterator in Object(obj) && typeof obj !== 'string'
+}
+
 export class TemplateResult<TOptions> {
-  protected readonly strings: TemplateStringsArray;
-  protected readonly values: readonly (Value<TemplateResult<TOptions>> | object)[];
+  protected readonly strings: TemplateStringsArray
+  protected readonly values: readonly (Value<TemplateResult<TOptions>> | object)[]
   protected readonly _tag: TagFunction<TemplateResult<TOptions>, Value<TemplateResult<TOptions>>, TOptions>
   private readonly __strategy: SerializationStrategy<TOptions>
   private readonly __defaultOptions: TOptions

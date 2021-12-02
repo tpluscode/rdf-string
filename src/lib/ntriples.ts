@@ -9,9 +9,8 @@ interface NTriplesOptions {
   sortGraphs: false
 }
 
-export type NTriplesValue<T extends Term = Term> = Value<NTriplesTemplateResult, T>
-
 export type NTriplesTemplateResult = TemplateResult<NTriplesOptions>
+export type NTriplesValue<T extends Term = Term> = Value<NTriplesTemplateResult, T>
 
 export class NTriplesStrategy extends NQuadsStrategy<NTriplesOptions> {
   public evaluateDataset(dataset: DatasetCore, options: NTriplesOptions): PartialString {

@@ -1,9 +1,10 @@
-import { sparql } from '../src/index'
 import { blankNode, literal, namedNode, quad, variable } from '@rdfjs/data-model'
 import $rdf from 'rdf-ext'
 import { prefixes } from '@zazuko/rdf-vocabularies'
 import namespace from '@rdfjs/namespace'
 import { xsd } from '@tpluscode/rdf-ns-builders'
+import TermSet from '@rdfjs/term-set'
+import { sparql } from '../src'
 
 const schema = namespace(prefixes.schema)
 const foaf = namespace(prefixes.foaf)
@@ -250,6 +251,17 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
 
       // then
       expect(str).toEqual('<http://example.com/foo>')
+    })
+
+    it('iterates a set', () => {
+      // when
+      const terms = new TermSet([schema.Person, schema.Agent])
+      const str = sparql`DESCRIBE ${terms}`.toString({
+        prologue: false,
+      })
+
+      // then
+      expect(str).toEqual('DESCRIBE schema:Person\nschema:Agent')
     })
   })
 
