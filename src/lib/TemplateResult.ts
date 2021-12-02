@@ -105,15 +105,6 @@ export class TemplateResult<TOptions> {
         partialResult = this.__strategy.evaluateLiteral(RDF.literal(value.toString(), datatype), options)
       } else if (value instanceof Date) {
         partialResult = this.__strategy.evaluateLiteral(RDF.literal(value.toISOString(), xsd.dateTime), options)
-      } else if (Array.isArray(value)) {
-        const [first, ...rest] = value
-        partialResult = this._tag`${first}`._toPartialString(options)
-
-        for (const item of rest) {
-          const itemResult = this._tag`${item}`._toPartialString(options)
-          partialResult.value += `\n${itemResult.value}`
-          partialResult.prefixes = [...partialResult.prefixes, ...itemResult.prefixes]
-        }
       } else if (typeof value === 'object') {
         if ('_toPartialString' in value) {
           partialResult = value._toPartialString(options)
@@ -123,6 +114,15 @@ export class TemplateResult<TOptions> {
           partialResult = this.__strategy.evaluateDataset(value, options)
         } else if ('termType' in value) {
           partialResult = this.__strategy.evaluateTerm(value, options)
+        } else if (isIterable(value)) {
+          const [first, ...rest] = value
+          partialResult = this._tag`${first}`._toPartialString(options)
+
+          for (const item of rest) {
+            const itemResult = this._tag`${item}`._toPartialString(options)
+            partialResult.value += `\n${itemResult.value}`
+            partialResult.prefixes = [...partialResult.prefixes, ...itemResult.prefixes]
+          }
         }
       }
 
