@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.26
+
+### Patch Changes
+
+- 0e2d234: Updated `@tpluscode/rdf-ns-builders` to v2
+
 ## 0.2.25
 
 ### Patch Changes
