@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;lib/sparql&quot; | @tpluscode/rdf-string</title>
+	<title>&quot;lib/prefixes&quot; | @tpluscode/rdf-string</title>
 	<meta name="description" content="Documentation for @tpluscode/rdf-string">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_lib_sparql_.html">&quot;lib/sparql&quot;</a>
+					<a href="_lib_prefixes_.html">&quot;lib/prefixes&quot;</a>
 				</li>
 			</ul>
-			<h1>Module &quot;lib/sparql&quot;</h1>
+			<h1>Module &quot;lib/prefixes&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -69,81 +69,68 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Classes</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/_lib_sparql_.sparqlstrategy.html" class="tsd-kind-icon">Sparql<wbr>Strategy</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Type aliases</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="_lib_sparql_.html#sparqltemplateresult" class="tsd-kind-icon">Sparql<wbr>Template<wbr>Result</a></li>
-								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter"><a href="_lib_sparql_.html#sparqlvalue" class="tsd-kind-icon">Sparql<wbr>Value</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_lib_sparql_.html#sparql" class="tsd-kind-icon">sparql</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_lib_prefixes_.html#getnamespaces" class="tsd-kind-icon">get<wbr>Namespaces</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_lib_prefixes_.html#mapbuilders" class="tsd-kind-icon">map<wbr>Builders</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Type aliases</h2>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
-					<a name="sparqltemplateresult" class="tsd-anchor"></a>
-					<h3>Sparql<wbr>Template<wbr>Result</h3>
-					<div class="tsd-signature tsd-kind-icon">Sparql<wbr>Template<wbr>Result<span class="tsd-signature-symbol">:</span> <a href="../classes/_lib_templateresult_.templateresult.html" class="tsd-signature-type">TemplateResult</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">SparqlOptions</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/tpluscode/rdf-string/blob/3cbfa26/src/lib/sparql.ts#L26">src/lib/sparql.ts:26</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-					<a name="sparqlvalue" class="tsd-anchor"></a>
-					<h3>Sparql<wbr>Value</h3>
-					<div class="tsd-signature tsd-kind-icon">Sparql<wbr>Value&lt;T&gt;<span class="tsd-signature-symbol">:</span> <a href="_lib_value_.html#value" class="tsd-signature-type">Value</a><span class="tsd-signature-symbol">&lt;</span><a href="_lib_sparql_.html#sparqltemplateresult" class="tsd-signature-type">SparqlTemplateResult</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/tpluscode/rdf-string/blob/3cbfa26/src/lib/sparql.ts#L27">src/lib/sparql.ts:27</a></li>
-						</ul>
-					</aside>
-					<h4 class="tsd-type-parameters-title">Type parameters</h4>
-					<ul class="tsd-type-parameters">
-						<li>
-							<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Term</span></h4>
-						</li>
-					</ul>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="sparql" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> sparql</h3>
+					<a name="getnamespaces" class="tsd-anchor"></a>
+					<h3>get<wbr>Namespaces</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">sparql<span class="tsd-signature-symbol">(</span>strings<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TemplateStringsArray</span>, <span class="tsd-signature-symbol">...</span>values<span class="tsd-signature-symbol">: </span><a href="_lib_sparql_.html#sparqlvalue" class="tsd-signature-type">SparqlValue</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_lib_templateresult_.templateresult.html" class="tsd-signature-type">TemplateResult</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">SparqlOptions</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Namespaces<span class="tsd-signature-symbol">(</span>prefixes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Iterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span>, prefixMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/tpluscode/rdf-string/blob/3cbfa26/src/lib/sparql.ts#L140">src/lib/sparql.ts:140</a></li>
+									<li>Defined in <a href="https://github.com/tpluscode/rdf-string/blob/3cbfa26/src/lib/prefixes.ts#L12">src/lib/prefixes.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>strings: <span class="tsd-signature-type">TemplateStringsArray</span></h5>
+									<h5>prefixes: <span class="tsd-signature-type">Iterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>values: <a href="_lib_sparql_.html#sparqlvalue" class="tsd-signature-type">SparqlValue</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>prefixMap: <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/_lib_templateresult_.templateresult.html" class="tsd-signature-type">TemplateResult</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">SparqlOptions</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="mapbuilders" class="tsd-anchor"></a>
+					<h3>map<wbr>Builders</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">map<wbr>Builders<span class="tsd-signature-symbol">(</span>prefixes<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">NamespaceBuilder</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/tpluscode/rdf-string/blob/3cbfa26/src/lib/prefixes.ts#L3">src/lib/prefixes.ts:3</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> prefixes: <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">NamespaceBuilder</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = {}</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{}</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-index-signature">
+									<h5><span class="tsd-signature-symbol">[</span>k: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</section>
@@ -167,10 +154,10 @@
 					<li class=" tsd-kind-module">
 						<a href="_lib_ntriples_.html">&quot;lib/ntriples&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="_lib_prefixes_.html">&quot;lib/prefixes&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="_lib_sparql_.html">&quot;lib/sparql&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -192,17 +179,11 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/_lib_sparql_.sparqlstrategy.html" class="tsd-kind-icon">Sparql<wbr>Strategy</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="_lib_sparql_.html#sparqltemplateresult" class="tsd-kind-icon">Sparql<wbr>Template<wbr>Result</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="_lib_sparql_.html#sparqlvalue" class="tsd-kind-icon">Sparql<wbr>Value</a>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_lib_prefixes_.html#getnamespaces" class="tsd-kind-icon">get<wbr>Namespaces</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="_lib_sparql_.html#sparql" class="tsd-kind-icon">sparql</a>
+						<a href="_lib_prefixes_.html#mapbuilders" class="tsd-kind-icon">map<wbr>Builders</a>
 					</li>
 				</ul>
 			</nav>
