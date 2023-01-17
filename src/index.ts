@@ -1,3 +1,4 @@
+export { default as prefixes } from '@zazuko/rdf-vocabularies/prefixes'
 export { sparql } from './lib/sparql'
 export { turtle } from './lib/turtle'
 export { nquads } from './lib/nquads'

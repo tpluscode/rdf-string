@@ -3,9 +3,10 @@ import RDF from '@rdfjs/dataset'
 import { xsd, foaf, schema, rdf } from '@tpluscode/rdf-ns-builders'
 import namespace from '@rdfjs/namespace'
 import { DateTime } from 'luxon'
-import { turtle } from '../src'
+import { prefixes, turtle } from '../src'
 
 const ex = namespace('http://example.com/')
+prefixes.turtle = 'http://turtle.com/'
 
 describe('turtle', () => {
   describe('named node interpolation', () => {
@@ -64,6 +65,37 @@ describe('turtle', () => {
       expect(str).toEqual(`@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <http://example.com/> <http://example.com/foo> xsd:TOKEN .`)
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('prefixes custom prefixes added globally', async () => {
+      const Foo = namedNode('http://turtle.com/Foo')
+
+      // when
+      const str = turtle`[ a ${Foo} ] .`.toString()
+
+      // then
+      expect(str).toEqual(`@prefix turtle: <http://turtle.com/> .
+
+[ a turtle:Foo ] .`)
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('outputs prefixed node for ad-hoc prefixes', async () => {
+      // given
+      const exOrg = 'http://example.org/'
+      const Foo = namedNode('http://example.org/Foo')
+
+      // when
+      const str = turtle`${ex.foo} a ${Foo} .`.toString({
+        prefixes: { ex, exOrg },
+      })
+
+      // then
+      expect(str).toEqual(`@prefix ex: <http://example.com/> .
+@prefix exOrg: <http://example.org/> .
+
+ex:foo a exOrg:Foo .`)
       await expect(str).toBeValidTurtle()
     })
   })

@@ -2,19 +2,21 @@ import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from
 import knownPrefixes from '@zazuko/rdf-vocabularies/prefixes'
 import { defaultGraphInstance, quad } from '@rdf-esm/data-model'
 import TermMap from '@rdf-esm/term-map'
+import type { NamespaceBuilder } from '@rdfjs/namespace'
 import { Value } from './value'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult'
 import * as turtleSyntax from './syntax/turtle'
+import { getNamespaces, mapBuilders } from './prefixes'
 
 interface SparqlOptions {
   base?: string
   prologue: boolean
+  prefixes?: Record<string, string | NamespaceBuilder>
 }
 
-function prefixDeclarations(prefixes: Iterable<string>): string[] {
-  return [...prefixes]
-    .filter(prefix => prefix in knownPrefixes)
-    .map(prefix => `PREFIX ${prefix}: <${knownPrefixes[prefix]}>`)
+function prefixDeclarations(prefixes: Iterable<string>, prefixMap: Record<string, string>): string[] {
+  return getNamespaces(prefixes, prefixMap)
+    .map(([prefix, ns]) => `PREFIX ${prefix}: <${ns}>`)
 }
 
 function toTriple({ subject, predicate, object }: Quad) {
@@ -26,11 +28,11 @@ export type SparqlValue<T extends Term = Term> = Value<SparqlTemplateResult, T>
 
 export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
   public evaluateLiteral(term: Literal, options: SparqlOptions): PartialString {
-    return turtleSyntax.literal(term, options.base)
+    return turtleSyntax.literal(term, options)
   }
 
   public evaluateNamedNode(term: NamedNode, options: SparqlOptions): PartialString {
-    return turtleSyntax.namedNode(term, options.base)
+    return turtleSyntax.namedNode(term, options)
   }
 
   public evaluateBlankNode(term: BlankNode): PartialString {
@@ -51,7 +53,10 @@ export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
     const prologue = options.prologue || typeof options.prologue === 'undefined'
     let prologueLines: string[] = []
     if (prologue) {
-      prologueLines = prefixDeclarations(prefixes)
+      prologueLines = prefixDeclarations(prefixes, {
+        ...knownPrefixes,
+        ...mapBuilders(options.prefixes),
+      })
       if (options.base) {
         prologueLines = [`BASE <${options.base}>`, ...prologueLines]
       }
