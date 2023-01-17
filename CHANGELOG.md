@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.27
+
+### Patch Changes
+
+- 3cbfa26: Add `prefixes` argument to turtle and SPARQL option (closes #3)
+
 ## 0.2.26
 
 ### Patch Changes
