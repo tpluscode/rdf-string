@@ -1,21 +1,23 @@
 import { BlankNode, DatasetCore, DefaultGraph, Literal, NamedNode, Quad, Term } from 'rdf-js'
 import RDF from '@rdf-esm/data-model'
 import knownPrefixes from '@zazuko/rdf-vocabularies/prefixes'
+import type { NamespaceBuilder } from '@rdfjs/namespace'
 import { Value } from './value'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult'
 import * as syntax from './syntax/turtle'
+import { mapBuilders, getNamespaces } from './prefixes'
 
 interface TurtleOptions {
   base?: string | NamedNode
   directives: boolean
   graph: NamedNode | DefaultGraph
   cheapCompression: boolean
+  prefixes?: Record<string, string | NamespaceBuilder>
 }
 
-function prefixDeclarations(prefixes: Iterable<string>): string[] {
-  return [...prefixes]
-    .filter(prefix => prefix in knownPrefixes)
-    .map(prefix => `@prefix ${prefix}: <${knownPrefixes[prefix]}> .`)
+function prefixDeclarations(prefixes: Iterable<string>, prefixMap: Record<string, string>): string[] {
+  return getNamespaces(prefixes, prefixMap)
+    .map(([prefix, ns]) => `@prefix ${prefix}: <${ns}> .`)
 }
 
 export type TurtleTemplateResult = TemplateResult<TurtleOptions>
@@ -34,11 +36,11 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
   }
 
   public evaluateLiteral(term: Literal, options: TurtleOptions): PartialString {
-    return syntax.literal(term, options.base)
+    return syntax.literal(term, options)
   }
 
-  public evaluateNamedNode(term: NamedNode, options: TurtleOptions): PartialString {
-    return syntax.namedNode(term, options.base)
+  public evaluateNamedNode(term: NamedNode, { base, prefixes }: TurtleOptions): PartialString {
+    return syntax.namedNode(term, { base, prefixes })
   }
 
   public evaluateVariable(): PartialString {
@@ -103,7 +105,10 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
 
     let prologueLines: string[] = []
     if (prologue) {
-      prologueLines = prefixDeclarations(prefixes)
+      prologueLines = prefixDeclarations(prefixes, {
+        ...knownPrefixes,
+        ...mapBuilders(options.prefixes),
+      })
 
       if (options.base) {
         const baseStr = typeof options.base === 'string' ? options.base : options.base.value

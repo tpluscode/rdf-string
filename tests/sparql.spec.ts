@@ -1,13 +1,13 @@
 import { blankNode, literal, namedNode, quad, variable } from '@rdfjs/data-model'
 import $rdf from 'rdf-ext'
-import { prefixes } from '@zazuko/rdf-vocabularies'
 import namespace from '@rdfjs/namespace'
 import { xsd } from '@tpluscode/rdf-ns-builders'
 import TermSet from '@rdfjs/term-set'
-import { sparql } from '../src'
+import { prefixes, sparql } from '../src'
 
 const schema = namespace(prefixes.schema)
 const foaf = namespace(prefixes.foaf)
+prefixes.sparql = 'http://sparql.com/'
 
 describe('sparql', () => {
   describe('interpolating quads', () => {
@@ -121,6 +121,38 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
 
       // when
       const query = sparql`SELECT * WHERE { ?person ${schema.name} "Tomasz" }`
+
+      // then
+      expect(query).toMatchQuery(expected)
+    })
+
+    it('extracts custom prefixes', () => {
+      // given
+      const ex = namespace('http://example.org/')
+      const exCom = 'http://example.com/'
+      const expected = `PREFIX ex: <http://example.org/>
+    PREFIX exCom: <http://example.com/>
+    SELECT * WHERE { ?person ex:spouse exCom:Jane }`
+
+      // when
+      const jane = $rdf.namedNode('http://example.com/Jane')
+      const query = sparql`SELECT * WHERE { ?person ${ex.spouse} ${jane} }`.toString({
+        prefixes: { ex, exCom },
+      })
+
+      // then
+      expect(query).toMatchQuery(expected)
+    })
+
+    it('extracts custom prefixes added globally', () => {
+      // given
+      const expected = `PREFIX sparql: <http://sparql.com/>
+
+    SELECT * WHERE { ?person a sparql:Foo }`
+
+      // when
+      const Foo = $rdf.namedNode('http://sparql.com/Foo')
+      const query = sparql`SELECT * WHERE { ?person a ${Foo} }`
 
       // then
       expect(query).toMatchQuery(expected)

@@ -1,5 +1,45 @@
 # Advanced topics
 
+## Custom prefixes
+
+By default, named nodes will be replaced with prefixed URIs using a list of namespaces published in the package
+[@zazuko/rdf-vocabularies](https://github.com/zazuko/rdf-vocabularies)
+
+To add or replace certain prefixes in a string template, pass them the `toString` call. Values can be strings or
+instances of `NamespaceBuilder`.
+
+> ![TIP]
+> This is supported by Turtle and SPARQL builders
+
+<run-kit>
+
+```js
+const namespace = require('@rdf-esm/namespace')
+const { turtle } = require('@tpluscode/rdf-string')
+
+const ex = namespace('https://example.com/')
+
+turtle`${ex.foo} a ${ex.Foo}`.toString({
+  prefixes: { ex }
+})
+```
+
+</run-kit>
+
+It is also possible to add namespaces globally to be applied to all templates:
+
+<run-kit>
+
+```js
+const { prefixes, turtle } = require('@tpluscode/rdf-string')
+
+prefixes.ex = 'https://example.com/'
+
+turtle`${ex.foo} a ${ex.Foo}`.toString()
+```
+
+</run-kit>
+
 ## Creating custom objects to interpolate
 
 While the `TemplateResult`, the type which all the tag functions return can interpret built-in JavaScript types and itself through nesting, it will fail to (meaningfully) serialize just any random object.
