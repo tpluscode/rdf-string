@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+### Patch Changes
+
+- 1b627ee: Installing from NPM tried to call `patch-package`
+
 ## 1.0.0
 
 ### Major Changes
