@@ -1,7 +1,7 @@
 import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term } from 'rdf-js'
-import { Value } from './value'
-import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult'
-import * as ntriples from './syntax/ntriples'
+import { Value } from './value.js'
+import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult.js'
+import * as ntriples from './syntax/ntriples.js'
 
 interface NQuadsOptions {
   sortGraphs: boolean

@@ -1,9 +1,10 @@
-import { blankNode, literal, namedNode, quad, variable } from '@rdfjs/data-model'
 import $rdf from 'rdf-ext'
 import namespace from '@rdfjs/namespace'
 import { xsd } from '@tpluscode/rdf-ns-builders'
 import TermSet from '@rdfjs/term-set'
-import { prefixes, sparql } from '../src'
+import { expect } from 'chai'
+import { prefixes, sparql } from '../src/index.js'
+import './matchers.js'
 
 const schema = namespace(prefixes.schema)
 const foaf = namespace(prefixes.foaf)
@@ -15,15 +16,15 @@ describe('sparql', () => {
       // given
       const expected = 'SELECT * WHERE { ?s ?p ?o . ?a ?b ?c }'
       const patterns = [
-        quad(variable('s'), variable('p'), variable('o')),
-        quad(variable('a'), variable('b'), variable('c')),
+        $rdf.quad($rdf.variable('s'), $rdf.variable('p'), $rdf.variable('o')),
+        $rdf.quad($rdf.variable('a'), $rdf.variable('b'), $rdf.variable('c')),
       ]
 
       // when
       const query = sparql`SELECT * WHERE { ${patterns} }`
 
       // then
-      expect(query.toString()).toMatchQuery(expected)
+      expect(query.toString()).to.be.query(expected)
     })
 
     it('wraps them in graph pattern', () => {
@@ -35,17 +36,17 @@ describe('sparql', () => {
           GRAPH <urn:foo:bar> { ?a ?b ?c } 
        }`
       const patterns = [
-        quad(variable('s'), variable('p'), variable('o'), namedNode('urn:foo:bar')),
-        quad(variable('a'), variable('b'), variable('c'), variable('bar')),
-        quad(variable('s'), variable('p'), variable('o'), variable('bar')),
-        quad(variable('a'), variable('b'), variable('c'), namedNode('urn:foo:bar')),
+        $rdf.quad($rdf.variable('s'), $rdf.variable('p'), $rdf.variable('o'), $rdf.namedNode('urn:foo:bar')),
+        $rdf.quad($rdf.variable('a'), $rdf.variable('b'), $rdf.variable('c'), $rdf.variable('bar')),
+        $rdf.quad($rdf.variable('s'), $rdf.variable('p'), $rdf.variable('o'), $rdf.variable('bar')),
+        $rdf.quad($rdf.variable('a'), $rdf.variable('b'), $rdf.variable('c'), $rdf.namedNode('urn:foo:bar')),
       ]
 
       // when
       const query = sparql`SELECT * WHERE { ${patterns} }`
 
       // then
-      expect(query.toString()).toMatchQuery(expected)
+      expect(query.toString()).to.be.query(expected)
     })
   })
 
@@ -57,17 +58,17 @@ describe('sparql', () => {
           GRAPH ?bar { ?s ?p ?o . ?a ?b ?c } 
        }`
       const patterns = $rdf.dataset([
-        quad(variable('s'), variable('p'), variable('o'), namedNode('urn:foo:bar')),
-        quad(variable('a'), variable('b'), variable('c'), variable('bar')),
-        quad(variable('s'), variable('p'), variable('o'), variable('bar')),
-        quad(variable('a'), variable('b'), variable('c'), namedNode('urn:foo:bar')),
+        $rdf.quad($rdf.variable('s'), $rdf.variable('p'), $rdf.variable('o'), $rdf.namedNode('urn:foo:bar')),
+        $rdf.quad($rdf.variable('a'), $rdf.variable('b'), $rdf.variable('c'), $rdf.variable('bar')),
+        $rdf.quad($rdf.variable('s'), $rdf.variable('p'), $rdf.variable('o'), $rdf.variable('bar')),
+        $rdf.quad($rdf.variable('a'), $rdf.variable('b'), $rdf.variable('c'), $rdf.namedNode('urn:foo:bar')),
       ])
 
       // when
       const query = sparql`SELECT * WHERE { ${patterns} }`
 
       // then
-      expect(query.toString()).toMatchQuery(expected)
+      expect(query.toString()).to.be.query(expected)
     })
 
     it('does not wrap default graph in pattern', () => {
@@ -76,33 +77,33 @@ describe('sparql', () => {
           ?foo ?bar ?baz .
        }`
       const patterns = $rdf.dataset([
-        quad(variable('foo'), variable('bar'), variable('baz')),
+        $rdf.quad($rdf.variable('foo'), $rdf.variable('bar'), $rdf.variable('baz')),
       ])
 
       // when
       const query = sparql`SELECT * WHERE { ${patterns} }`
 
       // then
-      expect(query.toString()).toMatchQuery(expected)
+      expect(query.toString()).to.be.query(expected)
     })
   })
 
   describe('interpolating named node', () => {
     it('serializes in angle brackets', () => {
       // given
-      const type = namedNode('http://example.com/type')
+      const type = $rdf.namedNode('http://example.com/type')
       const expected = 'SELECT * WHERE { ?person a <http://example.com/type> }'
 
       // when
       const query = sparql`SELECT * WHERE { ?person a ${type} }`
 
       // then
-      expect(query.toString()).toMatchQuery(expected)
+      expect(query.toString()).to.be.query(expected)
     })
 
-    it('writes URIs relative to base', () => {
+    it('writes URIs relative to base', function () {
       // given
-      const dog = namedNode('http://example.org/dog')
+      const dog = $rdf.namedNode('http://example.org/dog')
 
       // when
       const query = sparql`PREFIX : <http://example.org/vocab#> 
@@ -111,7 +112,7 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
 })
 
       // then
-      expect(query.toString()).toMatchSnapshot()
+      expect(query.toString()).to.matchSnapshot(this)
     })
 
     it('extracts known prefixes', () => {
@@ -123,7 +124,7 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
       const query = sparql`SELECT * WHERE { ?person ${schema.name} "Tomasz" }`
 
       // then
-      expect(query).toMatchQuery(expected)
+      expect(query).to.be.query(expected)
     })
 
     it('extracts custom prefixes', () => {
@@ -141,7 +142,7 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
       })
 
       // then
-      expect(query).toMatchQuery(expected)
+      expect(query).to.be.query(expected)
     })
 
     it('extracts custom prefixes added globally', () => {
@@ -155,7 +156,7 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
       const query = sparql`SELECT * WHERE { ?person a ${Foo} }`
 
       // then
-      expect(query).toMatchQuery(expected)
+      expect(query).to.be.query(expected)
     })
 
     it('merges nested templates, hoisting prefixes', () => {
@@ -175,12 +176,12 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
       const query = sparql`SELECT * WHERE { ${namePattern} ${knowsPattern} }`
 
       // then
-      expect(query).toMatchQuery(expected)
+      expect(query).to.be.query(expected)
     })
 
-    it('respects base in sub-templates', () => {
+    it('respects base in sub-templates', function () {
       // given
-      const dog = namedNode('http://example.org/dog')
+      const dog = $rdf.namedNode('http://example.org/dog')
 
       // when
       const where = sparql`${dog} <eats> ${dog}`
@@ -189,7 +190,7 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
       })
 
       // then
-      expect(query.toString()).toMatchSnapshot()
+      expect(query.toString()).to.matchSnapshot(this)
     })
   })
 
@@ -197,46 +198,46 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
     it('serializes with question mark', () => {
       // given
       const expected = 'SELECT * WHERE { ?s ?p ?o }'
-      const s = variable('s')
-      const p = variable('p')
-      const o = variable('o')
+      const s = $rdf.variable('s')
+      const p = $rdf.variable('p')
+      const o = $rdf.variable('o')
 
       // when
       const query = sparql`SELECT * WHERE { ${s} ${p} ${o} }`
 
       // then
-      expect(query.toString()).toMatchQuery(expected)
+      expect(query.toString()).to.be.query(expected)
     })
   })
 
   describe('interpolating literal', () => {
     it('serializes in quotes', () => {
       // given
-      const name = literal('John Doe')
+      const name = $rdf.literal('John Doe')
       const expected = 'SELECT * WHERE { ?person <http://schema.org/name> "John Doe" }'
 
       // when
       const query = sparql`SELECT * WHERE { ?person <http://schema.org/name> ${name} }`
 
       // then
-      expect(query).toMatchQuery(expected)
+      expect(query).to.be.query(expected)
     })
 
     it('writes datatype', () => {
       // given
-      const name = literal('John Doe', namedNode('http://example.com/D'))
+      const name = $rdf.literal('John Doe', $rdf.namedNode('http://example.com/D'))
       const expected = 'SELECT * WHERE { ?person <http://schema.org/name> "John Doe"^^<http://example.com/D> }'
 
       // when
       const query = sparql`SELECT * WHERE { ?person <http://schema.org/name> ${name} }`
 
       // then
-      expect(query).toMatchQuery(expected)
+      expect(query).to.be.query(expected)
     })
 
     it('shortens datatype as prefixed name', () => {
       // given
-      const name = literal('John Doe', xsd.normalizedString)
+      const name = $rdf.literal('John Doe', xsd.normalizedString)
       const expected = `PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
       
       SELECT * WHERE { ?person <http://schema.org/name> "John Doe"^^xsd:normalizedString }`
@@ -245,33 +246,33 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
       const query = sparql`SELECT * WHERE { ?person <http://schema.org/name> ${name} }`
 
       // then
-      expect(query).toMatchQuery(expected)
+      expect(query).to.be.query(expected)
     })
 
     it('writes datatype with language tag', () => {
       // given
-      const name = literal('John Doe', 'en')
+      const name = $rdf.literal('John Doe', 'en')
       const expected = 'SELECT * WHERE { ?person <http://schema.org/name> "John Doe"@en }'
 
       // when
       const query = sparql`SELECT * WHERE { ?person <http://schema.org/name> ${name} }`
 
       // then
-      expect(query).toMatchQuery(expected)
+      expect(query).to.be.query(expected)
     })
   })
 
   describe('interpolating blank nodes', () => {
     it('writes correct value', () => {
       // given
-      const whom = blankNode('anyone')
+      const whom = $rdf.blankNode('anyone')
       const expected = 'SELECT * WHERE { ?person <http://xmlns.com/foaf/0.1/knows> _:anyone }'
 
       // when
       const query = sparql`SELECT * WHERE { ?person <http://xmlns.com/foaf/0.1/knows> ${whom} }`
 
       // then
-      expect(query).toMatchQuery(expected)
+      expect(query).to.be.query(expected)
     })
   })
 
@@ -282,7 +283,7 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
       const str = sparql`<http://example.com/${foo}>`.toString()
 
       // then
-      expect(str).toEqual('<http://example.com/foo>')
+      expect(str).to.eq('<http://example.com/foo>')
     })
 
     it('iterates a set', () => {
@@ -293,7 +294,7 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
       })
 
       // then
-      expect(str).toEqual('DESCRIBE schema:Person\nschema:Agent')
+      expect(str).to.eq('DESCRIBE schema:Person\nschema:Agent')
     })
   })
 
@@ -306,7 +307,7 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
       const query = sparql`SELECT * WHERE { ${subquery} }`.toString()
 
       // then
-      expect(query).toEqual(`PREFIX schema: <http://schema.org/>
+      expect(query).to.eq(`PREFIX schema: <http://schema.org/>
 
 SELECT * WHERE { ?s a schema:Person }`)
     })
@@ -320,7 +321,7 @@ SELECT * WHERE { ?s a schema:Person }`)
     const query = sparql`SELECT * WHERE { ?person <http://schema.org/name> "Tomasz" ${null} }`
 
     // then
-    expect(query).toMatchQuery(expected)
+    expect(query).to.be.query(expected)
   })
 
   it('ignores undefined', () => {
@@ -331,6 +332,6 @@ SELECT * WHERE { ?s a schema:Person }`)
     const query = sparql`SELECT * WHERE { ?person <http://schema.org/name> "Tomasz" ${undefined} }`
 
     // then
-    expect(query).toMatchQuery(expected)
+    expect(query).to.be.query(expected)
   })
 })

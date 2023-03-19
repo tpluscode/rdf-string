@@ -1,0 +1,8 @@
+exports["sparql interpolating named node respects base in sub-templates 1"] = "\n\"BASE <http://example.org/>\n\nSELECT * WHERE { <dog> <eats> <dog> }\"\n";
+
+exports["sparql interpolating named node writes URIs relative to base 1"] = "\n\"BASE <http://example.org/>\n\nPREFIX : <http://example.org/vocab#> \nSELECT * WHERE { <dog> :eats <dog> }\"\n";
+
+exports["sparql interpolating named node writes URIs relative to base"] = "BASE <http://example.org/>\n\nPREFIX : <http://example.org/vocab#> \nSELECT * WHERE { <dog> :eats <dog> }";
+
+exports["sparql interpolating named node respects base in sub-templates"] = "BASE <http://example.org/>\n\nSELECT * WHERE { <dog> <eats> <dog> }";
+

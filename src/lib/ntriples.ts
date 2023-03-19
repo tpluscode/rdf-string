@@ -1,8 +1,8 @@
 import { BlankNode, DatasetCore, DefaultGraph, Literal, NamedNode, Quad, Term } from 'rdf-js'
-import RDF from '@rdf-esm/data-model'
-import { NQuadsStrategy } from './nquads'
-import { Value } from './value'
-import { PartialString, TemplateResult } from './TemplateResult'
+import RDF from '@rdfjs/data-model'
+import { NQuadsStrategy } from './nquads.js'
+import { Value } from './value.js'
+import { PartialString, TemplateResult } from './TemplateResult.js'
 
 interface NTriplesOptions {
   graph: NamedNode | DefaultGraph
@@ -26,7 +26,7 @@ export class NTriplesStrategy extends NQuadsStrategy<NTriplesOptions> {
       }
     }
 
-    return super.evaluateQuad(RDF.triple(quad.subject, quad.predicate, quad.object), options)
+    return super.evaluateQuad(RDF.quad(quad.subject, quad.predicate, quad.object), options)
   }
 }
 
