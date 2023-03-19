@@ -1,12 +1,12 @@
 import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from 'rdf-js'
-import knownPrefixes from '@zazuko/rdf-vocabularies/prefixes'
-import { defaultGraphInstance, quad } from '@rdf-esm/data-model'
-import TermMap from '@rdf-esm/term-map'
+import knownPrefixes from '@zazuko/prefixes'
+import RDF from '@rdfjs/data-model'
+import TermMap from '@rdfjs/term-map'
 import type { NamespaceBuilder } from '@rdfjs/namespace'
-import { Value } from './value'
-import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult'
-import * as turtleSyntax from './syntax/turtle'
-import { getNamespaces, mapBuilders } from './prefixes'
+import { Value } from './value.js'
+import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult.js'
+import * as turtleSyntax from './syntax/turtle.js'
+import { getNamespaces, mapBuilders } from './prefixes.js'
 
 interface SparqlOptions {
   base?: string
@@ -20,7 +20,7 @@ function prefixDeclarations(prefixes: Iterable<string>, prefixMap: Record<string
 }
 
 function toTriple({ subject, predicate, object }: Quad) {
-  return quad(subject, predicate, object)
+  return RDF.quad(subject, predicate, object)
 }
 
 export type SparqlTemplateResult = TemplateResult<SparqlOptions>
@@ -83,7 +83,7 @@ export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
     return [...graphs.entries()].reduce<PartialString>((previous, [graph, quads]) => {
       const triplePatterns = this.__evaluateTripleArray(quads, options)
 
-      if (defaultGraphInstance.equals(graph)) {
+      if (RDF.defaultGraph().equals(graph)) {
         return {
           value: `${previous.value}\n${triplePatterns.value}`,
           prefixes: [...previous.prefixes, ...triplePatterns.prefixes],
@@ -114,7 +114,7 @@ export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
       ...object.prefixes,
     ]
 
-    if (!defaultGraphInstance.equals(quad.graph)) {
+    if (!RDF.defaultGraph().equals(quad.graph)) {
       const graph = this.evaluateTerm(quad.graph, options)
       pattern = `GRAPH ${graph.value} { ${pattern} }`
       prefixes = [...prefixes, ...graph.prefixes]

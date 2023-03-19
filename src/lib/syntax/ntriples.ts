@@ -1,5 +1,5 @@
 import { BlankNode, Literal, NamedNode } from 'rdf-js'
-import xsd from './xsd'
+import xsd from './xsd.js'
 
 const echarRegEx = new RegExp('["\\\\\n\r]') // eslint-disable-line no-control-regex, prefer-regex-literals
 const echarRegExAll = new RegExp('["\\\\\n\r]', 'g') // eslint-disable-line no-control-regex, prefer-regex-literals

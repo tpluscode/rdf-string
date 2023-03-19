@@ -1,0 +1,28 @@
+exports["turtle dataset interpolation combines multiple objects for subsequent quads 1"] = "\n\"<http://example.com/S>\n   <http://example.com/P> <http://example.com/O1> ,\n      <http://example.com/O2> ,\n      <http://example.com/O3> .\"\n";
+
+exports["turtle dataset interpolation combines multiple predicates from same subsequent subject 1"] = "\n\"<http://example.com/S>\n   <http://example.com/P1> <http://example.com/O1> ;\n   <http://example.com/P2> <http://example.com/O2> ;\n   <http://example.com/P3> <http://example.com/O3> .\"\n";
+
+exports["turtle dataset interpolation correctly compresses output when prefixing names 1"] = "\n\"@prefix schema: <http://schema.org/> .\n\nschema:S\n   schema:P schema:O1 ,\n      schema:O2 ,\n      schema:O3 .\nschema:S1\n   schema:P1 schema:O ;\n   schema:P2 schema:O .\"\n";
+
+exports["turtle dataset interpolation does not combine multiple objects for non-linear quads when doing cheap compression 1"] = "\n\"<http://example.com/S>\n   <http://example.com/P> <http://example.com/O1> ,\n      <http://example.com/O3> ;\n   <http://example.com/P1> <http://example.com/O2> .\"\n";
+
+exports["turtle dataset interpolation does not combine multiple predicates for non-linear quads when doing cheap compression 1"] = "\n\"<http://example.com/S>\n   <http://example.com/P> <http://example.com/O1> ,\n      <http://example.com/O3> .\n<http://example.com/S1>\n   <http://example.com/P> <http://example.com/O2> .\"\n";
+
+exports["turtle dataset interpolation reorders quads to get the most efficient compression 1"] = "\n\"@prefix schema: <http://schema.org/> .\n\nschema:S1\n   schema:P schema:O1 ;\n   schema:P1 schema:O .\nschema:S2\n   schema:P schema:O1 ,\n      schema:O2 ;\n   schema:P2 schema:O .\nschema:S\n   schema:P schema:O1 ,\n      schema:O3 .\"\n";
+
+exports["turtle interpolating JS types reduces an array to it's values 1"] = "\n\"@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n\n<http://example.com/foo> rdf:type <http://example.com/Bar> .\n<http://example.com/foo> rdf:type <http://example.com/Baz> .\"\n";
+
+exports["turtle dataset interpolation combines multiple predicates from same subsequent subject"] = "<http://example.com/S>\n   <http://example.com/P1> <http://example.com/O1> ;\n   <http://example.com/P2> <http://example.com/O2> ;\n   <http://example.com/P3> <http://example.com/O3> .";
+
+exports["turtle dataset interpolation combines multiple objects for subsequent quads"] = "<http://example.com/S>\n   <http://example.com/P> <http://example.com/O1> ,\n      <http://example.com/O2> ,\n      <http://example.com/O3> .";
+
+exports["turtle dataset interpolation correctly compresses output when prefixing names"] = "@prefix schema: <http://schema.org/> .\n\nschema:S\n   schema:P schema:O1 ,\n      schema:O2 ,\n      schema:O3 .\nschema:S1\n   schema:P1 schema:O ;\n   schema:P2 schema:O .";
+
+exports["turtle dataset interpolation reorders quads to get the most efficient compression"] = "@prefix schema: <http://schema.org/> .\n\nschema:S1\n   schema:P schema:O1 ;\n   schema:P1 schema:O .\nschema:S2\n   schema:P schema:O1 ,\n      schema:O2 ;\n   schema:P2 schema:O .\nschema:S\n   schema:P schema:O1 ,\n      schema:O3 .";
+
+exports["turtle dataset interpolation does not combine multiple objects for non-linear quads when doing cheap compression"] = "<http://example.com/S>\n   <http://example.com/P> <http://example.com/O1> ,\n      <http://example.com/O3> ;\n   <http://example.com/P1> <http://example.com/O2> .";
+
+exports["turtle dataset interpolation does not combine multiple predicates for non-linear quads when doing cheap compression"] = "<http://example.com/S>\n   <http://example.com/P> <http://example.com/O1> ,\n      <http://example.com/O3> .\n<http://example.com/S1>\n   <http://example.com/P> <http://example.com/O2> .";
+
+exports["turtle interpolating JS types reduces an array to it's values"] = "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n\n<http://example.com/foo> rdf:type <http://example.com/Bar> .\n<http://example.com/foo> rdf:type <http://example.com/Baz> .";
+

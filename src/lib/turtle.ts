@@ -1,11 +1,11 @@
 import { BlankNode, DatasetCore, DefaultGraph, Literal, NamedNode, Quad, Term } from 'rdf-js'
-import RDF from '@rdf-esm/data-model'
-import knownPrefixes from '@zazuko/rdf-vocabularies/prefixes'
+import RDF from '@rdfjs/data-model'
+import knownPrefixes from '@zazuko/prefixes'
 import type { NamespaceBuilder } from '@rdfjs/namespace'
-import { Value } from './value'
-import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult'
-import * as syntax from './syntax/turtle'
-import { mapBuilders, getNamespaces } from './prefixes'
+import { Value } from './value.js'
+import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult.js'
+import * as syntax from './syntax/turtle.js'
+import { mapBuilders, getNamespaces } from './prefixes.js'
 
 interface TurtleOptions {
   base?: string | NamedNode

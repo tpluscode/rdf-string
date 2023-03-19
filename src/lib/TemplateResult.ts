@@ -1,8 +1,8 @@
 /* eslint-disable no-use-before-define */
 import { BlankNode, DatasetCore, Literal, NamedNode, BaseQuad, Term, Variable } from 'rdf-js'
-import RDF from '@rdf-esm/data-model'
-import xsd from './syntax/xsd'
-import { Value } from './value'
+import RDF from '@rdfjs/data-model'
+import xsd from './syntax/xsd.js'
+import { Value } from './value.js'
 
 type TagFunction<TImpl extends TemplateResult<TOptions>, TValue extends Value<TImpl>, TOptions> = {
   (strings: TemplateStringsArray, ...values: TValue[]): TImpl
