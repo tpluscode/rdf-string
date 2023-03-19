@@ -12,7 +12,7 @@
   "types": "index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "postinstall": "patch-package",
+    "prepare": "patch-package",
     "prepack": "npm run build",
     "build": "tsc",
     "lint": "eslint . --ext .ts --quiet --ignore-path .gitignore --ignore-path .eslintignore",
