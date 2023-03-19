@@ -1,6 +1,6 @@
 {
   "name": "@tpluscode/rdf-string",
-  "version": "0.2.27",
+  "version": "1.0.0",
   "description": "Simplifies creating of RDF strings using ECMAscript templates",
   "main": "index.js",
   "type": "module",
@@ -116,7 +116,9 @@
     "roots": [
       "<rootDir>"
     ],
-    "extensionsToTreatAsEsm": [".ts"],
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
     "transform": {
       "^.+\\.tsx?$": [
         "ts-jest",
