@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0
+
+### Major Changes
+
+- 8b7597c: The package is now only ESM
+- 8b7597c: Use `@zazuko/prefixes` instead of `@zazuko/rdf-vocabularies`
+
 ## 0.2.27
 
 ### Patch Changes
