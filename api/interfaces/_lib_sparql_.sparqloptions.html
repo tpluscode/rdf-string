@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PartialString | @tpluscode/rdf-string</title>
+	<title>SparqlOptions | @tpluscode/rdf-string</title>
 	<meta name="description" content="Documentation for @tpluscode/rdf-string">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,13 +54,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_lib_templateresult_.html">&quot;lib/TemplateResult&quot;</a>
+					<a href="../modules/_lib_sparql_.html">&quot;lib/sparql&quot;</a>
 				</li>
 				<li>
-					<a href="_lib_templateresult_.partialstring.html">PartialString</a>
+					<a href="_lib_sparql_.sparqloptions.html">SparqlOptions</a>
 				</li>
 			</ul>
-			<h1>Interface PartialString</h1>
+			<h1>Interface SparqlOptions</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +71,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">PartialString</span>
+						<span class="target">SparqlOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -82,8 +82,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_templateresult_.partialstring.html#prefixes" class="tsd-kind-icon">prefixes</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_templateresult_.partialstring.html#value" class="tsd-kind-icon">value</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_sparql_.sparqloptions.html#base" class="tsd-kind-icon">base</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_sparql_.sparqloptions.html#prefixes" class="tsd-kind-icon">prefixes</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_sparql_.sparqloptions.html#prologue" class="tsd-kind-icon">prologue</a></li>
 							</ul>
 						</section>
 					</div>
@@ -92,22 +93,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="prefixes" class="tsd-anchor"></a>
-					<h3>prefixes</h3>
-					<div class="tsd-signature tsd-kind-icon">prefixes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Iterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="base" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> base</h3>
+					<div class="tsd-signature tsd-kind-icon">base<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/tpluscode/rdf-string/blob/907f149/src/lib/TemplateResult.ts#L13">src/lib/TemplateResult.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/tpluscode/rdf-string/blob/907f149/src/lib/sparql.ts#L12">src/lib/sparql.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="value" class="tsd-anchor"></a>
-					<h3>value</h3>
-					<div class="tsd-signature tsd-kind-icon">value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="prefixes" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> prefixes</h3>
+					<div class="tsd-signature tsd-kind-icon">prefixes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">NamespaceBuilder</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/tpluscode/rdf-string/blob/907f149/src/lib/TemplateResult.ts#L12">src/lib/TemplateResult.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/tpluscode/rdf-string/blob/907f149/src/lib/sparql.ts#L14">src/lib/sparql.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="prologue" class="tsd-anchor"></a>
+					<h3>prologue</h3>
+					<div class="tsd-signature tsd-kind-icon">prologue<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/tpluscode/rdf-string/blob/907f149/src/lib/sparql.ts#L13">src/lib/sparql.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -122,7 +133,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_index_.html">&quot;index&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/_lib_templateresult_.html">&quot;lib/<wbr>Template<wbr>Result&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -134,7 +145,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_lib_prefixes_.html">&quot;lib/prefixes&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/_lib_sparql_.html">&quot;lib/sparql&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -156,29 +167,35 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/_lib_templateresult_.serializationstrategy.html" class="tsd-kind-icon">Serialization<wbr>Strategy</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/_lib_templateresult_.templateresult.html" class="tsd-kind-icon">Template<wbr>Result</a>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/_lib_sparql_.sparqlstrategy.html" class="tsd-kind-icon">Sparql<wbr>Strategy</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_lib_templateresult_.partialstring.html" class="tsd-kind-icon">Partial<wbr>String</a>
+						<a href="_lib_sparql_.sparqloptions.html" class="tsd-kind-icon">Sparql<wbr>Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_templateresult_.partialstring.html#prefixes" class="tsd-kind-icon">prefixes</a>
+								<a href="_lib_sparql_.sparqloptions.html#base" class="tsd-kind-icon">base</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_templateresult_.partialstring.html#value" class="tsd-kind-icon">value</a>
+								<a href="_lib_sparql_.sparqloptions.html#prefixes" class="tsd-kind-icon">prefixes</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_lib_sparql_.sparqloptions.html#prologue" class="tsd-kind-icon">prologue</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="_lib_templateresult_.templateresultinit.html" class="tsd-kind-icon">Template<wbr>Result<wbr>Init</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_lib_sparql_.html#sparqltemplateresult" class="tsd-kind-icon">Sparql<wbr>Template<wbr>Result</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/_lib_sparql_.html#sparqlvalue" class="tsd-kind-icon">Sparql<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/_lib_sparql_.html#sparql" class="tsd-kind-icon">sparql</a>
 					</li>
 				</ul>
 			</nav>
