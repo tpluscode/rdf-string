@@ -7,7 +7,7 @@ import { PartialString, SerializationStrategy, TemplateResult } from './Template
 import * as syntax from './syntax/turtle.js'
 import { mapBuilders, getNamespaces } from './prefixes.js'
 
-interface TurtleOptions {
+export interface TurtleOptions {
   base?: string | NamedNode
   directives: boolean
   graph: NamedNode | DefaultGraph

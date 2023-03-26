@@ -8,7 +8,7 @@ import { PartialString, SerializationStrategy, TemplateResult } from './Template
 import * as turtleSyntax from './syntax/turtle.js'
 import { getNamespaces, mapBuilders } from './prefixes.js'
 
-interface SparqlOptions {
+export interface SparqlOptions {
   base?: string
   prologue: boolean
   prefixes?: Record<string, string | NamespaceBuilder>

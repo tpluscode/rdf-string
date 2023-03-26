@@ -4,7 +4,7 @@ import { NQuadsStrategy } from './nquads.js'
 import { Value } from './value.js'
 import { PartialString, TemplateResult } from './TemplateResult.js'
 
-interface NTriplesOptions {
+export interface NTriplesOptions {
   graph: NamedNode | DefaultGraph
   sortGraphs: false
 }

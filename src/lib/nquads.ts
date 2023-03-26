@@ -3,7 +3,7 @@ import { Value } from './value.js'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult.js'
 import * as ntriples from './syntax/ntriples.js'
 
-interface NQuadsOptions {
+export interface NQuadsOptions {
   sortGraphs: boolean
 }
 
