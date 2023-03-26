@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2
+
+### Patch Changes
+
+- 907f149: Export `*Options` interfaces to fix errors like `TS4053 Return type of public method from exported class has or is using name '*Options' from external module "Y" but cannot be named`
+
 ## 1.0.1
 
 ### Patch Changes
