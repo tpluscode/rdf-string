@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.3
+
+### Patch Changes
+
+- 5cc2988: Relax dependency on `@zazuko/prefixes`
+
 ## 1.0.2
 
 ### Patch Changes
