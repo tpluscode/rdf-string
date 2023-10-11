@@ -14,8 +14,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-      - run: yarn
-      - run: yarn test
+      - run: npm ci
+      - run: npm test
       - name: Codecov
         uses: codecov/codecov-action@v3
         with:

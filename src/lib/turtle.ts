@@ -1,5 +1,5 @@
 import { BlankNode, DatasetCore, DefaultGraph, Literal, NamedNode, Quad, Term } from 'rdf-js'
-import RDF from '@rdfjs/data-model'
+import RDF from '@zazuko/env'
 import knownPrefixes from '@zazuko/prefixes'
 import type { NamespaceBuilder } from '@rdfjs/namespace'
 import { Value } from './value.js'

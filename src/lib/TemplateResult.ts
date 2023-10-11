@@ -1,6 +1,6 @@
-/* eslint-disable no-use-before-define */
+/* eslint-disable no-use-before-define,@typescript-eslint/no-explicit-any */
 import { BlankNode, DatasetCore, Literal, NamedNode, BaseQuad, Term, Variable } from 'rdf-js'
-import RDF from '@rdfjs/data-model'
+import RDF from '@zazuko/env'
 import xsd from './syntax/xsd.js'
 import { Value } from './value.js'
 

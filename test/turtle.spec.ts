@@ -1,12 +1,11 @@
-import RDF from 'rdf-ext'
+import RDF from '@zazuko/env'
 import { xsd, foaf, schema, rdf } from '@tpluscode/rdf-ns-builders/loose'
-import namespace from '@rdfjs/namespace'
 import { DateTime } from 'luxon'
 import { expect } from 'chai'
 import { prefixes, turtle } from '../src/index.js'
 import './matchers.js'
 
-const ex = namespace('http://example.com/')
+const ex = RDF.namespace('http://example.com/')
 prefixes.turtle = 'http://turtle.com/'
 
 describe('turtle', () => {

@@ -1,6 +1,6 @@
-import namespace from '@rdfjs/namespace'
+import rdf from '@zazuko/env'
 
-const xsd = namespace('http://www.w3.org/2001/XMLSchema#')
+const { xsd } = rdf.ns
 
 export default {
   string: xsd.string,
