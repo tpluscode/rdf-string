@@ -1,5 +1,5 @@
 import { BlankNode, DatasetCore, DefaultGraph, Literal, NamedNode, Quad, Term } from 'rdf-js'
-import RDF from '@rdfjs/data-model'
+import RDF from '@zazuko/env'
 import { NQuadsStrategy } from './nquads.js'
 import { Value } from './value.js'
 import { PartialString, TemplateResult } from './TemplateResult.js'

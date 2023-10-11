@@ -1,7 +1,6 @@
 import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from 'rdf-js'
 import knownPrefixes from '@zazuko/prefixes'
-import RDF from '@rdfjs/data-model'
-import TermMap from '@rdfjs/term-map'
+import RDF from '@zazuko/env'
 import type { NamespaceBuilder } from '@rdfjs/namespace'
 import { Value } from './value.js'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult.js'
@@ -79,7 +78,7 @@ export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
         ])
 
         return graphs
-      }, new TermMap<Term, Quad[]>())
+      }, RDF.termMap<Term, Quad[]>())
 
     return [...graphs.entries()].reduce<PartialString>((previous, [graph, quads]) => {
       const triplePatterns = this.__evaluateTripleArray(quads, options)

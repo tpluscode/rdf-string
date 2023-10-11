@@ -1,14 +1,12 @@
-import $rdf from 'rdf-ext'
-import namespace from '@rdfjs/namespace'
+import $rdf from '@zazuko/env'
 import { xsd } from '@tpluscode/rdf-ns-builders'
-import TermSet from '@rdfjs/term-set'
 import { expect } from 'chai'
 import { prefixes, sparql } from '../src/index.js'
 import './matchers.js'
 
-const ex = namespace('http://example.com/')
-const schema = namespace(prefixes.schema)
-const foaf = namespace(prefixes.foaf)
+const ex = $rdf.namespace('http://example.com/')
+const schema = $rdf.namespace(prefixes.schema)
+const foaf = $rdf.namespace(prefixes.foaf)
 prefixes.sparql = 'http://sparql.com/'
 
 describe('sparql', () => {
@@ -130,7 +128,7 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
 
     it('extracts custom prefixes', () => {
       // given
-      const ex = namespace('http://example.org/')
+      const ex = $rdf.namespace('http://example.org/')
       const exCom = 'http://example.com/'
       const expected = `PREFIX ex: <http://example.org/>
     PREFIX exCom: <http://example.com/>
@@ -289,7 +287,7 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
 
     it('iterates a set', () => {
       // when
-      const terms = new TermSet([schema.Person, schema.Agent])
+      const terms = $rdf.termSet([schema.Person, schema.Agent])
       const str = sparql`DESCRIBE ${terms}`.toString({
         prologue: false,
       })

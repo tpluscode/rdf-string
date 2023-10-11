@@ -1,10 +1,9 @@
-import $rdf from 'rdf-ext'
-import namespace from '@rdfjs/namespace'
+import $rdf from '@zazuko/env'
 import { expect } from 'chai'
 import { ntriples } from '../src/index.js'
 import './matchers.js'
 
-const ex = namespace('http://example.com/')
+const ex = $rdf.namespace('http://example.com/')
 
 describe('ntriples', () => {
   describe('serializing dataset', () => {
