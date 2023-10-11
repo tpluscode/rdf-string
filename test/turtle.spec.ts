@@ -99,6 +99,18 @@ describe('turtle', () => {
 ex:foo a exOrg:Foo .`)
       await expect(str).to.be.validTurtle()
     })
+
+    it('outputs full URIs when prefixed names are disabled', async () => {
+      // when
+      const str = turtle`${ex.foo} a ${schema.Organization} .`.toString({
+        prefixes: { ex },
+        noPrefixedNames: true,
+      })
+
+      // then
+      expect(str).to.eq('<http://example.com/foo> a <http://schema.org/Organization> .')
+      await expect(str).to.be.validTurtle()
+    })
   })
 
   describe('blank node interpolation', () => {

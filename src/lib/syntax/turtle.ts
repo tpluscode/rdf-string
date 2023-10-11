@@ -13,14 +13,16 @@ export function blankNode(term: BlankNode): string {
 interface NamedNodeOptions {
   base?: string | NamedNode
   prefixes?: Record<string, string | NamespaceBuilder>
+  noPrefixedNames?: boolean
 }
 
-export function namedNode(term: NamedNode, { base = '', prefixes = {} }: NamedNodeOptions): PartialString {
+export function namedNode(term: NamedNode, { base = '', prefixes = {}, noPrefixedNames }: NamedNodeOptions): PartialString {
   const baseStr = (typeof base === 'string') ? base : base.value
-
   const baseRegex = new RegExp('^' + baseStr)
-  const shrunk = shrink(term.value, mapBuilders(prefixes))
-  if (shrunk) {
+
+  let shrunk: string | undefined
+
+  if (noPrefixedNames !== true && (shrunk = shrink(term.value, mapBuilders(prefixes)))) {
     return {
       value: shrunk,
       prefixes: [

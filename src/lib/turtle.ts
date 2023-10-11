@@ -13,6 +13,7 @@ export interface TurtleOptions {
   graph: NamedNode | DefaultGraph
   cheapCompression: boolean
   prefixes?: Record<string, string | NamespaceBuilder>
+  noPrefixedNames?: boolean
 }
 
 function prefixDeclarations(prefixes: Iterable<string>, prefixMap: Record<string, string>): string[] {
@@ -39,8 +40,8 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
     return syntax.literal(term, options)
   }
 
-  public evaluateNamedNode(term: NamedNode, { base, prefixes }: TurtleOptions): PartialString {
-    return syntax.namedNode(term, { base, prefixes })
+  public evaluateNamedNode(term: NamedNode, options: TurtleOptions): PartialString {
+    return syntax.namedNode(term, options)
   }
 
   public evaluateVariable(): PartialString {
