@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0
+
+### Minor Changes
+
+- 4135a1f: Use `@zazuko/env` instead of separate packages
+- 7ecd35d: Add option to `turtle` and `sparql` to disable prefixed URIs
+
 ## 1.0.3
 
 ### Patch Changes
