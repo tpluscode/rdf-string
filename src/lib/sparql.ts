@@ -12,6 +12,7 @@ export interface SparqlOptions {
   base?: string
   prologue: boolean
   prefixes?: Record<string, string | NamespaceBuilder>
+  noPrefixedNames?: boolean
 }
 
 function prefixDeclarations(prefixes: Iterable<string>, prefixMap: Record<string, string>): string[] {

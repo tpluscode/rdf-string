@@ -6,6 +6,7 @@ import { expect } from 'chai'
 import { prefixes, sparql } from '../src/index.js'
 import './matchers.js'
 
+const ex = namespace('http://example.com/')
 const schema = namespace(prefixes.schema)
 const foaf = namespace(prefixes.foaf)
 prefixes.sparql = 'http://sparql.com/'
@@ -310,6 +311,22 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
       expect(query).to.eq(`PREFIX schema: <http://schema.org/>
 
 SELECT * WHERE { ?s a schema:Person }`)
+    })
+  })
+
+  describe('without prefixes', () => {
+    it('produces long URIs', () => {
+      // given
+      const subquery = sparql`${ex.foo} ?p ${schema.bar}`
+
+      // when
+      const query = sparql`SELECT * WHERE { ${subquery} }`.toString({
+        prefixes: { ex },
+        noPrefixedNames: true,
+      })
+
+      // then
+      expect(query).to.eq('SELECT * WHERE { <http://example.com/foo> ?p <http://schema.org/bar> }')
     })
   })
 
