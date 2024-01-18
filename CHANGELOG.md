@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1
+
+### Patch Changes
+
+- 012b73f: Support `@zazuko/env` v2
+
 ## 1.1.0
 
 ### Minor Changes
