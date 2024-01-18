@@ -26,13 +26,13 @@
     "lib"
   ],
   "dependencies": {
-    "@zazuko/env": "^1.5.2",
     "@rdfjs/types": "*",
+    "@zazuko/env": "1 - 2",
     "@zazuko/prefixes": ">=1"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
-    "@rdfjs/formats-common": "^3.1.0",
+    "@rdfjs/formats": "^4",
     "@tpluscode/eslint-config": "^0.4.2",
     "@tpluscode/rdf-ns-builders": "^4",
     "@types/chai": "^4.3.4",
@@ -56,7 +56,7 @@
     "string-to-stream": "^3.0.1",
     "ts-node": "^10.9.1",
     "typedoc": "^0.17.7",
-    "typescript": "^4"
+    "typescript": "^5"
   },
   "repository": {
     "type": "git",
