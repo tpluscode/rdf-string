@@ -1,7 +1,7 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-extraneous-dependencies,@typescript-eslint/no-explicit-any */
 import { Assertion, AssertionError } from 'chai'
 import { Parser } from 'sparqljs'
-import { parsers } from '@rdfjs/formats-common'
+import formats from '@rdfjs/formats'
 import toStream from 'string-to-stream'
 import 'chai-snapshot-matcher'
 
@@ -20,7 +20,7 @@ declare global {
 
 function parsingMatcher(mediaType: string) {
   return function (this: Chai.AssertionStatic) {
-    const stream = parsers.import(mediaType, toStream(this._obj.toString())) as any
+    const stream = formats.parsers.import(mediaType, toStream(this._obj.toString())) as any
 
     stream.on('data', () => {
       // force the stream to consume all input
