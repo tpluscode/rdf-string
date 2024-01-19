@@ -55,7 +55,7 @@
     "sparqljs": "^3.0.1",
     "string-to-stream": "^3.0.1",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.17.7",
+    "typedoc": "^0.25.7",
     "typescript": "^5"
   },
   "repository": {
@@ -88,25 +88,5 @@
   "mocha": {
     "extension": "ts",
     "loader": "ts-node/esm"
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>"
-    ],
-    "extensionsToTreatAsEsm": [
-      ".ts"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": [
-        "ts-jest",
-        {
-          "useESM": true
-        }
-      ]
-    },
-    "testRegex": "tests/.+\\.spec\\.ts$",
-    "setupFilesAfterEnv": [
-      "./tests/jestSetup.ts"
-    ]
   }
 }

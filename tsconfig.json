@@ -22,8 +22,9 @@
     "src/index.ts"
   ],
   "typedocOptions": {
-    "inputFiles": ["src/"],
-    "exclude": "tests/**/*.ts",
-    "excludeNotExported": true
+    "entryPoints": [
+      "src/index.ts"
+    ],
+    "exclude": "tests/**/*.ts"
   }
 }
