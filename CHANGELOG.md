@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.2
+
+### Patch Changes
+
+- 75d1f4b: More strict dependency on `@rdfjs/environment`
+
 ## 1.1.1
 
 ### Patch Changes
