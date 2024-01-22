@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "@rdfjs/types": "*",
-    "@zazuko/env": "^2",
+    "@zazuko/env": "^2.0.3",
     "@zazuko/prefixes": ">=1"
   },
   "devDependencies": {

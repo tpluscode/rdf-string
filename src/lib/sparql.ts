@@ -1,4 +1,4 @@
-import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from 'rdf-js'
+import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from '@rdfjs/types'
 import knownPrefixes from '@zazuko/prefixes'
 import RDF from '@zazuko/env'
 import type { NamespaceBuilder } from '@rdfjs/namespace'

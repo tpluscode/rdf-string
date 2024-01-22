@@ -1,4 +1,4 @@
-import { BlankNode, Literal, NamedNode } from 'rdf-js'
+import { BlankNode, Literal, NamedNode } from '@rdfjs/types'
 import { shrink } from '@zazuko/prefixes'
 import type { NamespaceBuilder } from '@rdfjs/namespace'
 import { PartialString } from '../TemplateResult.js'
