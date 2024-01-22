@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.3
+
+### Patch Changes
+
+- 62f331b: Remove usages of `rdf-js`
+
 ## 1.1.2
 
 ### Patch Changes
