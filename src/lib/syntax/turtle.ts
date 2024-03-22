@@ -1,10 +1,10 @@
 import { BlankNode, Literal, NamedNode } from '@rdfjs/types'
 import { shrink } from '@zazuko/prefixes'
 import type { NamespaceBuilder } from '@rdfjs/namespace'
+import { xsd } from '@tpluscode/rdf-ns-builders'
 import { PartialString } from '../TemplateResult.js'
 import { mapBuilders } from '../prefixes.js'
 import * as ntriples from './ntriples.js'
-import xsd from './xsd.js'
 
 export function blankNode(term: BlankNode): string {
   return ntriples.blankNode(term)

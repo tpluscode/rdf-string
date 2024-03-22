@@ -1,13 +1,15 @@
-import { BlankNode, DatasetCore, DefaultGraph, Literal, NamedNode, Quad, Term } from '@rdfjs/types'
-import RDF from '@zazuko/env'
+import { BlankNode, DataFactory, DatasetCore, DefaultGraph, Literal, NamedNode, Quad, Term } from '@rdfjs/types'
 import knownPrefixes from '@zazuko/prefixes'
 import type { NamespaceBuilder } from '@rdfjs/namespace'
+import type { Environment } from '@rdfjs/environment/Environment'
+import type { TermMapFactory } from '@rdfjs/term-map/Factory'
 import { Value } from './value.js'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult.js'
 import * as syntax from './syntax/turtle.js'
 import { mapBuilders, getNamespaces } from './prefixes.js'
 
 export interface TurtleOptions {
+  env: Environment<DataFactory | TermMapFactory>
   base?: string | NamedNode
   directives: boolean
   graph: NamedNode | DefaultGraph
@@ -205,9 +207,9 @@ export const turtle = (strings: TemplateStringsArray, ...values: Value<TemplateR
     values,
     tag: turtle,
     strategy: new TurtleStrategy(),
-    defaultOptions: {
+    defaultOptions: (RDF: Environment<DataFactory>) => ({
       directives: true,
       graph: RDF.defaultGraph(),
       cheapCompression: false,
-    },
+    }),
   })

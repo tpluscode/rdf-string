@@ -1,10 +1,16 @@
 /* eslint-disable no-use-before-define,@typescript-eslint/no-explicit-any */
-import { BlankNode, DatasetCore, Literal, NamedNode, BaseQuad, Term, Variable } from '@rdfjs/types'
-import RDF from '@zazuko/env'
-import xsd from './syntax/xsd.js'
+import { BlankNode, DatasetCore, Literal, NamedNode, BaseQuad, Term, Variable, DataFactory } from '@rdfjs/types'
+import type { Environment } from '@rdfjs/environment/Environment'
+import { xsd } from '@tpluscode/rdf-ns-builders'
+import type { TermMapFactory } from '@rdfjs/term-map/Factory'
+import defaultEnv from './defaultEnv.js'
 import { Value } from './value.js'
 
-type TagFunction<TImpl extends TemplateResult<TOptions>, TValue extends Value<TImpl>, TOptions> = {
+interface Options {
+  env: Environment<DataFactory | TermMapFactory>
+}
+
+type TagFunction<TImpl extends TemplateResult<TOptions>, TValue extends Value<TImpl>, TOptions extends Options> = {
   (strings: TemplateStringsArray, ...values: TValue[]): TImpl
 }
 
@@ -16,8 +22,8 @@ export interface PartialString {
 export abstract class SerializationStrategy<TOptions> {
   public abstract evaluateLiteral(term: Literal, options: TOptions): PartialString
   public abstract evaluateNamedNode(term: NamedNode, options: TOptions): PartialString
-  public abstract evaluateVariable(term: Variable): PartialString
-  public abstract evaluateBlankNode(term: BlankNode): PartialString
+  public abstract evaluateVariable(term: Variable, options: TOptions): PartialString
+  public abstract evaluateBlankNode(term: BlankNode, options: TOptions): PartialString
   public abstract evaluateQuad(quad: BaseQuad, options: TOptions): PartialString
   public abstract evaluateDataset(dataset: DatasetCore, options: TOptions): PartialString
   public abstract getFinalString(result: string, prefixes: Iterable<string>, options: TOptions): string
@@ -29,9 +35,9 @@ export abstract class SerializationStrategy<TOptions> {
       case 'NamedNode':
         return this.evaluateNamedNode(value, options)
       case 'BlankNode':
-        return this.evaluateBlankNode(value)
+        return this.evaluateBlankNode(value, options)
       case 'Variable':
-        return this.evaluateVariable(value)
+        return this.evaluateVariable(value, options)
     }
 
     return {
@@ -41,24 +47,24 @@ export abstract class SerializationStrategy<TOptions> {
   }
 }
 
-export interface TemplateResultInit<TOptions> {
+export interface TemplateResultInit<TOptions extends Options> {
   strings: TemplateStringsArray
   values: Value<TemplateResult<TOptions>>[]
   tag: TagFunction<any, Value<any>, TOptions>
   strategy: SerializationStrategy<TOptions>
-  defaultOptions: TOptions
+  defaultOptions(env: TOptions['env']): Omit<TOptions, 'env'>
 }
 
 function isIterable(obj: unknown): obj is Iterable<any> {
   return Symbol.iterator in Object(obj) && typeof obj !== 'string'
 }
 
-export class TemplateResult<TOptions> {
+export class TemplateResult<TOptions extends Options> {
   protected readonly strings: TemplateStringsArray
   protected readonly values: readonly (Value<TemplateResult<TOptions>> | object)[]
   protected readonly _tag: TagFunction<TemplateResult<TOptions>, Value<TemplateResult<TOptions>>, TOptions>
   private readonly __strategy: SerializationStrategy<TOptions>
-  private readonly __defaultOptions: TOptions
+  private readonly __defaultOptions: (env: TOptions['env']) => Omit<TOptions, 'env'>
 
   public constructor({
     strings,
@@ -74,8 +80,11 @@ export class TemplateResult<TOptions> {
     this.__defaultOptions = defaultOptions
   }
 
-  toString(options?: Partial<TOptions>): string {
-    let actualOptions = this.__defaultOptions
+  toString({ env = defaultEnv, ...options }: Partial<TOptions> = {}): string {
+    let actualOptions = {
+      ...this.__defaultOptions(env),
+      env,
+    } as unknown as TOptions
     if (options) {
       actualOptions = { ...actualOptions, ...options }
     }
@@ -86,6 +95,7 @@ export class TemplateResult<TOptions> {
   }
 
   public _toPartialString(options: TOptions): PartialString {
+    const RDF = options.env
     const prefixes: Set<string> = new Set()
     const l = this.strings.length - 1
     let result = ''

@@ -1,9 +1,12 @@
-import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term } from '@rdfjs/types'
+import { BlankNode, DataFactory, DatasetCore, Literal, NamedNode, Quad, Term } from '@rdfjs/types'
+import type { Environment } from '@rdfjs/environment/Environment'
+import type { TermMapFactory } from '@rdfjs/term-map/Factory'
 import { Value } from './value.js'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult.js'
 import * as ntriples from './syntax/ntriples.js'
 
 export interface NQuadsOptions {
+  env: Environment<DataFactory | TermMapFactory>
   sortGraphs: boolean
 }
 
@@ -76,7 +79,7 @@ export const nquads = (strings: TemplateStringsArray, ...values: Value<TemplateR
     values,
     tag: nquads,
     strategy: new NQuadsStrategy(),
-    defaultOptions: {
+    defaultOptions: () => ({
       sortGraphs: false,
-    },
+    }),
   })
