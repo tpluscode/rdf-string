@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+
+### Minor Changes
+
+- 4f51f6b: Remove dependency on `@zazuko/env` to improve browser compatibility
+
 ## 1.1.3
 
 ### Patch Changes
