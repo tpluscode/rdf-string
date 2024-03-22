@@ -1,10 +1,13 @@
 import { BlankNode, DatasetCore, DefaultGraph, Literal, NamedNode, Quad, Term } from '@rdfjs/types'
-import RDF from '@zazuko/env'
+import type { Environment } from '@rdfjs/environment/Environment'
+import type DataFactory from '@rdfjs/data-model/Factory.js'
+import type { TermMapFactory } from '@rdfjs/term-map/Factory'
 import { NQuadsStrategy } from './nquads.js'
 import { Value } from './value.js'
 import { PartialString, TemplateResult } from './TemplateResult.js'
 
 export interface NTriplesOptions {
+  env: Environment<DataFactory | TermMapFactory>
   graph: NamedNode | DefaultGraph
   sortGraphs: false
 }
@@ -26,7 +29,7 @@ export class NTriplesStrategy extends NQuadsStrategy<NTriplesOptions> {
       }
     }
 
-    return super.evaluateQuad(RDF.quad(quad.subject, quad.predicate, quad.object), options)
+    return super.evaluateQuad(options.env.quad(quad.subject, quad.predicate, quad.object), options)
   }
 }
 
@@ -36,8 +39,8 @@ export const ntriples = (strings: TemplateStringsArray, ...values: Value<NTriple
     values,
     tag: ntriples,
     strategy: new NTriplesStrategy(),
-    defaultOptions: {
+    defaultOptions: (RDF) => ({
       graph: RDF.defaultGraph(),
       sortGraphs: false,
-    },
+    }),
   })

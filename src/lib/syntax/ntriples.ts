@@ -1,5 +1,5 @@
 import { BlankNode, Literal, NamedNode } from '@rdfjs/types'
-import xsd from './xsd.js'
+import { xsd } from '@tpluscode/rdf-ns-builders'
 
 const echarRegEx = new RegExp('["\\\\\n\r]') // eslint-disable-line no-control-regex, prefer-regex-literals
 const echarRegExAll = new RegExp('["\\\\\n\r]', 'g') // eslint-disable-line no-control-regex, prefer-regex-literals

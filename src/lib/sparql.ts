@@ -1,13 +1,15 @@
-import { BlankNode, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from '@rdfjs/types'
+import { BlankNode, DataFactory, DatasetCore, Literal, NamedNode, Quad, Term, Variable } from '@rdfjs/types'
 import knownPrefixes from '@zazuko/prefixes'
-import RDF from '@zazuko/env'
 import type { NamespaceBuilder } from '@rdfjs/namespace'
+import type { Environment } from '@rdfjs/environment/Environment'
+import type { TermMapFactory } from '@rdfjs/term-map/Factory'
 import { Value } from './value.js'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult.js'
 import * as turtleSyntax from './syntax/turtle.js'
 import { getNamespaces, mapBuilders } from './prefixes.js'
 
 export interface SparqlOptions {
+  env: Environment<DataFactory | TermMapFactory>
   base?: string
   prologue: boolean
   prefixes?: Record<string, string | NamespaceBuilder>
@@ -19,7 +21,7 @@ function prefixDeclarations(prefixes: Iterable<string>, prefixMap: Record<string
     .map(([prefix, ns]) => `PREFIX ${prefix}: <${ns}>`)
 }
 
-function toTriple({ subject, predicate, object }: Quad) {
+function toTriple({ subject, predicate, object }: Quad, RDF: Environment<DataFactory>) {
   return RDF.quad(subject, predicate, object)
 }
 
@@ -74,16 +76,16 @@ export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
         const namedGraph = graphs.get(quad.graph) || []
         graphs.set(quad.graph, [
           ...namedGraph,
-          toTriple(quad),
+          toTriple(quad, options.env),
         ])
 
         return graphs
-      }, RDF.termMap<Term, Quad[]>())
+      }, options.env.termMap<Term, Quad[]>())
 
     return [...graphs.entries()].reduce<PartialString>((previous, [graph, quads]) => {
       const triplePatterns = this.__evaluateTripleArray(quads, options)
 
-      if (RDF.defaultGraph().equals(graph)) {
+      if (options.env.defaultGraph().equals(graph)) {
         return {
           value: `${previous.value}\n${triplePatterns.value}`,
           prefixes: [...previous.prefixes, ...triplePatterns.prefixes],
@@ -114,7 +116,7 @@ export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
       ...object.prefixes,
     ]
 
-    if (!RDF.defaultGraph().equals(quad.graph)) {
+    if (!options.env.defaultGraph().equals(quad.graph)) {
       const graph = this.evaluateTerm(quad.graph, options)
       pattern = `GRAPH ${graph.value} { ${pattern} }`
       prefixes = [...prefixes, ...graph.prefixes]
@@ -143,7 +145,7 @@ export const sparql = (strings: TemplateStringsArray, ...values: SparqlValue[]) 
     values,
     tag: sparql,
     strategy: new SparqlStrategy(),
-    defaultOptions: {
+    defaultOptions: () => ({
       prologue: true,
-    },
+    }),
   })
