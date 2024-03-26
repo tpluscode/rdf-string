@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.1
+
+### Patch Changes
+
+- 4fa006f: This fixes the import of the following modules by explicitly adding the `.js` extension:
+
+  - `@rdfjs/environment/Environment`
+  - `@rdfjs/term-map/Factory`
+
 ## 1.2.0
 
 ### Minor Changes
