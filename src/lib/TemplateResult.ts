@@ -1,8 +1,8 @@
 /* eslint-disable no-use-before-define,@typescript-eslint/no-explicit-any */
 import { BlankNode, DatasetCore, Literal, NamedNode, BaseQuad, Term, Variable, DataFactory } from '@rdfjs/types'
-import type { Environment } from '@rdfjs/environment/Environment.d.ts'
+import type { Environment } from '@rdfjs/environment/Environment.js'
 import { xsd } from '@tpluscode/rdf-ns-builders'
-import type { TermMapFactory } from '@rdfjs/term-map/Factory.d.ts'
+import type { TermMapFactory } from '@rdfjs/term-map/Factory.js'
 import defaultEnv from './defaultEnv.js'
 import { Value } from './value.js'
 

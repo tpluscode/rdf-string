@@ -1,6 +1,6 @@
 import { BlankNode, DataFactory, DatasetCore, Literal, NamedNode, Quad, Term } from '@rdfjs/types'
-import type { Environment } from '@rdfjs/environment/Environment.d.ts'
-import type { TermMapFactory } from '@rdfjs/term-map/Factory.d.ts'
+import type { Environment } from '@rdfjs/environment/Environment.js'
+import type { TermMapFactory } from '@rdfjs/term-map/Factory.js'
 import { Value } from './value.js'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult.js'
 import * as ntriples from './syntax/ntriples.js'
