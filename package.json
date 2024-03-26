@@ -36,7 +36,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
     "@rdfjs/formats": "^4",
-    "@tpluscode/eslint-config": "^0.4.2",
+    "@tpluscode/eslint-config": "^0.4.5",
     "@types/chai": "^4.3.4",
     "@types/chai-snapshot-matcher": "^1",
     "@types/rdfjs__environment": "^1.0.0",
