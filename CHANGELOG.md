@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0
+
+### Minor Changes
+
+- 2c4b2ce: Re-export `Options` types from each syntax module
+
 ## 1.2.1
 
 ### Patch Changes
