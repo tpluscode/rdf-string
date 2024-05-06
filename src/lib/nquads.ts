@@ -73,7 +73,7 @@ export class NQuadsStrategy<TOptions extends NQuadsOptions = NQuadsOptions> exte
   }
 }
 
-export const nquads = (strings: TemplateStringsArray, ...values: Value<TemplateResult<NQuadsOptions>, NamedNode | Literal | BlankNode>[]) =>
+export const nquads = (strings: TemplateStringsArray, ...values: Value<TemplateResult<NQuadsOptions>, NamedNode | Literal | BlankNode>[]): NQuadsTemplateResult =>
   new TemplateResult<NQuadsOptions>({
     strings,
     values,

@@ -33,7 +33,7 @@ export class NTriplesStrategy extends NQuadsStrategy<NTriplesOptions> {
   }
 }
 
-export const ntriples = (strings: TemplateStringsArray, ...values: Value<NTriplesTemplateResult, NamedNode | Literal | BlankNode>[]) =>
+export const ntriples = (strings: TemplateStringsArray, ...values: Value<NTriplesTemplateResult, NamedNode | Literal | BlankNode>[]): NTriplesTemplateResult =>
   new TemplateResult<NTriplesOptions>({
     strings,
     values,

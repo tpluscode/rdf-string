@@ -139,7 +139,7 @@ export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
   }
 }
 
-export const sparql = (strings: TemplateStringsArray, ...values: SparqlValue[]) =>
+export const sparql = (strings: TemplateStringsArray, ...values: SparqlValue[]): SparqlTemplateResult =>
   new TemplateResult<SparqlOptions>({
     strings,
     values,
