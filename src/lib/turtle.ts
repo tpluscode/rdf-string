@@ -201,7 +201,7 @@ export class TurtleStrategy extends SerializationStrategy<TurtleOptions> {
   }
 }
 
-export const turtle = (strings: TemplateStringsArray, ...values: Value<TemplateResult<TurtleOptions>, NamedNode | Literal | BlankNode>[]) =>
+export const turtle = (strings: TemplateStringsArray, ...values: Value<TemplateResult<TurtleOptions>, NamedNode | Literal | BlankNode>[]): TurtleTemplateResult =>
   new TemplateResult<TurtleOptions>({
     strings,
     values,
