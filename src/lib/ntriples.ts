@@ -5,9 +5,10 @@ import type { TermMapFactory } from '@rdfjs/term-map/Factory.js'
 import { NQuadsStrategy } from './nquads.js'
 import { Value } from './value.js'
 import { PartialString, TemplateResult } from './TemplateResult.js'
+import defaultEnv from './defaultEnv.js'
 
 export interface NTriplesOptions {
-  env: Environment<DataFactory | TermMapFactory>
+  env?: Environment<DataFactory | TermMapFactory>
   graph: NamedNode | DefaultGraph
   sortGraphs: false
 }
@@ -22,6 +23,8 @@ export class NTriplesStrategy extends NQuadsStrategy<NTriplesOptions> {
   }
 
   public evaluateQuad(quad: Quad, options: NTriplesOptions): PartialString {
+    const env = options.env || defaultEnv
+
     if (!options.graph.equals(quad.graph)) {
       return {
         value: '',
@@ -29,7 +32,7 @@ export class NTriplesStrategy extends NQuadsStrategy<NTriplesOptions> {
       }
     }
 
-    return super.evaluateQuad(options.env.quad(quad.subject, quad.predicate, quad.object), options)
+    return super.evaluateQuad(env.quad(quad.subject, quad.predicate, quad.object), options)
   }
 }
 
@@ -39,7 +42,7 @@ export const ntriples = (strings: TemplateStringsArray, ...values: Value<NTriple
     values,
     tag: ntriples,
     strategy: new NTriplesStrategy(),
-    defaultOptions: (RDF) => ({
+    defaultOptions: (RDF = defaultEnv) => ({
       graph: RDF.defaultGraph(),
       sortGraphs: false,
     }),

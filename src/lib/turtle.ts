@@ -7,9 +7,10 @@ import { Value } from './value.js'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult.js'
 import * as syntax from './syntax/turtle.js'
 import { mapBuilders, getNamespaces } from './prefixes.js'
+import defaultEnv from './defaultEnv.js'
 
 export interface TurtleOptions {
-  env: Environment<DataFactory | TermMapFactory>
+  env?: Environment<DataFactory | TermMapFactory>
   base?: string | NamedNode
   directives: boolean
   graph: NamedNode | DefaultGraph
@@ -207,7 +208,7 @@ export const turtle = (strings: TemplateStringsArray, ...values: Value<TemplateR
     values,
     tag: turtle,
     strategy: new TurtleStrategy(),
-    defaultOptions: (RDF: Environment<DataFactory>) => ({
+    defaultOptions: (RDF = defaultEnv) => ({
       directives: true,
       graph: RDF.defaultGraph(),
       cheapCompression: false,

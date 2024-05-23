@@ -6,7 +6,7 @@ import { PartialString, SerializationStrategy, TemplateResult } from './Template
 import * as ntriples from './syntax/ntriples.js'
 
 export interface NQuadsOptions {
-  env: Environment<DataFactory | TermMapFactory>
+  env?: Environment<DataFactory | TermMapFactory>
   sortGraphs: boolean
 }
 

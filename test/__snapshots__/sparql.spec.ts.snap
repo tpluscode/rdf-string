@@ -8,3 +8,5 @@ exports["sparql interpolating named node respects base in sub-templates"] = "BAS
 
 exports["sparql interpolating named node escapes characters in prefixed names"] = "SELECT * WHERE { ex::foo\\/bar\\#baz <eats> ex::foo\\/bar\\#baz }";
 
+exports["sparql interpolating named node escapes slashes and hash in prefixed names"] = "SELECT * WHERE { ex::foo\\/bar\\#baz <eats> ex::foo\\/bar\\#baz }";
+
