@@ -22,7 +22,7 @@ export function namedNode(term: NamedNode, { base = '', prefixes = {} }: NamedNo
   const shrunk = shrink(term.value, mapBuilders(prefixes))
   if (shrunk) {
     return {
-      value: shrunk,
+      value: shrunk.replaceAll(/[/#]/g, s => `\\${s}`),
       prefixes: [
         shrunk.split(':')[0],
       ],

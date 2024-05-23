@@ -11,7 +11,7 @@ prefixes.turtle = 'http://turtle.com/'
 describe('turtle', () => {
   describe('named node interpolation', () => {
     it('serializes named node', async () => {
-    // given
+      // given
       const node = namedNode('http://example.com/')
 
       // when
@@ -96,6 +96,24 @@ describe('turtle', () => {
 @prefix exOrg: <http://example.org/> .
 
 ex:foo a exOrg:Foo .`)
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('escapes slashes and hash in prefixed names', async () => {
+      // given
+      const exOrg = 'http://example.org/'
+      const Foo = RDF.namedNode('http://example.org/foo/bar#baz')
+
+      // when
+      const str = turtle`${ex.foo} a ${Foo} .`.toString({
+        prefixes: { ex, exOrg },
+      })
+
+      // then
+      expect(str).toEqual(`@prefix ex: <http://example.com/> .
+@prefix exOrg: <http://example.org/> .
+
+ex:foo a exOrg:foo\\/bar\\#baz .`)
       await expect(str).toBeValidTurtle()
     })
   })

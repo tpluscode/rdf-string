@@ -191,6 +191,20 @@ SELECT * WHERE { ${dog} :eats ${dog} }`.toString({
       // then
       expect(query.toString()).toMatchSnapshot()
     })
+
+    it('escapes slashes and hash in prefixed names', () => {
+      // given
+      const dog = $rdf.namedNode('http://example.org/foo/bar#baz')
+
+      // when
+      const where = sparql`${dog} <eats> ${dog}`
+      const query = sparql`SELECT * WHERE { ${where} }`.toString({
+        prefixes: { 'ex:': 'http://example.org/' },
+      })
+
+      // then
+      expect(query.toString()).toMatchSnapshot()
+    })
   })
 
   describe('interpolating variable', () => {

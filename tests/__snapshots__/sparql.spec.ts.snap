@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`sparql interpolating named node escapes slashes and hash in prefixed names 1`] = `"SELECT * WHERE { ex::foo\\\\/bar\\\\#baz <eats> ex::foo\\\\/bar\\\\#baz }"`;
+
 exports[`sparql interpolating named node respects base in sub-templates 1`] = `
 "BASE <http://example.org/>
 
