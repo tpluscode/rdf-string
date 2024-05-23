@@ -6,3 +6,5 @@ exports["sparql interpolating named node writes URIs relative to base"] = "BASE 
 
 exports["sparql interpolating named node respects base in sub-templates"] = "BASE <http://example.org/>\n\nSELECT * WHERE { <dog> <eats> <dog> }";
 
+exports["sparql interpolating named node escapes characters in prefixed names"] = "SELECT * WHERE { ex::foo\\/bar\\#baz <eats> ex::foo\\/bar\\#baz }";
+

@@ -24,7 +24,7 @@ export function namedNode(term: NamedNode, { base = '', prefixes = {}, noPrefixe
 
   if (noPrefixedNames !== true && (shrunk = shrink(term.value, mapBuilders(prefixes)))) {
     return {
-      value: shrunk,
+      value: shrunk.replaceAll(/[/#]/g, s => `\\${s}`),
       prefixes: [
         shrunk.split(':')[0],
       ],
