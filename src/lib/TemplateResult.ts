@@ -7,7 +7,7 @@ import defaultEnv from './defaultEnv.js'
 import { Value } from './value.js'
 
 interface Options {
-  env: Environment<DataFactory | TermMapFactory>
+  env?: Environment<DataFactory | TermMapFactory>
 }
 
 type TagFunction<TImpl extends TemplateResult<TOptions>, TValue extends Value<TImpl>, TOptions extends Options> = {
@@ -95,7 +95,7 @@ export class TemplateResult<TOptions extends Options> {
   }
 
   public _toPartialString(options: TOptions): PartialString {
-    const RDF = options.env
+    const RDF = options.env || defaultEnv
     const prefixes: Set<string> = new Set()
     const l = this.strings.length - 1
     let result = ''

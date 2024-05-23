@@ -7,9 +7,10 @@ import { Value } from './value.js'
 import { PartialString, SerializationStrategy, TemplateResult } from './TemplateResult.js'
 import * as turtleSyntax from './syntax/turtle.js'
 import { getNamespaces, mapBuilders } from './prefixes.js'
+import defaultEnv from './defaultEnv.js'
 
 export interface SparqlOptions {
-  env: Environment<DataFactory | TermMapFactory>
+  env?: Environment<DataFactory | TermMapFactory>
   base?: string
   prologue: boolean
   prefixes?: Record<string, string | NamespaceBuilder>
@@ -71,21 +72,23 @@ export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
   }
 
   public evaluateDataset(dataset: DatasetCore, options: SparqlOptions): PartialString {
+    const env = options.env || defaultEnv
+
     const graphs = [...dataset]
       .reduce((graphs, quad) => {
         const namedGraph = graphs.get(quad.graph) || []
         graphs.set(quad.graph, [
           ...namedGraph,
-          toTriple(quad, options.env),
+          toTriple(quad, env),
         ])
 
         return graphs
-      }, options.env.termMap<Term, Quad[]>())
+      }, env.termMap<Term, Quad[]>())
 
     return [...graphs.entries()].reduce<PartialString>((previous, [graph, quads]) => {
       const triplePatterns = this.__evaluateTripleArray(quads, options)
 
-      if (options.env.defaultGraph().equals(graph)) {
+      if (env.defaultGraph().equals(graph)) {
         return {
           value: `${previous.value}\n${triplePatterns.value}`,
           prefixes: [...previous.prefixes, ...triplePatterns.prefixes],
@@ -105,6 +108,8 @@ export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
   }
 
   public evaluateQuad(quad: Quad, options: SparqlOptions): PartialString {
+    const env = options.env || defaultEnv
+
     const subject = this.evaluateTerm(quad.subject, options)
     const predicate = this.evaluateTerm(quad.predicate, options)
     const object = this.evaluateTerm(quad.object, options)
@@ -116,7 +121,7 @@ export class SparqlStrategy extends SerializationStrategy<SparqlOptions> {
       ...object.prefixes,
     ]
 
-    if (!options.env.defaultGraph().equals(quad.graph)) {
+    if (!env.defaultGraph().equals(quad.graph)) {
       const graph = this.evaluateTerm(quad.graph, options)
       pattern = `GRAPH ${graph.value} { ${pattern} }`
       prefixes = [...prefixes, ...graph.prefixes]
