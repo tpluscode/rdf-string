@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.28
+
+### Patch Changes
+
+- 7c6d1da: IRIs which contained a slash or hash were not correctly escaped when the would be encoded as prefixed name
+
 ## 1.3.3
 
 ### Patch Changes
