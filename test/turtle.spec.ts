@@ -207,8 +207,8 @@ ex:foo a exOrg:foo\\/bar\\#baz .`)
       const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString()
 
       // then
-      expect(str).toMatch('<http://example.com/> <http://example.com/foo> "10"^^xsd:decimal .')
-      await expect(str).toBeValidTurtle()
+      expect(str).to.contain('<http://example.com/> <http://example.com/foo> "10"^^xsd:decimal .')
+      await expect(str).to.be.validTurtle()
     })
 
     it('serializes decimal shorthand', async () => {
@@ -219,8 +219,8 @@ ex:foo a exOrg:foo\\/bar\\#baz .`)
       const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString()
 
       // then
-      expect(str).toMatch('<http://example.com/> <http://example.com/foo> 10.4 .')
-      await expect(str).toBeValidTurtle()
+      expect(str).to.contain('<http://example.com/> <http://example.com/foo> 10.4 .')
+      await expect(str).to.be.validTurtle()
     })
 
     it('serializes literal node with language', async () => {
