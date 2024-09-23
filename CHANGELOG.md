@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.29
+
+### Patch Changes
+
+- 4b241c0: Whole number `xsd:decimal` would have been serialised as an `xsd:integer`
+
 ## 0.2.28
 
 ### Patch Changes
