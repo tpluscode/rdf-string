@@ -128,6 +128,24 @@ ex:foo a exOrg:foo\\/bar\\#baz .`)
       expect(str).to.eq('<http://example.com/foo> a <http://schema.org/Organization> .')
       await expect(str).to.be.validTurtle()
     })
+
+    it('escapes slashes and hash in prefixed names', async () => {
+      // given
+      const exOrg = 'http://example.org/'
+      const Foo = RDF.namedNode('http://example.org/foo/bar#baz')
+
+      // when
+      const str = turtle`${ex.foo} a ${Foo} .`.toString({
+        prefixes: { ex, exOrg },
+      })
+
+      // then
+      expect(str).to.eq(`@prefix ex: <http://example.com/> .
+@prefix exOrg: <http://example.org/> .
+
+ex:foo a exOrg:foo\\/bar\\#baz .`)
+      await expect(str).to.be.validTurtle()
+    })
   })
 
   describe('blank node interpolation', () => {
@@ -154,6 +172,54 @@ ex:foo a exOrg:foo\\/bar\\#baz .`)
 
       // then
       expect(str).to.eq('<http://example.com/> <http://example.com/foo> "bar"^^<http://example.com/Datatype> .')
+      await expect(str).to.be.validTurtle()
+    })
+
+    it('serializes explicitly typed decimal', async () => {
+      // given
+      const node = RDF.literal('10', xsd.decimal)
+
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString()
+
+      // then
+      expect(str).to.contain('<http://example.com/> <http://example.com/foo> "10"^^xsd:decimal .')
+      await expect(str).to.be.validTurtle()
+    })
+
+    it('serializes decimal shorthand', async () => {
+      // given
+      const node = RDF.literal('10.4', xsd.decimal)
+
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString()
+
+      // then
+      expect(str).to.contain('<http://example.com/> <http://example.com/foo> 10.4 .')
+      await expect(str).to.be.validTurtle()
+    })
+
+    it('serializes explicitly typed decimal', async () => {
+      // given
+      const node = RDF.literal('10', xsd.decimal)
+
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString()
+
+      // then
+      expect(str).to.contain('<http://example.com/> <http://example.com/foo> "10"^^xsd:decimal .')
+      await expect(str).to.be.validTurtle()
+    })
+
+    it('serializes decimal shorthand', async () => {
+      // given
+      const node = RDF.literal('10.4', xsd.decimal)
+
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString()
+
+      // then
+      expect(str).to.contain('<http://example.com/> <http://example.com/foo> 10.4 .')
       await expect(str).to.be.validTurtle()
     })
 

@@ -89,6 +89,18 @@
 - 8b7597c: The package is now only ESM
 - 8b7597c: Use `@zazuko/prefixes` instead of `@zazuko/rdf-vocabularies`
 
+## 0.2.29
+
+### Patch Changes
+
+- 4b241c0: Whole number `xsd:decimal` would have been serialised as an `xsd:integer`
+
+## 0.2.28
+
+### Patch Changes
+
+- 7c6d1da: IRIs which contained a slash or hash were not correctly escaped when the would be encoded as prefixed name
+
 ## 0.2.27
 
 ### Patch Changes

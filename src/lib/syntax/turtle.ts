@@ -2,6 +2,7 @@ import { BlankNode, Literal, NamedNode } from '@rdfjs/types'
 import { shrink } from '@zazuko/prefixes'
 import type { NamespaceBuilder } from '@rdfjs/namespace'
 import { xsd } from '@tpluscode/rdf-ns-builders'
+import TermMap from '@rdfjs/term-map'
 import { PartialString } from '../TemplateResult.js'
 import { mapBuilders } from '../prefixes.js'
 import * as ntriples from './ntriples.js'
@@ -16,7 +17,7 @@ interface NamedNodeOptions {
   noPrefixedNames?: boolean
 }
 
-export function namedNode(term: NamedNode, { base = '', prefixes = {}, noPrefixedNames }: NamedNodeOptions): PartialString {
+export function namedNode(term: Pick<NamedNode, 'value'>, { base = '', prefixes = {}, noPrefixedNames }: NamedNodeOptions): PartialString {
   const baseStr = (typeof base === 'string') ? base : base.value
   const baseRegex = new RegExp('^' + baseStr)
 
@@ -37,13 +38,16 @@ export function namedNode(term: NamedNode, { base = '', prefixes = {}, noPrefixe
   }
 }
 
-function isBuiltInType(datatype: NamedNode): boolean {
-  return datatype.equals(xsd.integer) || datatype.equals(xsd.boolean) || datatype.equals(xsd.decimal)
-}
+const buildInTypes = new TermMap<NamedNode, RegExp>([
+  [xsd.integer, /^-?[0-9]+$/],
+  [xsd.decimal, /^-?[0-9]+\.[0-9]+$/],
+  [xsd.boolean, /^(true|false)$/],
+])
 
 export function literal(term: Literal, { base = '', prefixes = {} }: NamedNodeOptions): PartialString {
   if (!term.language && term.datatype) {
-    if (isBuiltInType(term.datatype)) {
+    const shorthandSyntax = buildInTypes.get(term.datatype)
+    if (shorthandSyntax && shorthandSyntax.test(term.value)) {
       return {
         value: term.value,
         prefixes: [],
