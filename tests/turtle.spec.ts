@@ -145,6 +145,30 @@ ex:foo a exOrg:foo\\/bar\\#baz .`)
       await expect(str).toBeValidTurtle()
     })
 
+    it('serializes explicitly typed decimal', async () => {
+      // given
+      const node = RDF.literal('10', xsd.decimal)
+
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString()
+
+      // then
+      expect(str).toMatch('<http://example.com/> <http://example.com/foo> "10"^^xsd:decimal .')
+      await expect(str).toBeValidTurtle()
+    })
+
+    it('serializes decimal shorthand', async () => {
+      // given
+      const node = RDF.literal('10.4', xsd.decimal)
+
+      // when
+      const str = turtle`<http://example.com/> <http://example.com/foo> ${node} .`.toString()
+
+      // then
+      expect(str).toMatch('<http://example.com/> <http://example.com/foo> 10.4 .')
+      await expect(str).toBeValidTurtle()
+    })
+
     it('serializes literal node with language', async () => {
       // given
       const node = literal('foo', 'fr')

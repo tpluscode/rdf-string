@@ -1,6 +1,7 @@
 import { BlankNode, Literal, NamedNode } from 'rdf-js'
 import { shrink } from '@zazuko/rdf-vocabularies/shrink'
 import type { NamespaceBuilder } from '@rdfjs/namespace'
+import TermMap from '@rdf-esm/term-map'
 import { PartialString } from '../TemplateResult'
 import { mapBuilders } from '../prefixes'
 import * as ntriples from './ntriples'
@@ -35,13 +36,16 @@ export function namedNode(term: NamedNode, { base = '', prefixes = {} }: NamedNo
   }
 }
 
-function isBuiltInType(datatype: NamedNode): boolean {
-  return datatype.equals(xsd.integer) || datatype.equals(xsd.boolean) || datatype.equals(xsd.decimal)
-}
+const buildInTypes = new TermMap<NamedNode, RegExp>([
+  [xsd.integer, /^-?[0-9]+$/],
+  [xsd.decimal, /^-?[0-9]+\.[0-9]+$/],
+  [xsd.boolean, /^(true|false)$/],
+])
 
 export function literal(term: Literal, { base = '', prefixes = {} }: NamedNodeOptions): PartialString {
   if (!term.language && term.datatype) {
-    if (isBuiltInType(term.datatype)) {
+    const shorthandSyntax = buildInTypes.get(term.datatype)
+    if (shorthandSyntax && shorthandSyntax.test(term.value)) {
       return {
         value: term.value,
         prefixes: [],
